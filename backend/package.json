@@ -22,10 +22,10 @@
   "dependencies": {
     "@a2seven/yoo-checkout": "^1.1.4",
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^4.0.3",
+    "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.2",
-    "@nestjs/mapped-types": "*",
+    "@nestjs/mapped-types": "^2.1.1",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/serve-static": "^5.0.4",

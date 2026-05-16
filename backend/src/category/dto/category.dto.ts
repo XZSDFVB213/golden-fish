@@ -4,10 +4,10 @@ export class CategoryDto {
   @IsString({
     message: 'Название обязательно',
   })
-  title: string;
+  title!: string;
 
   @IsString({
     message: 'Описание обязательно',
   })
-  description: string;
+  description!: string;
 }
