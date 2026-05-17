@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { YooCheckout } from '@a2seven/yoo-checkout';
+import { ICapturePayment, YooCheckout } from '@a2seven/yoo-checkout';
 import { OrderDto } from './dto/order.dto';
+import { PaymentStatusDto } from './dto/payment.status.dto';
+import { EnumOrderStatus } from '@prisma/client';
 const chekout = new YooCheckout({
   shopId: process.env.YOOKASSA_SHOP_ID ?? 'defaultShopId',
   secretKey: process.env.YOOKASSA_SECRET_KEY ?? 'defaultSecretKey',
@@ -57,5 +60,30 @@ export class OrderService {
       description: `Оплата заказа в магазине. ID платежа #${order.id}`,
     });
     return payment;
+  }
+  async updateStatus(dto: PaymentStatusDto) {
+    if (dto.event === 'payment.waiting_for_capture') {
+      const capturePayment: ICapturePayment = {
+        amount: {
+          value: dto.object.amount.value,
+          currency: dto.object.amount.currency,
+        },
+      };
+      return chekout.capturePayment(dto.object.id, capturePayment);
+    }
+    if (dto.event === 'payment.succeeded') {
+      const orderId = dto.object.description.split('#')[1];
+
+      await this.prisma.order.update({
+        where: {
+          id: orderId,
+        },
+        data: {
+          status: EnumOrderStatus.PAYED,
+        },
+      });
+      return true;
+    }
+    return true;
   }
 }
