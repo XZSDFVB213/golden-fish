@@ -7,7 +7,12 @@ import {
 } from '../../../shared/models/user/auth.interface';
 import { tap } from 'rxjs';
 import { IUser } from '../../../shared/models/user/user.interface';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+
+interface CustomJwtPayload extends JwtPayload {
+  role?: 'ADMIN' | 'MANAGER' | 'COURIER' | 'BUYER';
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,14 +21,72 @@ export class AuthService {
   private env = environment;
 
   private _user = signal<IUser | null>(this.getStoredUser());
-  private _role = signal<'ADMIN' | 'MANAGER' | 'COURIER' | 'BUYER' | null>(
-    null,
-  );
+  private _role = signal<'ADMIN' | 'MANAGER' | 'COURIER' | 'BUYER' | null>(null);
 
+  // Readonly сигналы для использования в компонентах
   role = this._role.asReadonly();
-
   user = this._user.asReadonly();
 
+  private API_URL = `${this.env.API_URL}/auth`;
+
+  constructor() {
+    this.initAuthState();
+  }
+
+  private initAuthState() {
+    const token = this.getAccessToken();
+    if (token) {
+      this.setRoleFromToken(token);
+    }
+  }
+
+  main(type: 'login' | 'register', data: IAuthForm) {
+    return this.http
+      .post<IAuthResponse>(`${this.API_URL}/${type}`, data, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap((res) => {
+          localStorage.setItem('accessToken', res.accessToken);
+          this.setUser(res.user);
+          this.setRoleFromToken(res.accessToken);
+        }),
+      );
+  }
+
+  refreshTokens() {
+    return this.http
+      .post<IAuthResponse>(
+        `${this.API_URL}/login/access-token`,
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          localStorage.setItem('accessToken', res.accessToken);
+          if (res.user) {
+            this.setUser(res.user);
+          }
+          this.setRoleFromToken(res.accessToken);
+        })
+      );
+  }
+
+  logout() {
+    return this.http
+      .post(
+        `${this.API_URL}/logout`,
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        tap(() => {
+          this.clearAll();
+        })
+      );
+  }
+
+  // ====================== User & Role ======================
   setUser(user: IUser) {
     this._user.set(user);
     localStorage.setItem('user', JSON.stringify(user));
@@ -34,76 +97,52 @@ export class AuthService {
     localStorage.removeItem('user');
   }
 
-  private API_URL = `${this.env.API_URL}/auth`;
-
-  main(type: 'login' | 'register', data: IAuthForm) {
-    return this.http
-      .post<IAuthResponse>(`${this.API_URL}/${type}`, data, {
-        withCredentials: true,
-      })
-      .pipe(
-        tap((res) => {
-          localStorage.setItem('accessToken', res.accessToken);
-
-          this.setUser(res.user);
-          this.setRoleFromToken(res.accessToken);
-        }),
-      );
+  private clearAll() {
+    localStorage.removeItem('accessToken');
+    this.clearUser();
+    this._role.set(null);
   }
-  refreshTokens() {
-    return this.http.post<IAuthResponse>(
-      `${this.API_URL}/login/access-token`,
-      {},
-      {
-        withCredentials: true,
-      },
-    );
-  }
-  logout() {
-    return this.http
-      .post(
-        `${this.API_URL}/logout`,
-        {},
-        {
-          withCredentials: true,
-        },
-      )
-      .pipe(
-        tap(() => {
-          localStorage.removeItem('accessToken');
 
-          this.clearUser();
-        }),
-      );
-  }
-  getAccessToken() {
+  getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
   }
-  googleLogin() {
-    window.location.href = `${environment.API_URL}/auth/google`;
-  }
 
-  yandexLogin() {
-    window.location.href = `${environment.API_URL}/auth/yandex`;
-  }
   private getStoredUser(): IUser | null {
-    const user = localStorage.getItem('user');
-
-    if (!user) return null;
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return null;
 
     try {
-      return JSON.parse(user);
+      return JSON.parse(userStr);
     } catch {
       return null;
     }
   }
-  getProfile() {
-    return this.http.get<IUser>(`${environment.API_URL}/users/profile`, {
-      withCredentials: true,
-    });
+
+  private setRoleFromToken(token: string) {
+    try {
+      const decoded = jwtDecode<CustomJwtPayload>(token);
+      this._role.set(decoded.role ?? null);
+    } catch (e) {
+      console.error('Failed to decode JWT:', e);
+      this._role.set(null);
+    }
   }
-  setRoleFromToken(token: string) {
-const decoded = jwtDecode<JwtPayload>(token);
-    this._role.set(decoded.role);
+
+  // ====================== OAuth ======================
+  googleLogin() {
+    window.location.href = `${this.env.API_URL}/auth/google`;
+  }
+
+  yandexLogin() {
+    window.location.href = `${this.env.API_URL}/auth/yandex`;
+  }
+
+  // ====================== Profile ======================
+  getProfile() {
+    return this.http.get<IUser>(`${this.env.API_URL}/users/profile`, {
+      withCredentials: true,
+    }).pipe(
+      tap(user => this.setUser(user))
+    );
   }
 }
