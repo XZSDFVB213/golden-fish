@@ -1,1 +1,94 @@
-<p>register works!</p>
+<mat-card class="login-card">
+  <mat-card-content>
+
+    <div class="login-header">
+      <h1>Регистрация</h1>
+    </div>
+<div class="social-login">
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="loginWithGoogle()"
+  >
+    <img
+      src="assets/google.svg"
+      alt=""
+      width="20"
+    />
+
+    Google
+  </button>
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="loginWithYandex()"
+  >
+    <img
+      src="assets/yandex.svg"
+      alt=""
+      width="20"
+    />
+
+    Яндекс
+  </button>
+
+</div>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="login-form"
+    >
+    <mat-form-field appearance="outline">
+        <mat-label>Имя</mat-label>
+        <input
+          matInput
+          type="name"
+          formControlName="name"
+        />
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <div class="error">
+          {{ errorMessage() }}
+        </div>
+      }
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Пароль</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+        />
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <div class="error">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="isLoading"
+      >
+        Войти
+      </button>
+
+
+    </form>
+
+  </mat-card-content>
+</mat-card>

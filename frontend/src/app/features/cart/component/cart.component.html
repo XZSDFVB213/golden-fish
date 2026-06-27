@@ -1,1 +1,116 @@
-<p>cart works!</p>
+<div class="cart-page">
+
+  <h1 class="title">Корзина</h1>
+
+  @if (cart.items().length === 0) {
+    <div class="empty">
+      🛒 Корзина пуста
+
+      <button
+        mat-flat-button
+        color="primary"
+        routerLink="/products"
+      >
+        Перейти к товарам
+      </button>
+    </div>
+  } @else {
+
+    <div class="cart-layout">
+
+      <!-- ITEMS -->
+      <div class="items">
+
+        @for (item of cart.items(); track item.id) {
+
+          <mat-card class="cart-item">
+
+            <img
+              class="image"
+              [src]="item.product.images[0]"
+              [alt]="item.product.title"
+            />
+
+            <div class="info">
+
+              <div class="name">
+                {{ item.product.title }}
+              </div>
+
+              <div class="price">
+                {{ item.product.price }} ₽
+              </div>
+
+              <div class="controls">
+
+                <button
+                  mat-icon-button
+                  (click)="decrease(item.product.id)"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+
+                <span class="qty">
+                  {{ item.quantity }}
+                </span>
+
+                <button
+                  mat-icon-button
+                  (click)="increase(item.product.id)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  class="delete"
+                  (click)="remove(item.product.id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+
+              </div>
+
+            </div>
+
+          </mat-card>
+
+        }
+
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="summary">
+
+        <mat-card>
+
+          <h2>Итого</h2>
+
+          <div class="row">
+            <span>Товары:</span>
+            <span>{{ cart.totalCount() }}</span>
+          </div>
+
+          <div class="row total">
+            <span>Сумма:</span>
+            <span>{{ cart.totalPrice() }} ₽</span>
+          </div>
+
+          <button
+            mat-flat-button
+            color="primary"
+            class="checkout"
+            (click)="checkout()"
+          >
+            Оформить заказ
+          </button>
+
+        </mat-card>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

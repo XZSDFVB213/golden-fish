@@ -1,0 +1,27 @@
+.header {
+  height: 64px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 22px;
+}
+
+.search {
+  flex: 1;
+  max-width: 400px;
+  margin-left: 22px;
+}
+
+.actions {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

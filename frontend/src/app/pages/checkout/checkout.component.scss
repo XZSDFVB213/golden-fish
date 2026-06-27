@@ -1,0 +1,49 @@
+.checkout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.summary {
+  position: sticky;
+  top: 20px;
+  padding: 24px;
+  height: fit-content;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 12px;
+}
+
+.pay-btn {
+  width: 100%;
+  margin-top: 16px;
+}

@@ -1,0 +1,68 @@
+.orders-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.order-card {
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.order-id {
+  font-weight: 600;
+}
+
+.order-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eee;
+  font-size: 12px;
+}
+
+.status.payed {
+  background: #22c55e;
+  color: white;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+}

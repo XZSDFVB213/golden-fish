@@ -1,1 +1,17 @@
-<p>product-item works!</p>
+<mat-card class="product-card" [routerLink]="['/products', product.id]">
+  <img mat-card-image [src]="product.images[0]" [alt]="product.title" />
+
+  <mat-card-content>
+    <h3>{{ product.title }}</h3>
+
+    <p>
+      {{ product.description }}
+    </p>
+
+    <div class="price">{{ product.price }}₽</div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button (click)="goToProduct(product.id)" mat-flat-button color="primary">В корзину</button>
+  </mat-card-actions>
+</mat-card>

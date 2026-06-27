@@ -1,0 +1,50 @@
+.hero {
+  border-radius: 24px;
+  overflow: hidden;
+
+  min-height: 320px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 48px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  color: white;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.badge {
+  display: inline-block;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 1.1;
+  font-weight: 700;
+
+  margin-bottom: 16px;
+}
+
+p {
+  font-size: 18px;
+  opacity: 0.9;
+
+  margin-bottom: 24px;
+}

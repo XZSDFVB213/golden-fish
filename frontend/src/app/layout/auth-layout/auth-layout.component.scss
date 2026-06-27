@@ -1,0 +1,16 @@
+.auth-layout {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 24px;
+
+  background: linear-gradient(
+    135deg,
+    #f8fafc 0%,
+    #eff6ff 50%,
+    #f1f5f9 100%
+  );
+}

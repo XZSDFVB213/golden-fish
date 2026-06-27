@@ -1,1 +1,18 @@
-<p>products works!</p>
+<div class="products-page">
+  <h1>Каталог товаров</h1>
+  <div class="categories">
+    <button mat-stroked-button (click)="loadAllProducts()">Все</button>
+
+    @for (category of categories(); track category.id) {
+      <app-category-card
+        [category]="category"
+        (clicked)="loadCategory($event.id)"
+      />
+    }
+  </div>
+  <div class="products-grid">
+    @for (product of products(); track product.id) {
+      <app-product-item [product]="product" />
+    }
+  </div>
+</div>

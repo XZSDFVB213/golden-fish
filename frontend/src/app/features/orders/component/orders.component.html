@@ -1,1 +1,65 @@
-<p>orders works!</p>
+<div class="orders-page">
+
+  <h1>Мои заказы</h1>
+
+  @if (orders().length === 0) {
+    <div class="empty">
+      <h2>Заказов пока нет</h2>
+      <p>Сделайте первую покупку в каталоге</p>
+
+      <button mat-flat-button color="primary" routerLink="/products">
+        В каталог
+      </button>
+    </div>
+  }
+
+  @for (order of orders(); track order.id) {
+
+    <mat-card class="order-card">
+
+      <div class="order-header">
+        <div>
+          <div class="order-id">Заказ #{{ order.id }}</div>
+          <div class="order-date">
+            {{ order.createdAt | date:'short' }}
+          </div>
+        </div>
+
+        <div class="status" [class.payed]="order.status === 'PAYED'">
+          {{ order.status }}
+        </div>
+      </div>
+
+      <div class="items">
+
+        @for (item of order.items; track item.id) {
+          <div class="item">
+
+            <img [src]="item.product.images[0]" />
+
+            <div class="info">
+              <div class="title">
+                {{ item.product.title }}
+              </div>
+
+              <div class="meta">
+                {{ item.quantity }} × {{ item.price }} ₽
+              </div>
+            </div>
+
+          </div>
+        }
+
+      </div>
+
+      <div class="footer">
+        <div class="total">
+          Итого: {{ order.total }} ₽
+        </div>
+      </div>
+
+    </mat-card>
+
+  }
+
+</div>

@@ -1,0 +1,72 @@
+<div class="checkout">
+
+  <h1 class="title">Оформление заказа</h1>
+
+  <div class="layout">
+
+    <!-- LEFT: FORM -->
+    <mat-card class="form">
+
+      <h2>Контактные данные</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Имя</mat-label>
+        <input matInput />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Телефон</mat-label>
+        <input matInput />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Комментарий</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+
+      <h2>Доставка</h2>
+
+      <mat-radio-group>
+        <mat-radio-button value="courier">
+          Курьер
+        </mat-radio-button>
+
+        <mat-radio-button value="pickup">
+          Самовывоз
+        </mat-radio-button>
+      </mat-radio-group>
+
+    </mat-card>
+
+    <!-- RIGHT: SUMMARY -->
+    <mat-card class="summary">
+
+      <h2>Ваш заказ</h2>
+
+      @for (item of cart.items(); track item.id) {
+        <div class="row">
+          <span>{{ item.product.title }}</span>
+          <span>{{ item.quantity }} × {{ item.product.price }} ₽</span>
+        </div>
+      }
+
+      <hr />
+
+      <div class="total">
+        Итого: {{ totalPrice() }} ₽
+      </div>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="pay-btn"
+        (click)="pay()"
+      >
+        Перейти к оплате
+      </button>
+
+    </mat-card>
+
+  </div>
+
+</div>

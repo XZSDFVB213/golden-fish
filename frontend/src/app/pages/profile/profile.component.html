@@ -1,1 +1,65 @@
-<p>profile works!</p>
+@if (user()){
+<div class="profile-page">
+
+  <div class="profile-header">
+
+    <div class="avatar">
+      {{ user()?.name?.charAt(0) }}
+    </div>
+
+    <div class="user-info">
+      <h1>{{ user()?.name }}</h1>
+      <p>{{ user()?.email }}</p>
+    </div>
+
+  </div>
+
+  <div class="menu">
+
+    <mat-card
+      class="menu-item"
+      routerLink="/orders"
+    >
+      <mat-icon>receipt_long</mat-icon>
+
+      <span>Мои заказы</span>
+    </mat-card>
+
+    <mat-card
+      class="menu-item"
+      routerLink="/favorites"
+    >
+      <mat-icon>favorite</mat-icon>
+
+      <span>Избранное</span>
+
+    </mat-card>
+
+    <mat-card
+      class="menu-item"
+      routerLink="/support"
+    >
+      <mat-icon>support_agent</mat-icon>
+
+      <span>Поддержка</span>
+
+    </mat-card>
+
+    <mat-card
+      class="menu-item logout"
+      (click)="logout()"
+    >
+      <mat-icon>logout</mat-icon>
+
+      <span>Выйти</span>
+    </mat-card>
+
+  </div>
+
+</div>
+} @else{
+  <div class="profile-page">
+    <h1>Вы не авторизованы</h1>
+    <button mat-flat-button color="primary" routerLink="/login">Войти</button>
+  </div>
+}
