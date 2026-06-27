@@ -13,6 +13,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthDto } from './dto/auth.dto';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { RoleUser } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
   ) {}
   async login(dto: AuthDto) {
     const user = await this.validateUser(dto);
-    const tokens = this.issueTokens(user.id);
+    const tokens = this.issueTokens(user.id, user.role);
     return {
       user,
       ...tokens,
@@ -38,7 +39,7 @@ export class AuthService {
       throw new BadRequestException('Пользователь уже есть');
     }
     const user = await this.userService.create(dto);
-    const tokens = this.issueTokens(user.id);
+    const tokens = this.issueTokens(user.id, user.role);
     return {
       user,
       ...tokens,
@@ -50,14 +51,14 @@ export class AuthService {
       throw new UnauthorizedException('Невалидный токен');
     }
     const user = await this.userService.getById(result.id);
-    const tokens = this.issueTokens(user!.id);
+    const tokens = this.issueTokens(user.id, user.role);
     return {
       user,
       ...tokens,
     };
   }
-  issueTokens(userId: string) {
-    const data = { id: userId };
+  issueTokens(userId: string, role: RoleUser) {
+    const data = { id: userId, role };
     const accessToken = this.jwt.sign(data, {
       expiresIn: '1h',
     });
@@ -92,7 +93,7 @@ export class AuthService {
         },
       });
     }
-    const tokens = this.issueTokens(user.id);
+    const tokens = this.issueTokens(user.id, user.role);
     return {
       user,
       ...tokens,

@@ -105,7 +105,7 @@ export class ProductService {
     const products = await this.prisma.product.findMany({
       where: {
         category: {
-          id: currentProduct.category?.title,
+          id: currentProduct.category?.id,
         },
         NOT: {
           id: currentProduct.id,

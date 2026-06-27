@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { hash } from 'argon2';
 import { AuthDto } from 'src/auth/dto/auth.dto';
+import { RoleUser } from '@prisma/client';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -58,6 +59,7 @@ export class UserService {
       data: {
         name: dto.name,
         email: dto.email,
+        role: RoleUser.BUYER,
         password: await hash(dto.password),
       },
     });

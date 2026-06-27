@@ -82,7 +82,7 @@ export class AuthController {
       await this.authService.validateOAuthLogin(req);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
     return res.redirect(
-      `${process.env['CLIENT_URL']}/dashboard?accessToken=${response.accessToken}`,
+      `${process.env['CLIENT-SITE_URL']}/oauth-success?accessToken=${response.accessToken}`,
     );
   }
 
@@ -96,7 +96,7 @@ export class AuthController {
       await this.authService.validateOAuthLogin(req);
     this.authService.addRefreshTokenToResponse(res, refreshToken);
     return res.redirect(
-      `${process.env['CLIENT_URL']}/dashboard?accessToken=${response.accessToken}`,
+      `${process.env['CLIENT-SITE_URL']}/oauth-success?accessToken=${response.accessToken}`,
     );
   }
 

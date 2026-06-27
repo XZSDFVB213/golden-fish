@@ -23,6 +23,11 @@ export class OrderDto {
   @Type(() => OrderItemDto)
   items!: OrderItemDto[];
 }
+
+export class UpdateOrderStatusDto {
+  @IsEnum(EnumOrderStatus)
+  status!: EnumOrderStatus;
+}
 export class OrderItemDto {
   @IsNumber(
     {},

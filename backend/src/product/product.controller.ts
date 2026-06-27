@@ -22,12 +22,12 @@ export class ProductController {
   async getAll(@Query('searchTerm') searchTerm?: string) {
     return this.productService.getAll(searchTerm);
   }
-  @Auth()
+
   @Get('by-storeId/:storeId')
   async getByStoreId(@Param('storeId') storeId: string) {
     return this.productService.getByStoreId(storeId);
   }
-  @Auth()
+
   @Get('by-id/:id')
   async getById(@Param('id') id: string) {
     return this.productService.getById(id);

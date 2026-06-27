@@ -17,12 +17,10 @@ import { CategoryDto } from './dto/category.dto';
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-  @Auth()
   @Get('by-storeId/:storeId')
   async getByStoreId(@Param('storeId') storeId: string) {
     return this.categoryService.getByStoreId(storeId);
   }
-  @Auth()
   @Get('by-id/:id')
   async getById(@Param('id') id: string) {
     return this.categoryService.getById(id);
