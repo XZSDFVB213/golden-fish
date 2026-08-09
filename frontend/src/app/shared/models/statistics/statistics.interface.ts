@@ -18,3 +18,12 @@ export interface IMiddleStatistics{
     monthlySales: IMonthlySales[];
     lastUsers:ILastUsers[]
 }
+export interface IManagerDashboard {
+    todayOrders: number,
+    revenue: number,
+    pending: number,
+    ready: number,
+    processing: number,
+    delivery: number,
+    completed: number
+}

@@ -1,0 +1,81 @@
+<div class="dashboard">
+
+  <div class="header">
+    <div>
+      <h1>Панель управления</h1>
+      <p>Добро пожаловать в CRM магазина</p>
+    </div>
+
+    <div class="date">
+      {{ today | date:'dd MMMM yyyy' }}
+    </div>
+  </div>
+
+  <div class="cards">
+
+    <mat-card class="card revenue">
+      <mat-icon>payments</mat-icon>
+
+      <div class="content">
+        <span class="title">Выручка</span>
+        <h2>{{ dashboard()?.revenue }} ₽</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-icon>shopping_bag</mat-icon>
+
+      <div class="content">
+        <span class="title">Заказов сегодня</span>
+        <h2>{{ dashboard()?.todayOrders }}</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card pending">
+      <mat-icon>schedule</mat-icon>
+
+      <div class="content">
+        <span class="title">Новые</span>
+        <h2>{{ dashboard()?.pending }}</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card ready">
+      <mat-icon>inventory_2</mat-icon>
+
+      <div class="content">
+        <span class="title">Готовы</span>
+        <h2>{{ dashboard()?.ready }}</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card processing">
+      <mat-icon>construction</mat-icon>
+
+      <div class="content">
+        <span class="title">Собираются</span>
+        <h2>{{ dashboard()?.processing }}</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card delivery">
+      <mat-icon>local_shipping</mat-icon>
+
+      <div class="content">
+        <span class="title">Доставка</span>
+        <h2>{{ dashboard()?.delivery }}</h2>
+      </div>
+    </mat-card>
+
+    <mat-card class="card completed">
+      <mat-icon>check_circle</mat-icon>
+
+      <div class="content">
+        <span class="title">Завершены</span>
+        <h2>{{ dashboard()?.completed }}</h2>
+      </div>
+    </mat-card>
+
+  </div>
+
+</div>

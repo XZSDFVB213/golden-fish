@@ -1,0 +1,36 @@
+.layout {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  border-right: 1px solid #ececec;
+  background: #fff;
+}
+
+.logo {
+  padding: 24px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+mat-toolbar {
+  border-bottom: 1px solid #ececec;
+  background: white;
+}
+
+.content {
+  padding: 32px;
+}
+
+.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 12px;
+}
+a{
+    display: flex;
+    align-items: center !important;
+    gap: 8px;
+}

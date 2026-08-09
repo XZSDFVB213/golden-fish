@@ -1,27 +1,23 @@
 <div class="orders-page">
-
   <div class="header">
     <h1>Заказы</h1>
 
     <div class="filters">
       <button mat-stroked-button (click)="load()">Все</button>
-      <button mat-stroked-button (click)="filter('PENDING')">Новые</button>
-      <button mat-stroked-button (click)="filter('PAYED')">Оплачены</button>
+      <button mat-stroked-button (click)="filter('PROCESSING')">
+        В Сборке
+      </button>
+      <button mat-stroked-button (click)="filter('READY')">Готовые</button>
     </div>
   </div>
 
   <div class="orders-grid">
-
     @for (order of orders(); track order.id) {
       <mat-card class="order-card">
-
         <!-- TOP -->
         <div class="order-top">
-
           <div class="left">
-            <div class="order-id">
-              #{{ order.id.slice(0, 8) }}
-            </div>
+            <div class="order-id">#{{ order.id.slice(0, 8) }}</div>
 
             <div class="user">
               {{ order.user.email }}
@@ -33,62 +29,49 @@
               {{ order.status }}
             </span>
           </div>
-
         </div>
 
         <!-- ITEMS -->
         <div class="items">
-
           @for (item of order.items; track item.id) {
             <div class="item">
-
-              <img
-                [src]="item.product.images[0]"
-                class="item-img"
-              />
+              <img [src]="item.product.images[0]" class="item-img" />
 
               <div class="item-info">
                 <div class="title">
                   {{ item.product.title }}
                 </div>
 
-                <div class="meta">
-                  {{ item.quantity }} × {{ item.price }} ₽
-                </div>
+                <div class="meta">{{ item.quantity }} × {{ item.price }} ₽</div>
               </div>
-
             </div>
           }
-
         </div>
 
         <!-- FOOTER -->
         <div class="order-footer">
-
           <div class="total">
             Итого: <b>{{ order.total }} ₽</b>
           </div>
 
           <div class="actions">
-
-            <button mat-button (click)="setStatus(order.id,  EnumOrderStatus.PENDING)">
-              В обработку
+            <button
+              mat-button
+              (click)="setStatus(order.id, EnumOrderStatus.PROCESSING)"
+            >
+              В сборке
             </button>
 
-            <button mat-button color="primary" (click)="setStatus(order.id,EnumOrderStatus.PAYED)">
-              Оплачен
+            <button
+              mat-button
+              color="primary"
+              (click)="setStatus(order.id, EnumOrderStatus.READY)"
+            >
+              Собран
             </button>
-
-            <button mat-flat-button color="accent" (click)="setStatus(order.id,  EnumOrderStatus.COMPLETED)">
-              Завершить
-            </button>
-
           </div>
-
         </div>
-
       </mat-card>
     }
-
   </div>
 </div>

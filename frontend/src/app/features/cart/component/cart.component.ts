@@ -1,6 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { EnumOrderStatus } from '../../../shared/models/order/order.interface';
-import { OrderService } from '../../orders/service/order.service';
 import { CartService } from '../service/cart.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatCard } from '@angular/material/card';

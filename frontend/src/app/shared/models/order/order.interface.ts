@@ -33,6 +33,7 @@ export enum EnumOrderStatus {
   PAYED = 'PAYED',
   PROCESSING = 'PROCESSING',
   DELIVERY = 'DELIVERY',
+  READY = 'READY',
   COMPLETED = 'COMPLETED',
   CANCELED = 'CANCELED',
 }

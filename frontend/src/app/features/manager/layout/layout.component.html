@@ -1,1 +1,84 @@
-<p>layout works!</p>
+<mat-sidenav-container class="layout">
+
+  <mat-sidenav
+    mode="side"
+    opened
+    class="sidebar">
+
+    <div class="logo">
+      Золотая рыбка
+    </div>
+
+    <mat-nav-list>
+
+      <a
+        mat-list-item
+        routerLink="/manager/dashboard"
+        routerLinkActive="active">
+
+        <mat-icon>dashboard</mat-icon>
+
+        Dashboard
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/manager/orders"
+        routerLinkActive="active">
+
+        <mat-icon>shopping_bag</mat-icon>
+
+        Заказы
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/manager/products"
+        routerLinkActive="active">
+
+        <mat-icon>inventory_2</mat-icon>
+
+        Товары
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/manager/categories"
+        routerLinkActive="active">
+
+        <mat-icon>category</mat-icon>
+
+        Категории
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/manager/stores"
+        routerLinkActive="active">
+
+        <mat-icon>storefront</mat-icon>
+
+        Магазины
+      </a>
+
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar>
+
+      CRM Менеджера
+
+    </mat-toolbar>
+
+    <div class="content">
+
+      <router-outlet />
+
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -20,7 +20,8 @@ export const routes: Routes = [
             (c) => c.CheckoutComponent,
           ),
       },
-      {path:'thanks',
+      {
+        path: 'thanks',
         loadComponent: () =>
           import('./pages/thanks/thanks.component').then(
             (c) => c.ThanksComponent,
@@ -48,7 +49,9 @@ export const routes: Routes = [
       {
         path: 'cart',
         loadComponent: () =>
-          import('./features/cart/component/cart.component').then((c) => c.CartComponent),
+          import('./features/cart/component/cart.component').then(
+            (c) => c.CartComponent,
+          ),
       },
       {
         path: 'orders',
@@ -115,25 +118,41 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'manager',
+    canActivate: [ManagerGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/manager/layout/layout.component').then(
+            (c) => c.ManagerLayoutComponent,
+          ),
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./features/manager/orders/orders.component').then(
+            (c) => c.OrdersManagerComponent,
+          ),
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./features/manager/products/products.component').then(
+            (c) => c.ProductsComponent,
+          ),
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/manager/dashboard/dashboard.component').then(
+            (c) => c.DashboardComponent,
+          ),
+      },
+    ],
+  },
+  {
     path: '**',
     redirectTo: 'not-found',
   },
-  {
-  path: 'manager',
-  canActivate: [ManagerGuard],
-  children: [
-    {
-      path: 'orders',
-      loadComponent: () =>
-        import('./features/manager/orders/orders.component')
-          .then(c => c.OrdersManagerComponent),
-    },
-    {
-      path: 'products',
-      loadComponent: () =>
-        import('./features/manager/products/products.component')
-          .then(c => c.ProductsComponent),
-    },
-  ],
-}
 ];
