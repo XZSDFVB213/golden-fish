@@ -1,81 +1,531 @@
 <div class="dashboard">
 
-  <div class="header">
+  <!-- HEADER -->
+
+  <header class="dashboard-header">
+
     <div>
-      <h1>Панель управления</h1>
-      <p>Добро пожаловать в CRM магазина</p>
+      <div class="eyebrow">
+        Золотая рыбка • CRM
+      </div>
+
+      <h1>Добрый день 👋</h1>
+
+      <p>
+        Вот что происходит в магазинах сегодня
+      </p>
     </div>
 
-    <div class="date">
-      {{ today | date:'dd MMMM yyyy' }}
+    <div class="header-actions">
+
+      <div class="today">
+        <mat-icon>calendar_today</mat-icon>
+
+        <span>
+          {{ today | date:'d MMMM' }}
+        </span>
+      </div>
+
+      <a
+        mat-flat-button
+        routerLink="/manager/orders"
+        class="orders-button"
+      >
+        <mat-icon>shopping_bag</mat-icon>
+
+        Все заказы
+      </a>
+
     </div>
+
+  </header>
+
+
+  <!-- ATTENTION -->
+
+  @if (attentionCount() > 0) {
+
+    <section class="attention">
+
+      <div class="attention-icon">
+        <mat-icon>notifications_active</mat-icon>
+      </div>
+
+      <div class="attention-content">
+
+        <span>Требуют внимания</span>
+
+        <strong>
+          {{ attentionCount() }}
+          новых заказов ждут обработки
+        </strong>
+
+      </div>
+
+      <a
+        routerLink="/manager/orders"
+        class="attention-link"
+      >
+        Перейти к заказам
+
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+
+    </section>
+
+  }
+
+
+  <!-- KPI -->
+
+  <section class="stats-grid">
+
+    <article class="stat-card revenue">
+
+      <div class="stat-top">
+
+        <div class="stat-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Выручка
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.revenue | number:'1.0-0' }}
+        <small>₽</small>
+      </div>
+
+      <span class="stat-hint">
+        Общая выручка
+      </span>
+
+    </article>
+
+
+    <article class="stat-card today-orders">
+
+      <div class="stat-top">
+
+        <div class="stat-icon">
+          <mat-icon>shopping_basket</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Заказы сегодня
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.todayOrders ?? 0 }}
+      </div>
+
+      <span class="stat-hint">
+        За текущий день
+      </span>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-top">
+
+        <div class="stat-icon pending-icon">
+          <mat-icon>fiber_new</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Новые
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.pending ?? 0 }}
+      </div>
+
+      <span class="stat-hint">
+        Ждут обработки
+      </span>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-top">
+
+        <div class="stat-icon processing-icon">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Собираются
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.processing ?? 0 }}
+      </div>
+
+      <span class="stat-hint">
+        Сейчас в сборке
+      </span>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-top">
+
+        <div class="stat-icon ready-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Готовы
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.ready ?? 0 }}
+      </div>
+
+      <span class="stat-hint">
+        Можно выдавать
+      </span>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-top">
+
+        <div class="stat-icon delivery-icon">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+
+        <span class="stat-label">
+          Доставляются
+        </span>
+
+      </div>
+
+      <div class="stat-value">
+        {{ dashboard()?.delivery ?? 0 }}
+      </div>
+
+      <span class="stat-hint">
+        Уже в пути
+      </span>
+
+    </article>
+
+  </section>
+
+
+  <!-- MAIN -->
+
+  <div class="dashboard-grid">
+
+    <!-- ACTIVE ORDERS -->
+
+    <section class="panel active-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <span class="section-kicker">
+            В работе
+          </span>
+
+          <h2>Активные заказы</h2>
+        </div>
+
+        <a routerLink="/manager/orders">
+          Смотреть все
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+      </div>
+
+
+      <div class="active-orders">
+
+        @for (order of activeOrders(); track order.id) {
+
+          <article class="active-order">
+
+            <div class="order-main">
+
+              <div class="order-number">
+                #{{ order.id.slice(-6).toUpperCase() }}
+              </div>
+
+              <div
+                class="status"
+                [class]="
+                  'status ' +
+                  getStatusClass(order.status)
+                "
+              >
+                {{ getStatusLabel(order.status) }}
+              </div>
+
+            </div>
+
+
+            <div class="customer">
+
+              <div class="customer-avatar">
+                {{
+                  (order.user?.name || 'К')
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+
+              <div>
+
+                <strong>
+                  {{ order.user?.name || 'Клиент' }}
+                </strong>
+
+                <span>
+                  {{ order.items.length }}
+                  товаров
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="order-bottom">
+
+              <span class="order-date">
+                {{ order.createdAt | date:'HH:mm' }}
+              </span>
+
+              <strong class="order-price">
+                {{ order.total | number:'1.0-0' }} ₽
+              </strong>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <aside class="panel quick-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <span class="section-kicker">
+            Управление
+          </span>
+
+          <h2>Быстрые действия</h2>
+        </div>
+
+      </div>
+
+
+      <div class="quick-actions">
+
+        <a
+          routerLink="/manager/orders"
+          class="quick-action green"
+        >
+
+          <div class="quick-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+
+          <div>
+            <strong>Заказы</strong>
+            <span>Обработка и статусы</span>
+          </div>
+
+          <mat-icon class="arrow">
+            arrow_forward
+          </mat-icon>
+
+        </a>
+
+
+        <a
+          routerLink="/manager/products"
+          class="quick-action"
+        >
+
+          <div class="quick-icon">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+
+          <div>
+            <strong>Товары</strong>
+            <span>Каталог магазина</span>
+          </div>
+
+          <mat-icon class="arrow">
+            arrow_forward
+          </mat-icon>
+
+        </a>
+
+
+        <a
+          routerLink="/manager/categories"
+          class="quick-action"
+        >
+
+          <div class="quick-icon">
+            <mat-icon>category</mat-icon>
+          </div>
+
+          <div>
+            <strong>Категории</strong>
+            <span>Управление каталогом</span>
+          </div>
+
+          <mat-icon class="arrow">
+            arrow_forward
+          </mat-icon>
+
+        </a>
+
+
+        <a
+          routerLink="/manager/stores"
+          class="quick-action"
+        >
+
+          <div class="quick-icon">
+            <mat-icon>storefront</mat-icon>
+          </div>
+
+          <div>
+            <strong>Магазины</strong>
+            <span>Точки продаж</span>
+          </div>
+
+          <mat-icon class="arrow">
+            arrow_forward
+          </mat-icon>
+
+        </a>
+
+      </div>
+
+    </aside>
+
   </div>
 
-  <div class="cards">
 
-    <mat-card class="card revenue">
-      <mat-icon>payments</mat-icon>
+  <!-- LAST ORDERS -->
 
-      <div class="content">
-        <span class="title">Выручка</span>
-        <h2>{{ dashboard()?.revenue }} ₽</h2>
+  <section class="panel latest-panel">
+
+    <div class="panel-header">
+
+      <div>
+        <span class="section-kicker">
+          История
+        </span>
+
+        <h2>Последние заказы</h2>
       </div>
-    </mat-card>
 
-    <mat-card class="card">
-      <mat-icon>shopping_bag</mat-icon>
+      <a routerLink="/manager/orders">
+        Все заказы
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
 
-      <div class="content">
-        <span class="title">Заказов сегодня</span>
-        <h2>{{ dashboard()?.todayOrders }}</h2>
+    </div>
+
+
+    <div class="orders-table">
+
+      <div class="table-header">
+        <span>Заказ</span>
+        <span>Клиент</span>
+        <span>Дата</span>
+        <span>Статус</span>
+        <span>Сумма</span>
       </div>
-    </mat-card>
 
-    <mat-card class="card pending">
-      <mat-icon>schedule</mat-icon>
 
-      <div class="content">
-        <span class="title">Новые</span>
-        <h2>{{ dashboard()?.pending }}</h2>
-      </div>
-    </mat-card>
+      @for (order of latestOrders(); track order.id) {
 
-    <mat-card class="card ready">
-      <mat-icon>inventory_2</mat-icon>
+        <div class="table-row">
 
-      <div class="content">
-        <span class="title">Готовы</span>
-        <h2>{{ dashboard()?.ready }}</h2>
-      </div>
-    </mat-card>
+          <div class="order-id">
+            #{{ order.id.slice(-6).toUpperCase() }}
+          </div>
 
-    <mat-card class="card processing">
-      <mat-icon>construction</mat-icon>
+          <div class="table-customer">
 
-      <div class="content">
-        <span class="title">Собираются</span>
-        <h2>{{ dashboard()?.processing }}</h2>
-      </div>
-    </mat-card>
+            <div class="mini-avatar">
+              {{
+                (order.user?.name || 'К')
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+            </div>
 
-    <mat-card class="card delivery">
-      <mat-icon>local_shipping</mat-icon>
+            <div>
+              <strong>
+                {{ order.user?.name || 'Клиент' }}
+              </strong>
 
-      <div class="content">
-        <span class="title">Доставка</span>
-        <h2>{{ dashboard()?.delivery }}</h2>
-      </div>
-    </mat-card>
+              <span>
+                {{ order.user?.email }}
+              </span>
+            </div>
 
-    <mat-card class="card completed">
-      <mat-icon>check_circle</mat-icon>
+          </div>
 
-      <div class="content">
-        <span class="title">Завершены</span>
-        <h2>{{ dashboard()?.completed }}</h2>
-      </div>
-    </mat-card>
+          <span class="table-date">
+            {{ order.createdAt | date:'dd.MM.yyyy, HH:mm' }}
+          </span>
 
-  </div>
+          <div
+            [class]="
+              'status ' +
+              getStatusClass(order.status)
+            "
+          >
+            {{ getStatusLabel(order.status) }}
+          </div>
+
+          <strong class="table-price">
+            {{ order.total | number:'1.0-0' }} ₽
+          </strong>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
 
 </div>
