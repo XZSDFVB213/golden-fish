@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
+import { EnumOrderStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { PrismaService } from 'src/prisma.service';
@@ -32,6 +34,78 @@ export class StatisticsService {
       { id: 3, name: 'Количество категорий', value: categoriesCount },
       { id: 4, name: 'Средний рейтинг', value: averageRating },
     ];
+  }
+  async getManagerDashboard() {
+    const startToday = new Date();
+    startToday.setHours(0, 0, 0, 0);
+
+    const [
+      todayOrders,
+      revenue,
+      pending,
+      ready,
+      processing,
+      delivery,
+      completed,
+    ] = await Promise.all([
+      this.prisma.order.count({
+        where: {
+          createdAt: {
+            gte: startToday,
+          },
+        },
+      }),
+
+      this.prisma.order.aggregate({
+        where: {
+          status: EnumOrderStatus.COMPLETED,
+        },
+        _sum: {
+          total: true,
+        },
+      }),
+
+      this.prisma.order.count({
+        where: {
+          status: EnumOrderStatus.PENDING,
+        },
+      }),
+
+      this.prisma.order.count({
+        where: {
+          status: EnumOrderStatus.READY,
+        },
+      }),
+
+      this.prisma.order.count({
+        where: {
+          status: EnumOrderStatus.PROCESSING,
+        },
+      }),
+
+      this.prisma.order.count({
+        where: {
+          status: EnumOrderStatus.DELIVERY,
+        },
+      }),
+
+      this.prisma.order.count({
+        where: {
+          status: EnumOrderStatus.COMPLETED,
+        },
+      }),
+    ]);
+
+    return {
+      todayOrders,
+      revenue: revenue._sum.total ?? 0,
+
+      pending,
+      ready,
+      processing,
+      delivery,
+      completed,
+    };
   }
   async getMiddleStatistics(storeId: string) {
     const mounthlySales = await this.calculateMonthlySales(storeId);

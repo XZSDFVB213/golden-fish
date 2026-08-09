@@ -117,6 +117,8 @@ export class OrderService {
     });
   }
   async updateStatusOrder(orderId: string, status: EnumOrderStatus) {
+    console.log(status);
+    console.log(typeof status);
     return this.prisma.order.update({
       where: {
         id: orderId,
