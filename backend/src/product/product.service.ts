@@ -139,12 +139,16 @@ export class ProductService {
     });
   }
   async update(id: string, dto: ProductDto) {
-    await this.getById(id);
     return this.prisma.product.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: {
         title: dto.title,
         description: dto.description,
+        price: dto.price,
+        images: dto.images,
+        categoryId: dto.categoryId,
       },
     });
   }

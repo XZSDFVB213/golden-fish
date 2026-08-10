@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,10 +16,20 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/user/decorators/user.decorator';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleUser } from '@prisma/client';
+import { RolesGuard } from 'src/auth/guards/role.guards';
 
 @Controller('stores')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
+  @Get('manager/all')
+  @Roles(RoleUser.MANAGER, RoleUser.ADMIN)
+  @UseGuards(RolesGuard)
+  @Auth()
+  getAllManager() {
+    return this.storeService.getAllManager();
+  }
   @Auth()
   @Get('by-id/:id')
   async getById(

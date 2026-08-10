@@ -23,6 +23,13 @@ export class StoreService {
 
     return store;
   }
+  async getAllManager() {
+    return this.prisma.store.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
   async create(dto: CreateStoreDto, userId: string) {
     return this.prisma.store.create({
       data: {
