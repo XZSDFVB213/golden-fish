@@ -1,48 +1,180 @@
-<mat-toolbar class="header shadow-sm">
-  <!-- Logo -->
-  <a routerLink="/home" class="logo"> Золотая рыбка </a>
-  <mat-form-field
-    appearance="outline"
-    class="store-select"
-    subscriptSizing="dynamic"
-  >
-    <mat-select
-      [value]="selectedStoreId()"
-      (selectionChange)="onStoreChange($event.value)"
+<header class="header">
+
+  <div class="header-container">
+
+    <!-- LOGO -->
+
+    <a
+      routerLink="/home"
+      class="brand"
     >
-      @for (store of stores(); track store.id) {
-        <mat-option [value]="store.id">
-          {{ store.title }}
-        </mat-option>
+
+      <div class="brand-icon">
+        <mat-icon>set_meal</mat-icon>
+      </div>
+
+      <div class="brand-text">
+
+        <strong>
+          Золотая рыбка
+        </strong>
+
+        <span>
+          продукты рядом
+        </span>
+
+      </div>
+
+    </a>
+
+
+    <!-- STORE -->
+
+    <div class="store-selector">
+
+      <div class="store-icon">
+        <mat-icon>location_on</mat-icon>
+      </div>
+
+      <div class="store-content">
+
+        <span class="store-label">
+          Ваш магазин
+        </span>
+
+        <mat-select
+          [value]="selectedStoreId()"
+          (selectionChange)="
+            onStoreChange($event.value)
+          "
+        >
+
+          @for (
+            store of stores();
+            track store.id
+          ) {
+
+            <mat-option
+              [value]="store.id"
+            >
+              {{ store.title }}
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+      </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search">
+
+      <mat-icon>
+        search
+      </mat-icon>
+
+      <input
+        type="text"
+        placeholder="Найти молоко, сыр, напитки..."
+        [value]="search()"
+        (input)="
+          search.set(
+            $any($event.target).value
+          )
+        "
+        (keyup.enter)="searchProducts()"
+      />
+
+      @if (search()) {
+
+        <button
+          type="button"
+          class="clear-search"
+          (click)="search.set('')"
+        >
+          <mat-icon>
+            close
+          </mat-icon>
+        </button>
+
       }
-    </mat-select>
-  </mat-form-field>
-  <!-- Search -->
-  <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
-    <mat-icon matPrefix>search</mat-icon>
 
-    <input matInput placeholder="Поиск товаров" />
-  </mat-form-field>
+      <button
+        type="button"
+        class="search-button"
+        (click)="searchProducts()"
+      >
+        Найти
+      </button>
 
-  <!-- Navigation -->
-  <div class="actions">
-    <button mat-icon-button routerLink="/orders">
-      <mat-icon>receipt_long</mat-icon>
-    </button>
+    </div>
 
-    <button
-  mat-icon-button
-  routerLink="/cart"
-  [matBadge]="totalCount()"
-  matBadgeColor="warn"
->
-  <mat-icon>
-    shopping_cart
-  </mat-icon>
-</button>
 
-    <button mat-icon-button routerLink="/profile">
-      <mat-icon>person</mat-icon>
-    </button>
+    <!-- ACTIONS -->
+
+    <nav class="actions">
+
+      <a
+        routerLink="/orders"
+        class="action"
+      >
+
+        <div class="action-icon">
+          <mat-icon>
+            receipt_long
+          </mat-icon>
+        </div>
+
+        <span>
+          Заказы
+        </span>
+
+      </a>
+
+
+      <a
+        routerLink="/cart"
+        class="action cart-action"
+      >
+
+        <div
+          class="action-icon"
+          [matBadge]="totalCount()"
+          [matBadgeHidden]="totalCount() === 0"
+          matBadgeColor="warn"
+          matBadgeSize="small"
+        >
+          <mat-icon>
+            shopping_bag
+          </mat-icon>
+        </div>
+
+        <span>
+          Корзина
+        </span>
+
+      </a>
+
+
+      <a
+        routerLink="/profile"
+        class="profile-action"
+      >
+
+        <div class="profile-icon">
+          <mat-icon>
+            person
+          </mat-icon>
+        </div>
+
+      </a>
+
+    </nav>
+
   </div>
-</mat-toolbar>
+
+</header>

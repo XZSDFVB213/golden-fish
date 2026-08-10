@@ -1,14 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+
 import { IStore } from '../../shared/models/store/store.interface';
 import { StoreService } from '../../core/services/store/store.service';
 import { CartService } from '../../features/cart/service/cart.service';
@@ -19,15 +15,9 @@ import { CartService } from '../../features/cart/service/cart.service';
   imports: [
     RouterLink,
 
-    MatToolbarModule,
     MatIconModule,
-    MatButtonModule,
     MatBadgeModule,
-    MatInputModule,
-    MatFormFieldModule,
-
     MatSelectModule,
-    MatOptionModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -35,7 +25,12 @@ import { CartService } from '../../features/cart/service/cart.service';
 export class HeaderComponent {
   private storeService = inject(StoreService);
   private cartService = inject(CartService);
-  totalCount = this.cartService.totalCount
+  private router = inject(Router);
+
+  totalCount = this.cartService.totalCount;
+
+  search = signal('');
+
   stores = signal<IStore[]>([
     {
       id: 'cmq3qjnto00018w94ty3jx96g',
@@ -49,14 +44,39 @@ export class HeaderComponent {
     } as IStore,
   ]);
 
-  selectedStoreId = signal('cmq3qjnto00018w94ty3jx96g');
-  onStoreChange(storeId: string) {
-  this.selectedStoreId.set(storeId);
+  selectedStoreId = signal(
+    'cmq3qjnto00018w94ty3jx96g',
+  );
 
-  const store = this.stores().find((s) => s.id === storeId);
+  constructor() {
+    if (!this.storeService.store()) {
+      const store = this.stores()[0];
 
-  if (store) {
-    this.storeService.setStore(store);
+      if (store) {
+        this.storeService.setStore(store);
+      }
+    }
   }
-}
+
+  onStoreChange(storeId: string) {
+    this.selectedStoreId.set(storeId);
+
+    const store = this.stores().find(
+      store => store.id === storeId,
+    );
+
+    if (store) {
+      this.storeService.setStore(store);
+    }
+  }
+
+  searchProducts() {
+    const value = this.search().trim();
+
+    this.router.navigate(['/products'], {
+      queryParams: value
+        ? { search: value }
+        : undefined,
+    });
+  }
 }

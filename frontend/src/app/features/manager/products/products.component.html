@@ -1,1 +1,234 @@
-<p>products works!</p>
+<div class="products-page">
+  <!-- HEADER -->
+
+  <header class="page-header">
+    <div>
+      <div class="eyebrow">Управление каталогом</div>
+
+      <h1>Товары</h1>
+
+      <p>Управляйте ассортиментом, ценами и категориями товаров</p>
+    </div>
+
+    <button mat-flat-button class="add-button" (click)="openCreateProduct()">
+      <mat-icon>add</mat-icon>
+      Добавить товар
+    </button>
+  </header>
+
+  <!-- STATS -->
+
+  <section class="summary">
+    <article class="summary-card main">
+      <div class="summary-icon">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+
+      <div>
+        <span>Всего товаров</span>
+
+        <strong>
+          {{ products().length }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-icon category">
+        <mat-icon>category</mat-icon>
+      </div>
+
+      <div>
+        <span>Категорий</span>
+
+        <strong>
+          {{ categories().length }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-icon store">
+        <mat-icon>storefront</mat-icon>
+      </div>
+
+      <div>
+        <span>Магазинов</span>
+
+        <strong>
+          {{ storesCount() }}
+        </strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-icon price">
+        <mat-icon>payments</mat-icon>
+      </div>
+
+      <div>
+        <span>Средняя цена</span>
+
+        <strong> {{ averagePrice() | number: "1.0-0" }} ₽ </strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- TOOLBAR -->
+
+  <section class="catalog-toolbar">
+    <div class="search">
+      <mat-icon>search</mat-icon>
+
+      <input
+        type="text"
+        placeholder="Найти товар..."
+        (input)="search.set($any($event.target).value)"
+      />
+
+      @if (search()) {
+        <button class="clear-search" (click)="search.set('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+
+    <button class="refresh" (click)="loadProducts()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </section>
+
+  <!-- CATEGORIES -->
+
+  <section class="categories">
+    <button
+      class="category-filter"
+      [class.active]="selectedCategory() === 'ALL'"
+      (click)="selectCategory('ALL')"
+    >
+      Все товары
+
+      <span>
+        {{ products().length }}
+      </span>
+    </button>
+
+    @for (category of categories(); track category.id) {
+      <button
+        class="category-filter"
+        [class.active]="selectedCategory() === category.id"
+        (click)="selectCategory(category.id)"
+      >
+        {{ category.title }}
+
+        <span>
+          {{ getCategoryCount(category.id) }}
+        </span>
+      </button>
+    }
+  </section>
+
+  <!-- RESULT INFO -->
+
+  <div class="result-header">
+    <div>
+      <strong>
+        {{ filteredProducts().length }}
+      </strong>
+
+      <span> товаров найдено </span>
+    </div>
+
+    <button class="sort">
+      Сначала новые
+      <mat-icon>expand_more</mat-icon>
+    </button>
+  </div>
+
+  <!-- PRODUCTS -->
+
+  @if (filteredProducts().length) {
+    <section class="products-grid">
+      @for (product of filteredProducts(); track product.id) {
+        <article class="product-card">
+          <!-- IMAGE -->
+
+          <div class="product-image">
+            @if (product.images?.[0]) {
+              <img [src]="product.images[0]" [alt]="product.title" />
+            } @else {
+              <div class="image-placeholder">
+                <mat-icon>image</mat-icon>
+              </div>
+            }
+
+            <div class="product-status">
+              <span></span>
+              В продаже
+            </div>
+
+            <button class="menu-button">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
+
+          <!-- CONTENT -->
+
+          <div class="product-content">
+            <div class="product-category">
+              {{ product.category?.title || "Без категории" }}
+            </div>
+
+            <h3>
+              {{ product.title }}
+            </h3>
+
+            <p>
+              {{ product.description || "Описание товара не указано" }}
+            </p>
+
+            <div class="product-meta">
+              <div class="price">
+                {{ product.price | number: "1.0-0" }}
+                <span>₽</span>
+              </div>
+
+              <div class="store-code">
+                <mat-icon>storefront</mat-icon>
+
+                {{ product.storeId ? product.storeId.slice(-5) : "—" }}
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTIONS -->
+
+          <div class="product-actions">
+            <button class="edit-button" (click)="openEditProduct(product)">
+              <mat-icon>edit</mat-icon>
+              Изменить
+            </button>
+
+            <button class="delete-button" (click)="deleteProduct(product)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </article>
+      }
+    </section>
+  } @else {
+    <section class="empty">
+      <div class="empty-icon">
+        <mat-icon>search_off</mat-icon>
+      </div>
+
+      <h2>Товары не найдены</h2>
+
+      <p>Попробуйте изменить запрос или выбрать другую категорию</p>
+
+      <button (click)="search.set(''); selectCategory('ALL')">
+        Сбросить фильтры
+      </button>
+    </section>
+  }
+</div>

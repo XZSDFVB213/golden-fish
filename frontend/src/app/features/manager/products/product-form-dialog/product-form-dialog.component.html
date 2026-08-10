@@ -1,0 +1,332 @@
+<div class="dialog">
+
+  <!-- HEADER -->
+
+  <header class="dialog-header">
+
+    <div>
+
+      <div class="eyebrow">
+        Управление каталогом
+      </div>
+
+      <h2>
+        {{ isEdit ? 'Изменить товар' : 'Новый товар' }}
+      </h2>
+
+      <p>
+        {{
+          isEdit
+            ? 'Обновите информацию о товаре'
+            : 'Добавьте товар в каталог магазина'
+        }}
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="close-button"
+      (click)="close()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+
+  </header>
+
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+  >
+
+    <div class="dialog-content">
+
+      <!-- LEFT -->
+
+      <section class="form-section">
+
+        <div class="section-title">
+          <div class="section-icon">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+
+          <div>
+            <strong>Основная информация</strong>
+            <span>Название, описание и цена</span>
+          </div>
+        </div>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="full"
+        >
+          <mat-label>
+            Название товара
+          </mat-label>
+
+          <input
+            matInput
+            formControlName="title"
+            placeholder="Например, Молоко 3,2%"
+          />
+
+          <mat-icon matPrefix>
+            sell
+          </mat-icon>
+
+          @if (
+            form.controls.title.touched &&
+            form.controls.title.invalid
+          ) {
+            <mat-error>
+              Укажите название товара
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="full description"
+        >
+          <mat-label>
+            Описание
+          </mat-label>
+
+          <textarea
+            matInput
+            rows="5"
+            formControlName="description"
+            placeholder="Расскажите о товаре..."
+          ></textarea>
+        </mat-form-field>
+
+
+        <div class="row">
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+              Цена
+            </mat-label>
+
+            <input
+              matInput
+              type="number"
+              formControlName="price"
+            />
+
+            <span matTextSuffix>
+              ₽
+            </span>
+
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+              Категория
+            </mat-label>
+
+            <mat-select
+              formControlName="categoryId"
+            >
+
+              @for (
+                category of categories();
+                track category.id
+              ) {
+
+                <mat-option
+                  [value]="category.id"
+                >
+                  {{ category.title }}
+                </mat-option>
+
+              }
+
+            </mat-select>
+
+          </mat-form-field>
+
+        </div>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="full"
+        >
+
+          <mat-label>
+            Магазин
+          </mat-label>
+
+          <mat-select
+            formControlName="storeId"
+          >
+
+            @for (
+              store of stores();
+              track store.id
+            ) {
+
+              <mat-option
+                [value]="store.id"
+              >
+                {{ store.title }}
+              </mat-option>
+
+            }
+
+          </mat-select>
+
+          <mat-icon matPrefix>
+            storefront
+          </mat-icon>
+
+        </mat-form-field>
+
+        @if (isEdit) {
+          <div class="store-hint">
+            <mat-icon>info</mat-icon>
+
+            Магазин нельзя изменить после создания товара
+          </div>
+        }
+
+      </section>
+
+
+      <!-- RIGHT -->
+
+      <section class="image-section">
+
+        <div class="section-title">
+
+          <div class="section-icon image">
+            <mat-icon>image</mat-icon>
+          </div>
+
+          <div>
+            <strong>Изображение</strong>
+            <span>Фото товара для каталога</span>
+          </div>
+
+        </div>
+
+
+        <div class="preview">
+
+          @if (previewImage) {
+
+            <img
+              [src]="previewImage"
+              alt="Предпросмотр товара"
+            />
+
+            <div class="preview-badge">
+              <mat-icon>check_circle</mat-icon>
+              Фото загружено
+            </div>
+
+          } @else {
+
+            <div class="preview-empty">
+
+              <div class="preview-icon">
+                <mat-icon>add_photo_alternate</mat-icon>
+              </div>
+
+              <strong>
+                Добавьте изображение
+              </strong>
+
+              <span>
+                Вставьте ссылку на фотографию товара
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="full image-input"
+        >
+
+          <mat-label>
+            Ссылки на изображения
+          </mat-label>
+
+          <textarea
+            matInput
+            rows="4"
+            formControlName="images"
+            placeholder="https://site.ru/product.jpg"
+          ></textarea>
+
+          <mat-hint>
+            Каждую ссылку с новой строки
+          </mat-hint>
+
+        </mat-form-field>
+
+      </section>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="dialog-footer">
+
+      <button
+        type="button"
+        mat-button
+        class="cancel"
+        (click)="close()"
+      >
+        Отмена
+      </button>
+
+      <button
+        type="submit"
+        mat-flat-button
+        class="save-button"
+        [disabled]="loading()"
+      >
+
+        @if (loading()) {
+
+          <mat-spinner
+            diameter="20"
+          />
+
+        } @else {
+
+          <mat-icon>
+            {{ isEdit ? 'save' : 'add' }}
+          </mat-icon>
+
+        }
+
+        {{
+          isEdit
+            ? 'Сохранить изменения'
+            : 'Добавить товар'
+        }}
+
+      </button>
+
+    </footer>
+
+  </form>
+
+</div>

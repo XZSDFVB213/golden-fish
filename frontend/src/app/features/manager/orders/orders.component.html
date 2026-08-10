@@ -1,77 +1,368 @@
 <div class="orders-page">
-  <div class="header">
-    <h1>Заказы</h1>
 
-    <div class="filters">
-      <button mat-stroked-button (click)="load()">Все</button>
-      <button mat-stroked-button (click)="filter('PROCESSING')">
-        В Сборке
-      </button>
-      <button mat-stroked-button (click)="filter('READY')">Готовые</button>
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+      <div class="eyebrow">
+        Управление заказами
+      </div>
+
+      <h1>Заказы</h1>
+
+      <p>
+        Контролируйте сборку и доставку заказов
+        в реальном времени
+      </p>
     </div>
-  </div>
 
-  <div class="orders-grid">
-    @for (order of orders(); track order.id) {
-      <mat-card class="order-card">
-        <!-- TOP -->
-        <div class="order-top">
-          <div class="left">
-            <div class="order-id">#{{ order.id.slice(0, 8) }}</div>
+    <button
+      mat-stroked-button
+      class="refresh-button"
+      (click)="loadOrders()"
+    >
+      <mat-icon>refresh</mat-icon>
+      Обновить
+    </button>
 
-            <div class="user">
-              {{ order.user.email }}
+  </header>
+
+
+  <!-- SUMMARY -->
+
+  <section class="summary">
+
+    <div class="summary-item">
+
+      <div class="summary-icon green">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+
+      <div>
+        <span>Всего заказов</span>
+
+        <strong>
+          {{ orders().length }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+      <div class="summary-icon orange">
+        <mat-icon>pending_actions</mat-icon>
+      </div>
+
+      <div>
+        <span>В работе</span>
+
+        <strong>
+          {{ activeCount() }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+      <div class="summary-icon money">
+        <mat-icon>payments</mat-icon>
+      </div>
+
+      <div>
+        <span>Сумма заказов</span>
+
+        <strong>
+          {{ totalRevenue() | number:'1.0-0' }} ₽
+        </strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FILTERS -->
+
+  <section class="filters">
+
+    @for (filter of filters; track filter.value) {
+
+      <button
+        class="filter"
+        [class.active]="selectedFilter() === filter.value"
+        (click)="selectFilter(filter.value)"
+      >
+
+        <span>
+          {{ filter.label }}
+        </span>
+
+        <span class="filter-count">
+          {{ getCount(filter.value) }}
+        </span>
+
+      </button>
+
+    }
+
+  </section>
+
+
+  <!-- ORDERS -->
+
+  @if (filteredOrders().length) {
+
+    <section class="orders-grid">
+
+      @for (order of filteredOrders(); track order.id) {
+
+        <article class="order-card">
+
+          <!-- CARD HEADER -->
+
+          <div class="order-header">
+
+            <div>
+
+              <span class="order-label">
+                Заказ
+              </span>
+
+              <strong class="order-number">
+                #{{ order.id.slice(-6).toUpperCase() }}
+              </strong>
+
             </div>
+
+            <div
+              [class]="
+                'status ' +
+                getStatusClass(order.status)
+              "
+            >
+              <span class="status-dot"></span>
+
+              {{ getStatusLabel(order.status) }}
+            </div>
+
           </div>
 
-          <div class="right">
-            <span class="status" [class]="order.status.toLowerCase()">
-              {{ order.status }}
-            </span>
+
+          <!-- CUSTOMER -->
+
+          <div class="customer">
+
+            <div class="avatar">
+              {{
+                (order.user?.name || 'К')
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+            </div>
+
+            <div class="customer-info">
+
+              <strong>
+                {{ order.user?.name || 'Клиент' }}
+              </strong>
+
+              <span>
+                {{ order.user?.email }}
+              </span>
+
+            </div>
+
+            <div class="order-time">
+
+              <mat-icon>schedule</mat-icon>
+
+              {{ order.createdAt | date:'HH:mm' }}
+
+            </div>
+
           </div>
-        </div>
 
-        <!-- ITEMS -->
-        <div class="items">
-          @for (item of order.items; track item.id) {
-            <div class="item">
-              <img [src]="item.product.images[0]" class="item-img" />
 
-              <div class="item-info">
-                <div class="title">
-                  {{ item.product.title }}
+          <!-- PRODUCTS -->
+
+          <div class="products">
+
+            @for (
+              item of order.items.slice(0, 3);
+              track item.id
+            ) {
+
+              <div class="product">
+
+                <div class="product-image">
+
+                  @if (item.product.images?.[0]) {
+
+                    <img
+                      [src]="item.product.images[0]"
+                      [alt]="item.product.title"
+                    />
+
+                  } @else {
+
+                    <mat-icon>
+                      inventory_2
+                    </mat-icon>
+
+                  }
+
                 </div>
 
-                <div class="meta">{{ item.quantity }} × {{ item.price }} ₽</div>
-              </div>
-            </div>
-          }
-        </div>
+                <div class="product-info">
 
-        <!-- FOOTER -->
-        <div class="order-footer">
-          <div class="total">
-            Итого: <b>{{ order.total }} ₽</b>
+                  <strong>
+                    {{ item.product.title }}
+                  </strong>
+
+                  <span>
+                    {{ item.quantity }} ×
+                    {{ item.price | number:'1.0-0' }} ₽
+                  </span>
+
+                </div>
+
+                <strong class="product-price">
+                  {{
+                    item.price * item.quantity
+                      | number:'1.0-0'
+                  }}
+                  ₽
+                </strong>
+
+              </div>
+
+            }
+
+            @if (order.items.length > 3) {
+
+              <div class="more-products">
+                + ещё {{ order.items.length - 3 }}
+                товаров
+              </div>
+
+            }
+
           </div>
+
+
+          <!-- META -->
+
+          <div class="order-meta">
+
+            <div>
+              <span>Товаров</span>
+
+              <strong>
+                {{ order.items.length }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Дата</span>
+
+              <strong>
+                {{ order.createdAt | date:'dd.MM.yyyy' }}
+              </strong>
+            </div>
+
+            <div class="total">
+              <span>Итого</span>
+
+              <strong>
+                {{ order.total | number:'1.0-0' }} ₽
+              </strong>
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
 
           <div class="actions">
-            <button
-              mat-button
-              (click)="setStatus(order.id, EnumOrderStatus.PROCESSING)"
-            >
-              В сборке
-            </button>
 
-            <button
-              mat-button
-              color="primary"
-              (click)="setStatus(order.id, EnumOrderStatus.READY)"
-            >
-              Собран
-            </button>
+            @if (getNextAction(order.status); as action) {
+
+              <button
+                mat-flat-button
+                class="primary-action"
+                (click)="
+                  setStatus(
+                    order.id,
+                    action.status
+                  )
+                "
+              >
+                <mat-icon>
+                  {{ action.icon }}
+                </mat-icon>
+
+                {{ action.label }}
+              </button>
+
+            }
+
+            @if (
+              order.status !== EnumOrderStatus.COMPLETED &&
+              order.status !== EnumOrderStatus.CANCELED
+            ) {
+
+              <button
+                class="more-button"
+                title="Дополнительные действия"
+              >
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+
+            }
+
+            @if (
+              order.status === EnumOrderStatus.COMPLETED
+            ) {
+
+              <div class="completed-message">
+
+                <mat-icon>verified</mat-icon>
+
+                Заказ успешно завершён
+
+              </div>
+
+            }
+
           </div>
-        </div>
-      </mat-card>
-    }
-  </div>
+
+        </article>
+
+      }
+
+    </section>
+
+  } @else {
+
+    <section class="empty">
+
+      <div class="empty-icon">
+        <mat-icon>inbox</mat-icon>
+      </div>
+
+      <h2>Заказов здесь пока нет</h2>
+
+      <p>
+        В этой категории сейчас нет заказов
+      </p>
+
+    </section>
+
+  }
+
 </div>

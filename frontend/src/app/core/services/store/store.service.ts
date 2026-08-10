@@ -6,6 +6,7 @@ import {
   IStore,
   IStoreCreate,
 } from '../../../shared/models/store/store.interface';
+import { IProduct, IProductInput } from '../../../shared/models/product/product.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,17 +22,20 @@ export class StoreService {
   setStore(store: IStore) {
     this.currentStore.set(store);
   }
+  getAllManager() {
+    return this.http.get<IStore[]>(`${this.API_URL}/manager/all`);
+  }
 
   getById(storeId: string) {
     return this.http.get<IStore>(`${this.API_URL}/by-id/${storeId}`);
   }
 
-  create(data: IStoreCreate) {
-    return this.http.post<IStore>(this.API_URL, data);
+  create(storeId: string, data: IProductInput) {
+    return this.http.post<IProduct>(`${this.API_URL}/${storeId}`, data);
   }
 
-  update(storeId: string, data: Partial<IStore>) {
-    return this.http.put<IStore>(`${this.API_URL}/${storeId}`, data);
+  update(id: string, data: IProductInput) {
+    return this.http.put<IProduct>(`${this.API_URL}/${id}`, data);
   }
 
   delete(storeId: string) {

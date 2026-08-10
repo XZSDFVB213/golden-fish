@@ -149,6 +149,20 @@ export const routes: Routes = [
             (c) => c.DashboardComponent,
           ),
       },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./features/manager/categories/categories/categories.component').then(
+            (c) => c.CategoriesComponent,
+          ),
+      },
+      {
+        path: 'stores',
+        loadComponent: () =>
+          import('./features/manager/stores/stores.component').then(
+            (c) => c.StoresComponent,
+          ),
+      },
     ],
   },
   {

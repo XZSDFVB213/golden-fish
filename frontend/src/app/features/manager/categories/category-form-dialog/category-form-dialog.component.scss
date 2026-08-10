@@ -1,0 +1,175 @@
+:host {
+  display: block;
+}
+
+.dialog {
+  color: #202321;
+}
+
+.dialog-header {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 28px 30px 22px;
+
+  border-bottom: 1px solid #edf0ed;
+}
+
+.header-icon {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  color: #0000CF;
+  background: #e6f7ed;
+
+  mat-icon {
+    width: 25px;
+    height: 25px;
+
+    font-size: 25px;
+  }
+}
+
+.header-content {
+  span {
+    color: #0000CF;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    margin: 4px 0 0;
+
+    font-size: 25px;
+    font-weight: 760;
+
+    letter-spacing: -0.7px;
+  }
+
+  p {
+    margin: 5px 0 0;
+
+    color: #949995;
+
+    font-size: 11px;
+  }
+}
+
+.close {
+  position: absolute;
+
+  top: 22px;
+  right: 22px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 13px;
+
+  color: #727873;
+  background: #f2f4f2;
+
+  cursor: pointer;
+}
+
+.form-content {
+  padding: 25px 30px 17px;
+}
+
+.full {
+  width: 100%;
+}
+
+::ng-deep {
+  .mat-mdc-text-field-wrapper {
+    border-radius: 14px !important;
+  }
+
+  .mdc-notched-outline__leading {
+    border-radius:
+      14px 0 0 14px !important;
+  }
+
+  .mdc-notched-outline__trailing {
+    border-radius:
+      0 14px 14px 0 !important;
+  }
+}
+
+.info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  padding: 12px 14px;
+
+  border-radius: 13px;
+
+  color: #6e756f;
+  background: #f4f6f4;
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  mat-icon {
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    color: #18824f;
+
+    font-size: 17px;
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  padding: 18px 30px 23px;
+
+  border-top: 1px solid #edf0ed;
+
+  background: #fafbfa;
+}
+
+.cancel,
+.save {
+  height: 44px !important;
+
+  border-radius: 14px !important;
+}
+
+.save {
+  min-width: 155px;
+
+  background: #0000CF !important;
+  color: white !important;
+
+  font-weight: 700 !important;
+}

@@ -1,0 +1,195 @@
+<div class="dialog">
+
+  <header class="dialog-header">
+
+    <div class="header-icon">
+      <mat-icon>category</mat-icon>
+    </div>
+
+    <div class="header-content">
+
+      <span>
+        Каталог
+      </span>
+
+      <h2>
+        {{
+          isEdit
+            ? 'Изменить категорию'
+            : 'Новая категория'
+        }}
+      </h2>
+
+      <p>
+        {{
+          isEdit
+            ? 'Обновите информацию о категории'
+            : 'Создайте новый раздел каталога'
+        }}
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="close"
+      (click)="close()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+
+  </header>
+
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+  >
+
+    <div class="form-content">
+
+      <mat-form-field
+        appearance="outline"
+        class="full"
+      >
+
+        <mat-label>
+          Название категории
+        </mat-label>
+
+        <input
+          matInput
+          formControlName="title"
+          placeholder="Например, Молочные продукты"
+        />
+
+        <mat-icon matPrefix>
+          label
+        </mat-icon>
+
+        @if (
+          form.controls.title.touched &&
+          form.controls.title.invalid
+        ) {
+          <mat-error>
+            Укажите название категории
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+
+      <mat-form-field
+        appearance="outline"
+        class="full"
+      >
+
+        <mat-label>
+          Описание
+        </mat-label>
+
+        <textarea
+          matInput
+          rows="5"
+          formControlName="description"
+          placeholder="Краткое описание категории..."
+        ></textarea>
+
+      </mat-form-field>
+
+
+      <mat-form-field
+        appearance="outline"
+        class="full"
+      >
+
+        <mat-label>
+          Магазин
+        </mat-label>
+
+        <mat-select
+          formControlName="storeId"
+        >
+
+          @for (
+            store of data.stores;
+            track store.id
+          ) {
+
+            <mat-option [value]="store.id">
+              {{ store.title }}
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+        <mat-icon matPrefix>
+          storefront
+        </mat-icon>
+
+      </mat-form-field>
+
+
+      @if (isEdit) {
+
+        <div class="info">
+
+          <mat-icon>info</mat-icon>
+
+          <span>
+            Категория привязана к магазину.
+            Магазин при редактировании не меняется.
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <footer>
+
+      <button
+        type="button"
+        mat-button
+        class="cancel"
+        (click)="close()"
+      >
+        Отмена
+      </button>
+
+      <button
+        type="submit"
+        mat-flat-button
+        class="save"
+        [disabled]="loading()"
+      >
+
+        @if (loading()) {
+
+          <mat-spinner diameter="19" />
+
+        } @else {
+
+          <mat-icon>
+            {{ isEdit ? 'save' : 'add' }}
+          </mat-icon>
+
+        }
+
+        {{
+          isEdit
+            ? 'Сохранить'
+            : 'Создать категорию'
+        }}
+
+      </button>
+
+    </footer>
+
+  </form>
+
+</div>

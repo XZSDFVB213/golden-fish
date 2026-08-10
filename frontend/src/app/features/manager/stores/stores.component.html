@@ -1,1 +1,361 @@
-<p>stores works!</p>
+<div class="stores-page">
+
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+      <div class="eyebrow">
+        Торговая сеть
+      </div>
+
+      <h1>Магазины</h1>
+
+      <p>
+        Контролируйте торговые точки,
+        ассортимент и текущую нагрузку
+      </p>
+    </div>
+
+    <button
+      mat-flat-button
+      class="add-button"
+    >
+      <mat-icon>add</mat-icon>
+
+      Добавить магазин
+    </button>
+
+  </header>
+
+
+  <!-- SUMMARY -->
+
+  <section class="summary">
+
+    <article class="summary-card main">
+
+      <div class="summary-icon">
+        <mat-icon>storefront</mat-icon>
+      </div>
+
+      <div>
+        <span>Торговых точек</span>
+
+        <strong>
+          {{ stores().length }}
+        </strong>
+      </div>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <div class="summary-icon products">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+
+      <div>
+        <span>Товаров</span>
+
+        <strong>
+          {{ totalProducts() }}
+        </strong>
+      </div>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <div class="summary-icon revenue">
+        <mat-icon>payments</mat-icon>
+      </div>
+
+      <div>
+        <span>Выручка сети</span>
+
+        <strong>
+          {{ totalRevenue() | number:'1.0-0' }} ₽
+        </strong>
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- SEARCH -->
+
+  <section class="toolbar">
+
+    <div class="search">
+
+      <mat-icon>search</mat-icon>
+
+      <input
+        type="text"
+        placeholder="Найти магазин..."
+        (input)="
+          search.set(
+            $any($event.target).value
+          )
+        "
+      />
+
+      @if (search()) {
+
+        <button
+          class="clear"
+          (click)="search.set('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+
+      }
+
+    </div>
+
+
+    <button
+      class="refresh"
+      (click)="loadData()"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+  </section>
+
+
+  <!-- RESULT -->
+
+  <div class="result-info">
+
+    <strong>
+      {{ filteredStores().length }}
+    </strong>
+
+    <span>
+      торговых точек
+    </span>
+
+  </div>
+
+
+  <!-- STORES -->
+
+  <section class="stores-grid">
+
+    @for (
+      card of filteredStores();
+      track card.store.id;
+      let index = $index
+    ) {
+
+      <article class="store-card">
+
+        <!-- HERO -->
+
+        <div
+          class="store-hero"
+          [class.second]="index % 2 === 1"
+        >
+
+          <div class="hero-decoration one"></div>
+          <div class="hero-decoration two"></div>
+
+
+          <div class="hero-top">
+
+            <div class="network">
+              ЗОЛОТАЯ РЫБКА
+            </div>
+
+            <div class="status">
+              <span></span>
+              Открыт
+            </div>
+
+          </div>
+
+
+          <div class="store-icon">
+            <mat-icon>storefront</mat-icon>
+          </div>
+
+
+          <div class="hero-content">
+
+            <span class="store-label">
+              Магазин
+            </span>
+
+            <h2>
+              {{ getStoreName(card.store) }}
+            </h2>
+
+            <div class="address">
+
+              <mat-icon>location_on</mat-icon>
+
+              {{ getStoreAddress(card.store) }}
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="store-body">
+
+          <div class="store-stats">
+
+            <div>
+
+              <div class="stat-icon products">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+
+              <span>Товары</span>
+
+              <strong>
+                {{ card.products }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <div class="stat-icon categories">
+                <mat-icon>category</mat-icon>
+              </div>
+
+              <span>Категории</span>
+
+              <strong>
+                {{ card.categories }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <div class="stat-icon orders">
+                <mat-icon>receipt_long</mat-icon>
+              </div>
+
+              <span>Заказы</span>
+
+              <strong>
+                {{ card.orders }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIVITY -->
+
+          <div class="activity">
+
+            <div>
+
+              <span>
+                Сейчас в работе
+              </span>
+
+              <strong>
+                {{ card.activeOrders }}
+                заказов
+              </strong>
+
+            </div>
+
+            <div
+              class="activity-indicator"
+              [class.active]="
+                card.activeOrders > 0
+              "
+            >
+              <span></span>
+
+              {{
+                card.activeOrders > 0
+                  ? 'Есть активность'
+                  : 'Спокойно'
+              }}
+
+            </div>
+
+          </div>
+
+
+          <!-- REVENUE -->
+
+          <div class="revenue-block">
+
+            <div>
+
+              <span>
+                Выручка магазина
+              </span>
+
+              <strong>
+                {{
+                  card.revenue
+                    | number:'1.0-0'
+                }}
+                ₽
+              </strong>
+
+            </div>
+
+            <div class="revenue-icon">
+              <mat-icon>
+                trending_up
+              </mat-icon>
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="actions">
+
+            <button class="manage-button">
+
+              <mat-icon>tune</mat-icon>
+
+              Управлять магазином
+
+            </button>
+
+
+            <button
+              class="more-button"
+              title="Другие действия"
+            >
+              <mat-icon>
+                more_horiz
+              </mat-icon>
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    }
+
+  </section>
+
+</div>

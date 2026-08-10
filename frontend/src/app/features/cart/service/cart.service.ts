@@ -58,6 +58,7 @@ export class CartService {
         product,
         quantity: 1,
         price: product.price,
+        storeId: product.storeId
       },
     ]);
   }

@@ -1,84 +1,197 @@
-<mat-sidenav-container class="layout">
+<div
+  class="manager-layout"
+  [class.collapsed]="sidebarCollapsed()"
+>
 
-  <mat-sidenav
-    mode="side"
-    opened
-    class="sidebar">
+  <!-- SIDEBAR -->
 
-    <div class="logo">
-      Золотая рыбка
-    </div>
+  <aside class="sidebar">
 
-    <mat-nav-list>
+    <!-- LOGO -->
+
+    <div class="sidebar-header">
 
       <a
-        mat-list-item
         routerLink="/manager/dashboard"
-        routerLinkActive="active">
+        class="brand"
+      >
 
-        <mat-icon>dashboard</mat-icon>
+        <div class="brand-logo">
+          <mat-icon>set_meal</mat-icon>
+        </div>
 
-        Dashboard
+        <div class="brand-text">
+          <strong>Золотая рыбка</strong>
+          <span>Manager CRM</span>
+        </div>
+
       </a>
 
-      <a
-        mat-list-item
-        routerLink="/manager/orders"
-        routerLinkActive="active">
 
-        <mat-icon>shopping_bag</mat-icon>
-
-        Заказы
-      </a>
-
-      <a
-        mat-list-item
-        routerLink="/manager/products"
-        routerLinkActive="active">
-
-        <mat-icon>inventory_2</mat-icon>
-
-        Товары
-      </a>
-
-      <a
-        mat-list-item
-        routerLink="/manager/categories"
-        routerLinkActive="active">
-
-        <mat-icon>category</mat-icon>
-
-        Категории
-      </a>
-
-      <a
-        mat-list-item
-        routerLink="/manager/stores"
-        routerLinkActive="active">
-
-        <mat-icon>storefront</mat-icon>
-
-        Магазины
-      </a>
-
-    </mat-nav-list>
-
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-
-    <mat-toolbar>
-
-      CRM Менеджера
-
-    </mat-toolbar>
-
-    <div class="content">
-
-      <router-outlet />
+      <button
+        class="collapse-button"
+        (click)="toggleSidebar()"
+      >
+        <mat-icon>
+          {{
+            sidebarCollapsed()
+              ? 'chevron_right'
+              : 'chevron_left'
+          }}
+        </mat-icon>
+      </button>
 
     </div>
 
-  </mat-sidenav-content>
 
-</mat-sidenav-container>
+    <!-- WORKSPACE -->
+
+    <div class="workspace">
+
+      <div class="workspace-icon">
+        ЗР
+      </div>
+
+      <div class="workspace-info">
+
+        <span>Рабочее пространство</span>
+
+        <strong>
+          Золотая рыбка
+        </strong>
+
+      </div>
+
+      <mat-icon class="workspace-arrow">
+        unfold_more
+      </mat-icon>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <nav class="navigation">
+
+      <span class="navigation-title">
+        Управление
+      </span>
+
+
+      @for (item of menu; track item.route) {
+
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="navigation-item"
+        >
+
+          <div class="nav-icon">
+            <mat-icon>
+              {{ item.icon }}
+            </mat-icon>
+          </div>
+
+          <span class="nav-label">
+            {{ item.label }}
+          </span>
+
+
+          @if (
+            item.badge &&
+            pendingOrders() > 0
+          ) {
+
+            <span class="nav-badge">
+              {{ pendingOrders() }}
+            </span>
+
+          }
+
+        </a>
+
+      }
+
+    </nav>
+
+
+    <!-- PROMO / STATUS -->
+
+    <div class="sidebar-status">
+
+      <div class="status-icon">
+        <mat-icon>monitor_heart</mat-icon>
+      </div>
+
+      <div class="status-content">
+
+        <span>Система</span>
+
+        <strong>
+          Все работает
+        </strong>
+
+      </div>
+
+      <div class="online-dot"></div>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div class="profile">
+
+      <div class="avatar">
+
+        @if (user()?.picture) {
+
+          <img
+            [src]="user()?.picture"
+            alt="Менеджер"
+          />
+
+        } @else {
+
+          {{ userInitial() }}
+
+        }
+
+      </div>
+
+
+      <div class="profile-info">
+
+        <strong>
+          {{ user()?.name || 'Менеджер' }}
+        </strong>
+
+        <span>
+          {{ user()?.email }}
+        </span>
+
+      </div>
+
+
+      <button
+        class="logout-button"
+        (click)="logout()"
+        title="Выйти"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <router-outlet />
+
+  </main>
+
+</div>

@@ -1,17 +1,147 @@
-<mat-card class="product-card" [routerLink]="['/products', product.id]">
-  <img mat-card-image [src]="product.images[0]" [alt]="product.title" />
+<article class="product-card">
 
-  <mat-card-content>
-    <h3>{{ product.title }}</h3>
+  <!-- IMAGE -->
+
+  <div class="image-wrapper">
+
+    <a
+      [routerLink]="[
+        '/products',
+        product().id
+      ]"
+      class="image-link"
+    >
+
+      @if (product().images?.[0]) {
+
+        <img
+          [src]="product().images[0]"
+          [alt]="product().title"
+        />
+
+      } @else {
+
+        <div class="image-placeholder">
+          <mat-icon>
+            image
+          </mat-icon>
+        </div>
+
+      }
+
+    </a>
+
+
+    <button
+      type="button"
+      class="favorite"
+      [class.active]="favorite()"
+      (click)="toggleFavorite($event)"
+    >
+      <mat-icon>
+        {{
+          favorite()
+            ? 'favorite'
+            : 'favorite_border'
+        }}
+      </mat-icon>
+    </button>
+
+
+    <div class="fresh-badge">
+      <span></span>
+      В наличии
+    </div>
+
+  </div>
+
+
+  <!-- INFO -->
+
+  <div class="product-info">
+
+    <span class="category">
+      {{
+        product().category?.title ||
+        'Продукты'
+      }}
+    </span>
+
+
+    <a
+      [routerLink]="[
+        '/products',
+        product().id
+      ]"
+      class="product-title"
+    >
+      {{ product().title }}
+    </a>
+
 
     <p>
-      {{ product.description }}
+      {{
+        product().description ||
+        'Свежий товар из магазина'
+      }}
     </p>
 
-    <div class="price">{{ product.price }}₽</div>
-  </mat-card-content>
 
-  <mat-card-actions>
-    <button (click)="goToProduct(product.id)" mat-flat-button color="primary">В корзину</button>
-  </mat-card-actions>
-</mat-card>
+    <div class="bottom">
+
+      <div class="price">
+
+        <strong>
+          {{
+            product().price
+              | number:'1.0-0'
+          }}
+        </strong>
+
+        <span>₽</span>
+
+      </div>
+
+
+      @if (quantity() === 0) {
+
+        <button
+          type="button"
+          class="add-button"
+          (click)="add($event)"
+          aria-label="Добавить в корзину"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+
+      } @else {
+
+        <div class="quantity">
+
+          <button
+            type="button"
+            (click)="decrease($event)"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+
+          <strong>
+            {{ quantity() }}
+          </strong>
+
+          <button
+            type="button"
+            (click)="increase($event)"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</article>

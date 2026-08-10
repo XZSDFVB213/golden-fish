@@ -18,3 +18,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --text-primary: #111827;
   --text-secondary: #6b7280;
 }
+.category-dialog-panel {
+  .mat-mdc-dialog-surface {
+    overflow: hidden !important;
+
+    border-radius: 28px !important;
+
+    box-shadow:
+      0 30px 100px
+      rgba(25, 40, 31, 0.18) !important;
+  }
+}
+.product-dialog-panel {
+  .mat-mdc-dialog-surface {
+    overflow: hidden !important;
+
+    border-radius: 28px !important;
+
+    box-shadow:
+      0 30px 100px
+      rgba(25, 40, 31, 0.18) !important;
+  }
+}

@@ -2,46 +2,102 @@
 
   <app-hero-banner />
 
+
   <section class="section">
-    <h2 class="section-title">
-      Категории
-    </h2>
+
+    <div class="section-header">
+      <div>
+        <span class="section-label">
+          Каталог
+        </span>
+
+        <h2>
+          Что сегодня хочется?
+        </h2>
+      </div>
+    </div>
 
     <div class="categories-grid">
-      @for (category of categories(); track category.id) {
+
+      @for (
+        category of categories();
+        track category.id;
+        let i = $index
+      ) {
+
         <app-category-card
           [category]="category"
+          [index]="i"
         />
+
       }
+
     </div>
+
   </section>
 
+
   <section class="section">
-    <h2 class="section-title">
-      Популярные товары
-    </h2>
+
+    <div class="section-header">
+
+      <div>
+        <span class="section-label">
+          Выбирают чаще всего
+        </span>
+
+        <h2>Популярное</h2>
+      </div>
+
+    </div>
 
     <div class="products-grid">
-      @for (product of popularProducts(); track product.id) {
+
+      @for (
+        product of popularProducts();
+        track product.id
+      ) {
+
         <app-product-item
           [product]="product"
         />
+
       }
+
     </div>
+
   </section>
 
+
   <section class="section">
-    <h2 class="section-title">
-      Новинки
-    </h2>
+
+    <div class="section-header">
+
+      <div>
+        <span class="section-label">
+          Только появились
+        </span>
+
+        <h2>Новинки</h2>
+      </div>
+
+    </div>
 
     <div class="products-grid">
-      @for (product of newProducts(); track product.id) {
+
+      @for (
+        product of newProducts();
+        track product.id
+      ) {
+
         <app-product-item
           [product]="product"
         />
+
       }
+
     </div>
+
   </section>
 
 </div>

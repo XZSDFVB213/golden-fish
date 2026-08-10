@@ -1,0 +1,254 @@
+<div class="categories-page">
+
+  <header class="page-header">
+
+    <div>
+      <div class="eyebrow">
+        Структура каталога
+      </div>
+
+      <h1>Категории</h1>
+
+      <p>
+        Организуйте товары по категориям
+        и управляйте структурой каталога
+      </p>
+    </div>
+
+    <button
+      mat-flat-button
+      class="add-button"
+      (click)="openCreate()"
+    >
+      <mat-icon>add</mat-icon>
+      Добавить категорию
+    </button>
+
+  </header>
+
+
+  <!-- SUMMARY -->
+
+  <section class="summary">
+
+    <article class="summary-card green">
+
+      <div class="summary-icon">
+        <mat-icon>category</mat-icon>
+      </div>
+
+      <div>
+        <span>Всего категорий</span>
+        <strong>{{ categories().length }}</strong>
+      </div>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <div class="summary-icon products">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+
+      <div>
+        <span>Товаров в каталоге</span>
+        <strong>{{ products().length }}</strong>
+      </div>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <div class="summary-icon stores">
+        <mat-icon>storefront</mat-icon>
+      </div>
+
+      <div>
+        <span>Магазинов</span>
+        <strong>{{ stores().length }}</strong>
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- SEARCH -->
+
+  <section class="toolbar">
+
+    <div class="search">
+
+      <mat-icon>search</mat-icon>
+
+      <input
+        type="text"
+        placeholder="Найти категорию..."
+        (input)="search.set($any($event.target).value)"
+      />
+
+      @if (search()) {
+        <button
+          (click)="search.set('')"
+          class="clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+
+    </div>
+
+    <button
+      class="refresh"
+      (click)="loadData()"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+  </section>
+
+
+  <div class="result-info">
+    <strong>
+      {{ filteredCategories().length }}
+    </strong>
+
+    <span>
+      категорий
+    </span>
+  </div>
+
+
+  <!-- CARDS -->
+
+  @if (filteredCategories().length) {
+
+    <section class="categories-grid">
+
+      @for (
+        category of filteredCategories();
+        track category.id;
+        let index = $index
+      ) {
+
+        <article class="category-card">
+
+          <div
+            class="category-cover"
+            [class.variant-1]="index % 4 === 0"
+            [class.variant-2]="index % 4 === 1"
+            [class.variant-3]="index % 4 === 2"
+            [class.variant-4]="index % 4 === 3"
+          >
+
+            <div class="cover-shape shape-one"></div>
+            <div class="cover-shape shape-two"></div>
+
+            <div class="category-icon">
+              <mat-icon>category</mat-icon>
+            </div>
+
+            <span class="product-count">
+              {{ getProductsCount(category.id) }}
+              товаров
+            </span>
+
+          </div>
+
+
+          <div class="category-content">
+
+            <div class="store">
+
+              <mat-icon>storefront</mat-icon>
+
+              {{ getStoreName(category.storeId) }}
+
+            </div>
+
+            <h3>
+              {{ category.title }}
+            </h3>
+
+            <p>
+              {{
+                category.description ||
+                'Описание категории пока не добавлено'
+              }}
+            </p>
+
+
+            <div class="category-footer">
+
+              <div class="category-stat">
+
+                <span>Ассортимент</span>
+
+                <strong>
+                  {{ getProductsCount(category.id) }}
+                </strong>
+
+              </div>
+
+
+              <div class="actions">
+
+                <button
+                  class="edit"
+                  (click)="openEdit(category)"
+                  title="Редактировать"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  class="delete"
+                  (click)="deleteCategory(category)"
+                  title="Удалить"
+                >
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </section>
+
+  } @else {
+
+    <section class="empty">
+
+      <div class="empty-icon">
+        <mat-icon>category</mat-icon>
+      </div>
+
+      <h2>Категории не найдены</h2>
+
+      <p>
+        Добавьте первую категорию
+        или измените поисковый запрос
+      </p>
+
+      <button
+        mat-flat-button
+        class="empty-add"
+        (click)="openCreate()"
+      >
+        <mat-icon>add</mat-icon>
+        Добавить категорию
+      </button>
+
+    </section>
+
+  }
+
+</div>

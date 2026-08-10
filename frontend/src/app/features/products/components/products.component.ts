@@ -1,62 +1,111 @@
 import {
-  ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
 } from '@angular/core';
-import { ProductService } from '../service/product.service';
-import { StoreService } from '../../../core/services/store/store.service';
-import { IProduct } from '../../../shared/models/product/product.interface';
-import { ICategory } from '../../../shared/models/category/category.interface';
-import { CategoryService } from '../../../core/services/category/category.service';
-import { CategoryCardComponent } from '../../../shared/ui/category-card/category-card.component';
+
+import { MatIconModule } from '@angular/material/icon';
+
 import { ProductItemComponent } from '../../../shared/ui/product-item/product-item.component';
-import { MatButton } from '@angular/material/button';
+
+import { ICategory } from '../../../shared/models/category/category.interface';
+import { IProduct } from '../../../shared/models/product/product.interface';
+
+import { ProductService } from '../../../features/products/service/product.service';
+import { CategoryService } from '../../../core/services/category/category.service';
+import { StoreService } from '../../../core/services/store/store.service';
 
 @Component({
   selector: 'app-products',
-  imports: [CategoryCardComponent,ProductItemComponent,CategoryCardComponent,MatButton],
   standalone: true,
+  imports: [
+    ProductItemComponent,
+    MatIconModule,
+  ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsComponent {
   private productService = inject(ProductService);
-  private storeService = inject(StoreService);
   private categoryService = inject(CategoryService);
+  private storeService = inject(StoreService);
+
   categories = signal<ICategory[]>([]);
+  products = signal<IProduct[]>([]);
 
   selectedCategory = signal<string | null>(null);
-  products = signal<IProduct[]>([]);
+  search = signal('');
+
+  filteredProducts = computed(() => {
+    const value = this.search()
+      .trim()
+      .toLowerCase();
+
+    if (!value) {
+      return this.products();
+    }
+
+    return this.products().filter(product =>
+      product.title.toLowerCase().includes(value) ||
+      product.description
+        ?.toLowerCase()
+        .includes(value),
+    );
+  });
 
   constructor() {
     effect(() => {
       const store = this.storeService.store();
 
-      if (!store) return;
+      if (!store) {
+        return;
+      }
 
-      this.productService.getByStoreId(store.id).subscribe((products) => {
-        this.products.set(products);
-      });
-      this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-        this.categories.set(categories);
-      });
+      this.categoryService
+        .getByStoreId(store.id)
+        .subscribe(categories => {
+          this.categories.set(categories);
+        });
+
+      this.productService
+        .getByStoreId(store.id)
+        .subscribe(products => {
+          this.products.set(products);
+          this.selectedCategory.set(null);
+        });
     });
   }
 
-  loadCategory(id: string) {
-  this.selectedCategory.set(id);
+  loadCategory(categoryId: string) {
+    this.selectedCategory.set(categoryId);
 
-  this.productService
-    .getByCategory(id)
-    .subscribe(products => {
-      this.products.set(products);
-    });
-}
+    this.productService
+      .getByCategory(categoryId)
+      .subscribe(products => {
+        this.products.set(products);
+      });
+  }
 
   loadAllProducts() {
+    const store = this.storeService.store();
+
+    if (!store) {
+      return;
+    }
+
     this.selectedCategory.set(null);
+
+    this.productService
+      .getByStoreId(store.id)
+      .subscribe(products => {
+        this.products.set(products);
+      });
+  }
+
+  resetFilters() {
+    this.search.set('');
+    this.loadAllProducts();
   }
 }
