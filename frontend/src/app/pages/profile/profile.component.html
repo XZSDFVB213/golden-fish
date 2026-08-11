@@ -1,65 +1,281 @@
-@if (user()){
-<div class="profile-page">
+@if (user(); as currentUser) {
 
-  <div class="profile-header">
-
-    <div class="avatar">
-      {{ user()?.name?.charAt(0) }}
-    </div>
-
-    <div class="user-info">
-      <h1>{{ user()?.name }}</h1>
-      <p>{{ user()?.email }}</p>
-    </div>
-
-  </div>
-
-  <div class="menu">
-
-    <mat-card
-      class="menu-item"
-      routerLink="/orders"
-    >
-      <mat-icon>receipt_long</mat-icon>
-
-      <span>Мои заказы</span>
-    </mat-card>
-
-    <mat-card
-      class="menu-item"
-      routerLink="/favorites"
-    >
-      <mat-icon>favorite</mat-icon>
-
-      <span>Избранное</span>
-
-    </mat-card>
-
-    <mat-card
-      class="menu-item"
-      routerLink="/support"
-    >
-      <mat-icon>support_agent</mat-icon>
-
-      <span>Поддержка</span>
-
-    </mat-card>
-
-    <mat-card
-      class="menu-item logout"
-      (click)="logout()"
-    >
-      <mat-icon>logout</mat-icon>
-
-      <span>Выйти</span>
-    </mat-card>
-
-  </div>
-
-</div>
-} @else{
   <div class="profile-page">
-    <h1>Вы не авторизованы</h1>
-    <button mat-flat-button color="primary" routerLink="/login">Войти</button>
+
+    <!-- HERO PROFILE -->
+
+    <section class="profile-hero">
+
+      <div class="hero-decoration decoration-one"></div>
+      <div class="hero-decoration decoration-two"></div>
+
+      <div class="profile-main">
+
+        <div class="avatar">
+
+          @if (currentUser.picture) {
+
+            <img
+              [src]="currentUser.picture"
+              [alt]="currentUser.name"
+            />
+
+          } @else {
+
+            {{ initial() }}
+
+          }
+
+        </div>
+
+
+        <div class="user-info">
+
+          <span class="profile-label">
+            Личный кабинет
+          </span>
+
+          <h1>
+            {{ currentUser.name }}
+          </h1>
+
+          <div class="email">
+            <mat-icon>mail</mat-icon>
+            {{ currentUser.email }}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-status">
+
+        <div class="status-dot"></div>
+
+        <div>
+          <span>Аккаунт</span>
+          <strong>Активен</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- QUICK INFO -->
+
+    <section class="welcome">
+
+      <div>
+
+        <span class="section-label">
+          Ваш профиль
+        </span>
+
+        <h2>
+          Всё необходимое в одном месте
+        </h2>
+
+        <p>
+          Следите за заказами, сохраняйте любимые товары
+          и обращайтесь в поддержку.
+        </p>
+
+      </div>
+
+      <div class="welcome-icon">
+        <mat-icon>person</mat-icon>
+      </div>
+
+    </section>
+
+
+    <!-- MENU -->
+
+    <section class="profile-menu">
+
+      <a
+        routerLink="/orders"
+        class="menu-card orders"
+      >
+
+        <div class="menu-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+
+        <div class="menu-content">
+
+          <strong>
+            Мои заказы
+          </strong>
+
+          <span>
+            История покупок и статусы заказов
+          </span>
+
+        </div>
+
+        <div class="menu-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/favorites"
+        class="menu-card favorites"
+      >
+
+        <div class="menu-icon">
+          <mat-icon>favorite_border</mat-icon>
+        </div>
+
+        <div class="menu-content">
+
+          <strong>
+            Избранное
+          </strong>
+
+          <span>
+            Сохранённые товары и любимые продукты
+          </span>
+
+        </div>
+
+        <div class="menu-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/support"
+        class="menu-card support"
+      >
+
+        <div class="menu-icon">
+          <mat-icon>support_agent</mat-icon>
+        </div>
+
+        <div class="menu-content">
+
+          <strong>
+            Поддержка
+          </strong>
+
+          <span>
+            Поможем с заказом или ответим на вопрос
+          </span>
+
+        </div>
+
+        <div class="menu-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+      </a>
+
+
+      <button
+        type="button"
+        class="menu-card logout"
+        (click)="logout()"
+      >
+
+        <div class="menu-icon">
+          <mat-icon>logout</mat-icon>
+        </div>
+
+        <div class="menu-content">
+
+          <strong>
+            Выйти
+          </strong>
+
+          <span>
+            Завершить текущий сеанс
+          </span>
+
+        </div>
+
+        <div class="menu-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+      </button>
+
+    </section>
+
+
+    <!-- FOOTER CARD -->
+
+    <section class="help-card">
+
+      <div class="help-icon">
+        <mat-icon>headset_mic</mat-icon>
+      </div>
+
+      <div>
+
+        <span>
+          Нужна помощь?
+        </span>
+
+        <strong>
+          Мы всегда на связи
+        </strong>
+
+      </div>
+
+      <a
+        routerLink="/support"
+        class="help-button"
+      >
+        Написать
+      </a>
+
+    </section>
+
   </div>
+
+} @else {
+
+  <div class="guest-page">
+
+    <div class="guest-card">
+
+      <div class="guest-icon">
+        <mat-icon>person_outline</mat-icon>
+      </div>
+
+      <span class="guest-label">
+        Личный кабинет
+      </span>
+
+      <h1>
+        Войдите в аккаунт
+      </h1>
+
+      <p>
+        Чтобы видеть свои заказы,
+        избранные товары и профиль.
+      </p>
+
+      <a
+        mat-flat-button
+        routerLink="/login"
+        class="login-button"
+      >
+        Войти
+
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+
+    </div>
+
+  </div>
+
 }
