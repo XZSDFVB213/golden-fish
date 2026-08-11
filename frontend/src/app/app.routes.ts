@@ -77,7 +77,7 @@ export const routes: Routes = [
       {
         path: 'support',
         loadComponent: () =>
-          import('./pages/support/support.component').then(
+          import('./features/support/component/support.component').then(
             (c) => c.SupportComponent,
           ),
       },
