@@ -5,9 +5,9 @@ import { Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+
 import { AuthService } from '../../core/services/auth/auth.service';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -15,14 +15,14 @@ import { MatIcon } from '@angular/material/icon';
   imports: [
     ReactiveFormsModule,
     RouterLink,
+
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule,
-    MatIcon,
+    MatIconModule,
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
@@ -30,7 +30,9 @@ export class LoginComponent {
   private router = inject(Router);
 
   isLoading = false;
+
   errorMessage = signal('');
+  hidePassword = signal(true);
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -44,6 +46,7 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
+    this.errorMessage.set('');
 
     this.authService
       .main('login', {
@@ -54,16 +57,21 @@ export class LoginComponent {
         next: () => {
           this.router.navigate(['/home']);
         },
+
         error: (err) => {
-          this.errorMessage.set(err.error?.message || 'Произошла ошибка');
+          this.errorMessage.set(
+            err.error?.message || 'Не удалось войти в аккаунт',
+          );
 
           this.isLoading = false;
         },
+
         complete: () => {
           this.isLoading = false;
         },
       });
   }
+
   loginWithGoogle() {
     this.authService.googleLogin();
   }
