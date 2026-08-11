@@ -1,64 +1,268 @@
 <div class="orders-page">
 
-  <h1>Мои заказы</h1>
+  <header class="page-header">
 
-  @if (orders().length === 0) {
-    <div class="empty">
-      <h2>Заказов пока нет</h2>
-      <p>Сделайте первую покупку в каталоге</p>
+    <div>
+      <span class="eyebrow">
+        Личный кабинет
+      </span>
 
-      <button mat-flat-button color="primary" routerLink="/products">
-        В каталог
-      </button>
+      <h1>
+        Мои заказы
+      </h1>
+
+      <p>
+        История покупок и актуальные статусы заказов
+      </p>
     </div>
-  }
 
-  @for (order of orders(); track order.id) {
 
-    <mat-card class="order-card">
+    @if (orders().length) {
 
-      <div class="order-header">
-        <div>
-          <div class="order-id">Заказ #{{ order.id }}</div>
-          <div class="order-date">
-            {{ order.createdAt | date:'short' }}
-          </div>
-        </div>
+    <div class="header-stat">
 
-        <div class="status" [class.payed]="order.status === 'PAYED'">
-          {{ order.status }}
-        </div>
+      <span>
+        Всего заказов
+      </span>
+
+      <strong>
+        {{ orders().length }}
+      </strong>
+
+    </div>
+
+    }
+
+  </header>
+
+
+  @if (orders().length) {
+
+  <section class="summary">
+
+    <article class="summary-card primary">
+
+      <div class="summary-icon">
+        <mat-icon>receipt_long</mat-icon>
       </div>
 
-      <div class="items">
+      <div>
+        <span>Всего заказов</span>
 
-        @for (item of order.items; track item.id) {
-          <div class="item">
+        <strong>
+          {{ orders().length }}
+        </strong>
+      </div>
 
-            <img [src]="item.product.images[0]" />
+    </article>
 
-            <div class="info">
-              <div class="title">
-                {{ item.product.title }}
-              </div>
 
-              <div class="meta">
-                {{ item.quantity }} × {{ item.price }} ₽
-              </div>
+    <article class="summary-card">
+
+      <div class="summary-icon money">
+        <mat-icon>payments</mat-icon>
+      </div>
+
+      <div>
+        <span>Сумма покупок</span>
+
+        <strong>
+          {{ totalSpent() }} ₽
+        </strong>
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <section class="orders-list">
+
+    @for (
+    order of orders();
+    track order.id
+    ) {
+
+    <article class="order-card">
+
+      <div class="order-top">
+
+        <div class="order-main">
+
+          <div class="order-icon">
+            <mat-icon>
+              {{ getStatusIcon(order.status) }}
+            </mat-icon>
+          </div>
+
+          <div>
+
+            <span class="order-label">
+              Заказ
+            </span>
+
+            <strong class="order-id">
+              #{{ order.id.slice(-8) }}
+            </strong>
+
+            <div class="order-date">
+              <mat-icon>calendar_today</mat-icon>
+
+              {{
+              order.createdAt
+              | date:'dd.MM.yyyy, HH:mm'
+              }}
             </div>
 
           </div>
+
+        </div>
+
+
+        <div class="status" [class]="
+                'status ' +
+                getStatusClass(order.status)
+              ">
+          <span class="status-dot"></span>
+
+          {{ getStatusLabel(order.status) }}
+        </div>
+
+      </div>
+
+
+      <div class="divider"></div>
+
+
+      <div class="items">
+
+        @for (
+        item of order.items;
+        track item.id
+        ) {
+
+        <div class="item">
+
+          <div class="item-image">
+
+            @if (item.product.images?.[0]) {
+
+            <img [src]="item.product.images[0]" [alt]="item.product.title" />
+
+            } @else {
+
+            <mat-icon>
+              image
+            </mat-icon>
+
+            }
+
+          </div>
+
+
+          <div class="item-info">
+
+            <strong>
+              {{ item.product.title }}
+            </strong>
+
+            <span>
+              {{ item.quantity }}
+              ×
+              {{ item.price }} ₽
+            </span>
+
+          </div>
+
+
+          <div class="item-total">
+            {{
+            item.quantity * item.price
+            }}
+            ₽
+          </div>
+
+        </div>
+
         }
 
       </div>
 
-      <div class="footer">
-        <div class="total">
-          Итого: {{ order.total }} ₽
+
+      <div class="order-footer">
+
+        <div class="items-count">
+
+          <mat-icon>
+            shopping_bag
+          </mat-icon>
+
+          {{
+          order.items.length
+          }}
+
+          {{
+          order.items.length === 1
+          ? 'позиция'
+          : 'позиций'
+          }}
+
         </div>
+
+
+        <div class="total">
+
+          <span>
+            Итого
+          </span>
+
+          <strong>
+            {{ order.total }} ₽
+          </strong>
+
+        </div>
+
       </div>
 
-    </mat-card>
+    </article>
+
+    }
+
+  </section>
+
+  } @else {
+
+  <section class="empty">
+
+    <div class="empty-icon">
+      <mat-icon>
+        shopping_bag
+      </mat-icon>
+    </div>
+
+    <span class="empty-label">
+      Мои заказы
+    </span>
+
+    <h2>
+      Здесь пока пусто
+    </h2>
+
+    <p>
+      Выберите любимые продукты,
+      оформите первый заказ —
+      и он появится здесь.
+    </p>
+
+    <a mat-flat-button routerLink="/products" class="catalog-button">
+      Перейти в каталог
+
+      <mat-icon>
+        arrow_forward
+      </mat-icon>
+    </a>
+
+  </section>
 
   }
 
