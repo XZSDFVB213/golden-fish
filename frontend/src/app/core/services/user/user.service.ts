@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 import { IUser } from '../../../shared/models/user/user.interface';
+import { IProduct } from '../../../shared/models/product/product.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,4 +25,9 @@ export class UserService {
       {},
     );
   }
+  getFavorites() {
+  return this.http.get<IProduct[]>(
+    `${this.API_URL}/users/favorites`
+  );
+}
 }
