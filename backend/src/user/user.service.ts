@@ -20,6 +20,23 @@ export class UserService {
     });
     return user;
   }
+  async getFavorites(userId: string) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+
+      select: {
+        favorites: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+
+    return user.favorites;
+  }
   async getByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: {

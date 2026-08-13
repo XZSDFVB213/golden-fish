@@ -12,7 +12,11 @@ export class UserController {
   async getProfile(@CurrentUser('id') id: string) {
     return this.userService.getById(id);
   }
-
+  @Get('favorites')
+  @Auth()
+  getFavorites(@CurrentUser('id') userId: string) {
+    return this.userService.getFavorites(userId);
+  }
   @Auth()
   @Patch('profile/favorites/:productId')
   async toggleFavorite(
