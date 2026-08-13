@@ -1,0 +1,248 @@
+<div class="favorites-page">
+
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+      <span class="eyebrow">
+        Личный кабинет
+      </span>
+
+      <h1>
+        Избранное
+      </h1>
+
+      <p>
+        Здесь собраны товары,
+        которые вы сохранили на потом
+      </p>
+    </div>
+
+
+    @if (favorites().length) {
+
+      <div class="favorites-count">
+
+        <div class="count-icon">
+          <mat-icon>favorite</mat-icon>
+        </div>
+
+        <div>
+          <span>Сохранено</span>
+
+          <strong>
+            {{ favorites().length }}
+          </strong>
+        </div>
+
+      </div>
+
+    }
+
+  </header>
+
+
+  @if (favorites().length) {
+
+    <!-- INFO -->
+
+    <section class="favorites-info">
+
+      <div class="info-icon">
+        <mat-icon>auto_awesome</mat-icon>
+      </div>
+
+      <div>
+        <strong>
+          Ваши любимые товары
+        </strong>
+
+        <span>
+          Добавляйте их в корзину
+          в любое удобное время
+        </span>
+      </div>
+
+    </section>
+
+
+    <!-- GRID -->
+
+    <section class="favorites-grid">
+
+      @for (
+        product of favorites();
+        track product.id
+      ) {
+
+        <article class="favorite-card">
+
+          <!-- IMAGE -->
+
+          <a
+            class="product-image"
+            [routerLink]="[
+              '/products',
+              product.id
+            ]"
+          >
+
+            @if (product.images?.[0]) {
+
+              <img
+                [src]="product.images[0]"
+                [alt]="product.title"
+              />
+
+            } @else {
+
+              <div class="placeholder">
+                <mat-icon>image</mat-icon>
+              </div>
+
+            }
+
+
+            <div class="available">
+              <span></span>
+              В наличии
+            </div>
+
+          </a>
+
+
+          <!-- CONTENT -->
+
+          <div class="product-content">
+
+            <span class="category">
+              {{
+                product.category?.title ||
+                'Продукты'
+              }}
+            </span>
+
+
+            <a
+              [routerLink]="[
+                '/products',
+                product.id
+              ]"
+              class="title"
+            >
+              {{ product.title }}
+            </a>
+
+
+            <p>
+              {{
+                product.description ||
+                'Товар из магазина «Золотая рыбка»'
+              }}
+            </p>
+
+
+            <div class="bottom">
+
+              <div class="price">
+
+                <strong>
+                  {{
+                    product.price
+                      | number:'1.0-0'
+                  }}
+                </strong>
+
+                <span>₽</span>
+
+              </div>
+
+
+              <a
+                [routerLink]="[
+                  '/products',
+                  product.id
+                ]"
+                class="view-button"
+              >
+                <mat-icon>
+                  arrow_forward
+                </mat-icon>
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- FAVORITE BUTTON -->
+
+          <button
+            type="button"
+            class="favorite-button"
+            title="В избранном"
+          >
+            <mat-icon>
+              favorite
+            </mat-icon>
+          </button>
+
+        </article>
+
+      }
+
+    </section>
+
+  } @else {
+
+    <!-- EMPTY -->
+
+    <section class="empty">
+
+      <div class="empty-decoration one"></div>
+      <div class="empty-decoration two"></div>
+
+      <div class="heart">
+
+        <mat-icon>
+          favorite_border
+        </mat-icon>
+
+      </div>
+
+      <span class="empty-label">
+        Избранное
+      </span>
+
+      <h2>
+        Пока ничего нет
+      </h2>
+
+      <p>
+        Нажимайте на сердечко возле товаров,
+        которые хотите сохранить.
+        Они появятся здесь.
+      </p>
+
+
+      <a
+        routerLink="/products"
+        class="catalog-button"
+      >
+        <mat-icon>
+          shopping_bag
+        </mat-icon>
+
+        Перейти в каталог
+
+        <mat-icon>
+          arrow_forward
+        </mat-icon>
+      </a>
+
+    </section>
+
+  }
+
+</div>

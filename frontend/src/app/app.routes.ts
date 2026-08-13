@@ -81,6 +81,13 @@ export const routes: Routes = [
             (c) => c.SupportComponent,
           ),
       },
+       {
+        path: 'favorites',
+        loadComponent: () =>
+          import('./pages/favorites/favorites.component').then(
+            (c) => c.FavoritesComponent,
+          ),
+      },
     ],
   },
 
