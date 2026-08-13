@@ -15,6 +15,7 @@ import { IProduct } from '../../models/product/product.interface';
 
 // путь подставь свой
 import { CartService } from '../../../features/cart/service/cart.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-product-item',
@@ -29,7 +30,7 @@ import { CartService } from '../../../features/cart/service/cart.service';
 })
 export class ProductItemComponent {
   private cart = inject(CartService);
-
+  private userService = inject(UserService);
   product = input.required<IProduct>();
 
   favorite = signal(false);
@@ -47,6 +48,9 @@ export class ProductItemComponent {
   });
 
   toggleFavorite(event: MouseEvent) {
+    this.userService.toggleFavorite(
+      this.product().id,
+    )
     event.preventDefault();
     event.stopPropagation();
 
