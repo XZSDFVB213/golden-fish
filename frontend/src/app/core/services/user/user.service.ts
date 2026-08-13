@@ -27,7 +27,7 @@ export class UserService {
   }
   getFavorites() {
   return this.http.get<IProduct[]>(
-    `${this.API_URL}/users/favorites`
+    `${this.API_URL}/favorites`
   );
 }
 }
