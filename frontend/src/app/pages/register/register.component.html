@@ -1,94 +1,364 @@
-<mat-card class="login-card">
-  <mat-card-content>
+<div class="register-page">
 
-    <div class="login-header">
-      <h1>Регистрация</h1>
+  <!-- LEFT PROMO -->
+
+  <section class="register-promo">
+
+    <a
+      routerLink="/home"
+      class="brand"
+    >
+      <div class="brand-icon">
+        <mat-icon>set_meal</mat-icon>
+      </div>
+
+      <div class="brand-text">
+        <strong>Золотая рыбка</strong>
+        <span>продукты рядом</span>
+      </div>
+    </a>
+
+
+    <div class="promo-content">
+
+      <div class="promo-badge">
+        <span></span>
+        Новый аккаунт
+      </div>
+
+      <h1>
+        Покупки стали
+        <span>ещё проще</span>
+      </h1>
+
+      <p>
+        Создайте аккаунт и получите доступ
+        к заказам, избранным товарам
+        и удобному оформлению покупок.
+      </p>
+
+
+      <div class="promo-features">
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <mat-icon>shopping_bag</mat-icon>
+          </div>
+
+          <div>
+            <strong>Быстрые покупки</strong>
+            <span>Оформляйте заказы онлайн</span>
+          </div>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <mat-icon>favorite</mat-icon>
+          </div>
+
+          <div>
+            <strong>Избранное</strong>
+            <span>Сохраняйте любимые товары</span>
+          </div>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+
+          <div>
+            <strong>История заказов</strong>
+            <span>Все покупки в одном месте</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-<div class="social-login">
 
-  <button
-    mat-stroked-button
-    type="button"
-    (click)="loginWithGoogle()"
-  >
-    <img
-      src="assets/google.svg"
-      alt=""
-      width="20"
-    />
+  </section>
 
-    Google
-  </button>
 
-  <button
-    mat-stroked-button
-    type="button"
-    (click)="loginWithYandex()"
-  >
-    <img
-      src="assets/yandex.svg"
-      alt=""
-      width="20"
-    />
+  <!-- RIGHT FORM -->
 
-    Яндекс
-  </button>
+  <section class="form-side">
+
+    <div class="register-card">
+
+      <div class="mobile-brand">
+
+        <div class="brand-icon">
+          <mat-icon>set_meal</mat-icon>
+        </div>
+
+        <strong>
+          Золотая рыбка
+        </strong>
+
+      </div>
+
+
+      <div class="register-header">
+
+        <span class="eyebrow">
+          Регистрация
+        </span>
+
+        <h2>
+          Создайте аккаунт
+        </h2>
+
+        <p>
+          Это займёт всего пару минут.
+        </p>
+
+      </div>
+
+
+      <!-- SOCIAL -->
+
+      <div class="social-login">
+
+        <button
+          type="button"
+          class="social-button"
+          (click)="loginWithGoogle()"
+        >
+          <img
+            src="assets/google.svg"
+            alt="Google"
+          />
+
+          Google
+        </button>
+
+
+        <button
+          type="button"
+          class="social-button"
+          (click)="loginWithYandex()"
+        >
+          <img
+            src="assets/yandex.svg"
+            alt="Яндекс"
+          />
+
+          Яндекс
+        </button>
+
+      </div>
+
+
+      <div class="divider">
+        <span>
+          или через email
+        </span>
+      </div>
+
+
+      <!-- FORM -->
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        class="register-form"
+      >
+
+        <!-- NAME -->
+
+        <div class="field-label">
+          Ваше имя
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="field"
+        >
+
+          <mat-icon matPrefix>
+            person_outline
+          </mat-icon>
+
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            placeholder="Например, Абакар"
+          />
+
+          @if (
+            form.controls.name.touched &&
+            form.controls.name.invalid
+          ) {
+            <mat-error>
+              Введите имя
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+
+        <!-- EMAIL -->
+
+        <div class="field-label">
+          Email
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="field"
+        >
+
+          <mat-icon matPrefix>
+            mail_outline
+          </mat-icon>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="name@example.com"
+          />
+
+          @if (
+            form.controls.email.touched &&
+            form.controls.email.invalid
+          ) {
+            <mat-error>
+              Введите корректный email
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+
+        <!-- PASSWORD -->
+
+        <div class="field-label">
+          Пароль
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="field"
+        >
+
+          <mat-icon matPrefix>
+            lock_outline
+          </mat-icon>
+
+          <input
+            matInput
+            [type]="
+              hidePassword()
+                ? 'password'
+                : 'text'
+            "
+            formControlName="password"
+            placeholder="Минимум 6 символов"
+          />
+
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            class="password-toggle"
+            (click)="
+              hidePassword.set(
+                !hidePassword()
+              )
+            "
+          >
+            <mat-icon>
+              {{
+                hidePassword()
+                  ? 'visibility_off'
+                  : 'visibility'
+              }}
+            </mat-icon>
+          </button>
+
+          @if (
+            form.controls.password.touched &&
+            form.controls.password.invalid
+          ) {
+            <mat-error>
+              Минимум 6 символов
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+
+        <!-- ERROR -->
+
+        @if (errorMessage()) {
+
+          <div class="error">
+
+            <mat-icon>
+              error_outline
+            </mat-icon>
+
+            <span>
+              {{ errorMessage() }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isLoading"
+        >
+
+          @if (isLoading) {
+
+            Создаём аккаунт...
+
+          } @else {
+
+            Создать аккаунт
+
+            <mat-icon>
+              arrow_forward
+            </mat-icon>
+
+          }
+
+        </button>
+
+      </form>
+
+
+      <div class="login-link">
+
+        <span>
+          Уже есть аккаунт?
+        </span>
+
+        <a routerLink="/login">
+          Войти
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </div>
-    <form
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-      class="login-form"
-    >
-    <mat-form-field appearance="outline">
-        <mat-label>Имя</mat-label>
-        <input
-          matInput
-          type="name"
-          formControlName="name"
-        />
-      </mat-form-field>
-
-      @if (errorMessage()) {
-        <div class="error">
-          {{ errorMessage() }}
-        </div>
-      }
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          type="email"
-          formControlName="email"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Пароль</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="password"
-        />
-      </mat-form-field>
-
-      @if (errorMessage()) {
-        <div class="error">
-          {{ errorMessage() }}
-        </div>
-      }
-
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        [disabled]="isLoading"
-      >
-        Войти
-      </button>
-
-
-    </form>
-
-  </mat-card-content>
-</mat-card>
