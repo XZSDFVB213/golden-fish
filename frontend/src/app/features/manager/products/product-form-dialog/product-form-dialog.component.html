@@ -86,34 +86,16 @@
         <div class="row">
 
           <mat-form-field appearance="outline">
-
-            <mat-label>
-              Цена
-            </mat-label>
+            <mat-label>Цена</mat-label>
 
             <input matInput type="number" formControlName="price" />
 
-            <span matTextSuffix>
-              ₽
-            </span>
-
+            <span matTextSuffix>₽</span>
           </mat-form-field>
 
+
           <mat-form-field appearance="outline">
-
-            <mat-label>
-              Весовой товар
-            </mat-label>
-            <mat-checkbox formControlName="isWeighted">
-              Весовой товар
-            </mat-checkbox>
-
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-
-            <mat-label>
-              Категория
-            </mat-label>
+            <mat-label>Категория</mat-label>
 
             <mat-select formControlName="categoryId">
 
@@ -121,20 +103,26 @@
               category of categories();
               track category.id
               ) {
-
               <mat-option [value]="category.id">
                 {{ category.title }}
               </mat-option>
-
               }
 
             </mat-select>
-
           </mat-form-field>
 
         </div>
+        <div class="weighted-checkbox-row">
 
+          <mat-checkbox formControlName="isWeighted">
+            Весовой товар
+          </mat-checkbox>
 
+          <span>
+            Цена указывается за килограмм
+          </span>
+
+        </div>
         <mat-form-field appearance="outline" class="full">
 
           <mat-label>

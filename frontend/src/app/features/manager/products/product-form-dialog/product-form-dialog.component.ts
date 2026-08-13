@@ -106,7 +106,6 @@ export class ProductFormDialogComponent {
     ],
     isWeighted: [
       this.data.product?.isWeighted ?? false,
-      Validators.required,
     ],
     categoryId: [
       this.data.product?.categoryId ??

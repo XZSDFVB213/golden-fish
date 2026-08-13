@@ -23,7 +23,7 @@
   .eyebrow {
     margin-bottom: 7px;
 
-    color: #0000CF;
+    color: #0000cf;
 
     font-size: 10px;
     font-weight: 800;
@@ -172,13 +172,11 @@
   }
 
   .mdc-notched-outline__leading {
-    border-radius:
-      14px 0 0 14px !important;
+    border-radius: 14px 0 0 14px !important;
   }
 
   .mdc-notched-outline__trailing {
-    border-radius:
-      0 14px 14px 0 !important;
+    border-radius: 0 14px 14px 0 !important;
   }
 
   .mat-mdc-form-field-focus-overlay {
@@ -220,12 +218,7 @@
   border: 1px solid #e6eae6;
   border-radius: 22px;
 
-  background:
-    linear-gradient(
-      145deg,
-      #f7f8f6,
-      #f1f3f0
-    );
+  background: linear-gradient(145deg, #f7f8f6, #f1f3f0);
 
   img {
     width: 100%;
@@ -306,8 +299,7 @@
 
   color: #147747;
 
-  background:
-    rgba(240, 252, 245, 0.94);
+  background: rgba(240, 252, 245, 0.94);
 
   backdrop-filter: blur(9px);
 
@@ -355,20 +347,37 @@
   border-radius: 14px !important;
 
   color: white !important;
-  background: #0000CF !important;
+  background: #0000cf !important;
 
   font-weight: 700 !important;
 
-  box-shadow:
-    0 8px 22px
-    rgba(31, 164, 99, 0.17) !important;
+  box-shadow: 0 8px 22px rgba(31, 164, 99, 0.17) !important;
 
   mat-spinner {
     display: inline-block;
     margin-right: 8px;
   }
 }
+.weighted-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 
+  min-height: 56px;
+
+  margin-bottom: 16px;
+  padding: 0 14px;
+
+  border: 1px solid #dfe3df;
+  border-radius: 12px;
+
+  background: #fafbfa;
+
+  span {
+    color: #8b908c;
+    font-size: 11px;
+  }
+}
 @media (max-width: 750px) {
   .dialog-content {
     grid-template-columns: 1fr;
