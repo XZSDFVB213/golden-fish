@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CartService } from '../../features/cart/service/cart.service';
 import { OrderService } from '../../features/orders/service/order.service';
 import { EnumOrderStatus } from '../../shared/models/order/order.interface';
@@ -28,22 +28,29 @@ export class CheckoutComponent {
   private orderService = inject(OrderService);
 
   totalPrice = this.cart.totalPrice;
- pay() {
-  const items = this.cart.items().map(item => ({
-    productId: item.product.id,
-    storeId: item.product.storeId,
-    quantity: item.quantity,
-    price: item.price,
-  }));
+  pay() {
+    const items = this.cart.items().map((item) => ({
+      productId: item.product.id,
+      storeId: item.product.storeId,
+      quantity: item.quantity,
+      price: item.price,
+    }));
 
-  console.log(items);
+    console.log(items);
 
-  this.orderService.createPayment({
-    items,
-    status: EnumOrderStatus.PENDING,
-  }).subscribe(res => {
-    window.location.href =
-      res.confirmation.confirmation_url;
-  });
-}
+    this.orderService
+      .createPayment({
+        items,
+        status: EnumOrderStatus.PENDING,
+      })
+      .subscribe((res) => {
+        window.location.href = res.confirmation.confirmation_url;
+      });
+  }
+  hasWeightedProducts = computed(() =>
+    this.cart.items().some((item) => item.product.isWeighted),
+  );
+  totalLabel = computed(() =>
+    this.hasWeightedProducts() ? 'Предварительный итог' : 'Итого',
+  );
 }

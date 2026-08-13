@@ -343,19 +343,68 @@
       </div>
 
 
-      <div class="summary-total">
+      <div class="summary-total" [class.approximate]="hasWeightedProducts()">
 
-        <span>
-          Итого
-        </span>
+        <div class="total-label">
+
+          <span>
+            {{
+            hasWeightedProducts()
+            ? 'Предварительный итог'
+            : 'Итого'
+            }}
+          </span>
+
+          @if (hasWeightedProducts()) {
+          <small>
+            после взвешивания сумма может измениться
+          </small>
+          }
+
+        </div>
+
 
         <strong>
+
+          @if (hasWeightedProducts()) {
+          <span class="approximately">
+            ≈
+          </span>
+          }
+
           {{ totalPrice() }} ₽
+
         </strong>
 
       </div>
 
+      @if (hasWeightedProducts()) {
 
+      <div class="weight-notice">
+
+        <div class="weight-notice-icon">
+          <mat-icon>scale</mat-icon>
+        </div>
+
+        <div>
+
+          <strong>
+            В заказе есть весовые товары
+          </strong>
+
+          <p>
+            Вес таких товаров может немного отличаться
+            от выбранного. Например, вместо 1 кг фактический
+            вес может составить 950 г или 1,1 кг.
+            Итоговая стоимость будет рассчитана
+            после взвешивания.
+          </p>
+
+        </div>
+
+      </div>
+
+      }
       <button type="button" class="pay-button" (click)="pay()">
 
         <span>

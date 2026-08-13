@@ -10,7 +10,7 @@ export interface IProduct {
 
   storeId: string;
   categoryId: string;
-
+  isWeighted: boolean;
   category: ICategory;
   reviews: IReview[];
   images: string[];

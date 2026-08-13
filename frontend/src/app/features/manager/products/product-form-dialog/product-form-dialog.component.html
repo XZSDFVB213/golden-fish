@@ -16,29 +16,22 @@
 
       <p>
         {{
-          isEdit
-            ? 'Обновите информацию о товаре'
-            : 'Добавьте товар в каталог магазина'
+        isEdit
+        ? 'Обновите информацию о товаре'
+        : 'Добавьте товар в каталог магазина'
         }}
       </p>
 
     </div>
 
-    <button
-      type="button"
-      class="close-button"
-      (click)="close()"
-    >
+    <button type="button" class="close-button" (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
 
   </header>
 
 
-  <form
-    [formGroup]="form"
-    (ngSubmit)="save()"
-  >
+  <form [formGroup]="form" (ngSubmit)="save()">
 
     <div class="dialog-content">
 
@@ -58,50 +51,35 @@
         </div>
 
 
-        <mat-form-field
-          appearance="outline"
-          class="full"
-        >
+        <mat-form-field appearance="outline" class="full">
           <mat-label>
             Название товара
           </mat-label>
 
-          <input
-            matInput
-            formControlName="title"
-            placeholder="Например, Молоко 3,2%"
-          />
+          <input matInput formControlName="title" placeholder="Например, Молоко 3,2%" />
 
           <mat-icon matPrefix>
             sell
           </mat-icon>
 
           @if (
-            form.controls.title.touched &&
-            form.controls.title.invalid
+          form.controls.title.touched &&
+          form.controls.title.invalid
           ) {
-            <mat-error>
-              Укажите название товара
-            </mat-error>
+          <mat-error>
+            Укажите название товара
+          </mat-error>
           }
 
         </mat-form-field>
 
 
-        <mat-form-field
-          appearance="outline"
-          class="full description"
-        >
+        <mat-form-field appearance="outline" class="full description">
           <mat-label>
             Описание
           </mat-label>
 
-          <textarea
-            matInput
-            rows="5"
-            formControlName="description"
-            placeholder="Расскажите о товаре..."
-          ></textarea>
+          <textarea matInput rows="5" formControlName="description" placeholder="Расскажите о товаре..."></textarea>
         </mat-form-field>
 
 
@@ -113,11 +91,7 @@
               Цена
             </mat-label>
 
-            <input
-              matInput
-              type="number"
-              formControlName="price"
-            />
+            <input matInput type="number" formControlName="price" />
 
             <span matTextSuffix>
               ₽
@@ -125,27 +99,32 @@
 
           </mat-form-field>
 
+          <mat-form-field appearance="outline">
 
+            <mat-label>
+              Весовой товар
+            </mat-label>
+            <mat-checkbox formControlName="isWeighted">
+              Весовой товар
+            </mat-checkbox>
+
+          </mat-form-field>
           <mat-form-field appearance="outline">
 
             <mat-label>
               Категория
             </mat-label>
 
-            <mat-select
-              formControlName="categoryId"
-            >
+            <mat-select formControlName="categoryId">
 
               @for (
-                category of categories();
-                track category.id
+              category of categories();
+              track category.id
               ) {
 
-                <mat-option
-                  [value]="category.id"
-                >
-                  {{ category.title }}
-                </mat-option>
+              <mat-option [value]="category.id">
+                {{ category.title }}
+              </mat-option>
 
               }
 
@@ -156,29 +135,22 @@
         </div>
 
 
-        <mat-form-field
-          appearance="outline"
-          class="full"
-        >
+        <mat-form-field appearance="outline" class="full">
 
           <mat-label>
             Магазин
           </mat-label>
 
-          <mat-select
-            formControlName="storeId"
-          >
+          <mat-select formControlName="storeId">
 
             @for (
-              store of stores();
-              track store.id
+            store of stores();
+            track store.id
             ) {
 
-              <mat-option
-                [value]="store.id"
-              >
-                {{ store.title }}
-              </mat-option>
+            <mat-option [value]="store.id">
+              {{ store.title }}
+            </mat-option>
 
             }
 
@@ -191,11 +163,11 @@
         </mat-form-field>
 
         @if (isEdit) {
-          <div class="store-hint">
-            <mat-icon>info</mat-icon>
+        <div class="store-hint">
+          <mat-icon>info</mat-icon>
 
-            Магазин нельзя изменить после создания товара
-          </div>
+          Магазин нельзя изменить после создания товара
+        </div>
         }
 
       </section>
@@ -223,54 +195,43 @@
 
           @if (previewImage) {
 
-            <img
-              [src]="previewImage"
-              alt="Предпросмотр товара"
-            />
+          <img [src]="previewImage" alt="Предпросмотр товара" />
 
-            <div class="preview-badge">
-              <mat-icon>check_circle</mat-icon>
-              Фото загружено
-            </div>
+          <div class="preview-badge">
+            <mat-icon>check_circle</mat-icon>
+            Фото загружено
+          </div>
 
           } @else {
 
-            <div class="preview-empty">
+          <div class="preview-empty">
 
-              <div class="preview-icon">
-                <mat-icon>add_photo_alternate</mat-icon>
-              </div>
-
-              <strong>
-                Добавьте изображение
-              </strong>
-
-              <span>
-                Вставьте ссылку на фотографию товара
-              </span>
-
+            <div class="preview-icon">
+              <mat-icon>add_photo_alternate</mat-icon>
             </div>
+
+            <strong>
+              Добавьте изображение
+            </strong>
+
+            <span>
+              Вставьте ссылку на фотографию товара
+            </span>
+
+          </div>
 
           }
 
         </div>
 
 
-        <mat-form-field
-          appearance="outline"
-          class="full image-input"
-        >
+        <mat-form-field appearance="outline" class="full image-input">
 
           <mat-label>
             Ссылки на изображения
           </mat-label>
 
-          <textarea
-            matInput
-            rows="4"
-            formControlName="images"
-            placeholder="https://site.ru/product.jpg"
-          ></textarea>
+          <textarea matInput rows="4" formControlName="images" placeholder="https://site.ru/product.jpg"></textarea>
 
           <mat-hint>
             Каждую ссылку с новой строки
@@ -287,40 +248,28 @@
 
     <footer class="dialog-footer">
 
-      <button
-        type="button"
-        mat-button
-        class="cancel"
-        (click)="close()"
-      >
+      <button type="button" mat-button class="cancel" (click)="close()">
         Отмена
       </button>
 
-      <button
-        type="submit"
-        mat-flat-button
-        class="save-button"
-        [disabled]="loading()"
-      >
+      <button type="submit" mat-flat-button class="save-button" [disabled]="loading()">
 
         @if (loading()) {
 
-          <mat-spinner
-            diameter="20"
-          />
+        <mat-spinner diameter="20" />
 
         } @else {
 
-          <mat-icon>
-            {{ isEdit ? 'save' : 'add' }}
-          </mat-icon>
+        <mat-icon>
+          {{ isEdit ? 'save' : 'add' }}
+        </mat-icon>
 
         }
 
         {{
-          isEdit
-            ? 'Сохранить изменения'
-            : 'Добавить товар'
+        isEdit
+        ? 'Сохранить изменения'
+        : 'Добавить товар'
         }}
 
       </button>

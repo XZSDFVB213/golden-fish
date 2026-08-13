@@ -34,7 +34,7 @@ import { IStore } from '../../../../shared/models/store/store.interface';
 import { ProductService } from '../../../../features/products/service/product.service';
 import { CategoryService } from '../../../../core/services/category/category.service';
 import { StoreService } from '../../../../core/services/store/store.service';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
 export interface ProductDialogData {
   product?: IProduct;
 }
@@ -52,6 +52,7 @@ export interface ProductDialogData {
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
   ],
   templateUrl: './product-form-dialog.component.html',
   styleUrl: './product-form-dialog.component.scss',
@@ -103,7 +104,10 @@ export class ProductFormDialogComponent {
       this.data.product?.storeId ?? '',
       Validators.required,
     ],
-
+    isWeighted: [
+      this.data.product?.isWeighted ?? false,
+      Validators.required,
+    ],
     categoryId: [
       this.data.product?.categoryId ??
         this.data.product?.category?.id ??
@@ -198,6 +202,7 @@ export class ProductFormDialogComponent {
       price: Number(value.price),
       categoryId: value.categoryId,
       storeId: value.storeId,
+      isWeighted: value.isWeighted,
       images,
     };
 
