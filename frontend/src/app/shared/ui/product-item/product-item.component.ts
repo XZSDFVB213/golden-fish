@@ -48,15 +48,24 @@ export class ProductItemComponent {
   });
 
   toggleFavorite(event: MouseEvent) {
-    this.userService.toggleFavorite(
-      this.product().id,
-    )
+     this.userService
+    .toggleFavorite(this.product().id)
+    .subscribe({
+      next: () => {
+        this.favorite.update(
+          value => !value,
+        );
+      },
+
+      error: err => {
+        console.error(
+          'Ошибка избранного:',
+          err,
+        );
+      },
+    });
     event.preventDefault();
     event.stopPropagation();
-
-    this.favorite.update(
-      value => !value,
-    );
   }
 
   add(event: MouseEvent) {
