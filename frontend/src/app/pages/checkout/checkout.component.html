@@ -1,71 +1,388 @@
-<div class="checkout">
+<div class="checkout-page">
 
-  <h1 class="title">Оформление заказа</h1>
+  <header class="checkout-header">
 
-  <div class="layout">
+    <div>
+      <span class="eyebrow">
+        Последний шаг
+      </span>
 
-    <!-- LEFT: FORM -->
-    <mat-card class="form">
+      <h1>
+        Оформление заказа
+      </h1>
 
-      <h2>Контактные данные</h2>
+      <p>
+        Проверьте данные и выберите удобный способ получения
+      </p>
+    </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Имя</mat-label>
-        <input matInput />
-      </mat-form-field>
+    <div class="secure-badge">
+      <mat-icon>lock</mat-icon>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Телефон</mat-label>
-        <input matInput />
-      </mat-form-field>
+      <div>
+        <span>Безопасная оплата</span>
+        <strong>YooKassa</strong>
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Комментарий</mat-label>
-        <textarea matInput></textarea>
-      </mat-form-field>
+  </header>
 
-      <h2>Доставка</h2>
 
-      <mat-radio-group>
-        <mat-radio-button value="courier">
-          Курьер
-        </mat-radio-button>
+  <div class="checkout-layout">
 
-        <mat-radio-button value="pickup">
-          Самовывоз
-        </mat-radio-button>
-      </mat-radio-group>
+    <!-- LEFT -->
 
-    </mat-card>
+    <div class="checkout-content">
 
-    <!-- RIGHT: SUMMARY -->
-    <mat-card class="summary">
+      <!-- CONTACTS -->
 
-      <h2>Ваш заказ</h2>
+      <section class="checkout-card">
 
-      @for (item of cart.items(); track item.id) {
-        <div class="row">
-          <span>{{ item.product.title }}</span>
-          <span>{{ item.quantity }} × {{ item.product.price }} ₽</span>
+        <div class="card-header">
+
+          <div class="step-icon">
+            <mat-icon>person_outline</mat-icon>
+          </div>
+
+          <div>
+            <span class="step">
+              Шаг 1
+            </span>
+
+            <h2>
+              Контактные данные
+            </h2>
+          </div>
+
         </div>
-      }
 
-      <hr />
 
-      <div class="total">
-        Итого: {{ totalPrice() }} ₽
+        <div class="form-grid">
+
+          <div class="field-block">
+
+            <label>
+              Имя
+            </label>
+
+            <mat-form-field appearance="outline">
+
+              <mat-icon matPrefix>
+                person_outline
+              </mat-icon>
+
+              <input matInput placeholder="Ваше имя" />
+
+            </mat-form-field>
+
+          </div>
+
+
+          <div class="field-block">
+
+            <label>
+              Телефон
+            </label>
+
+            <mat-form-field appearance="outline">
+
+              <mat-icon matPrefix>
+                call
+              </mat-icon>
+
+              <input matInput type="tel" placeholder="+7 999 000-00-00" />
+
+            </mat-form-field>
+
+          </div>
+
+        </div>
+
+
+        <div class="field-block comment-field">
+
+          <label>
+            Комментарий к заказу
+          </label>
+
+          <mat-form-field appearance="outline">
+
+            <mat-icon matPrefix>
+              chat_bubble_outline
+            </mat-icon>
+
+            <textarea matInput rows="4" placeholder="Например: позвонить перед доставкой"></textarea>
+
+          </mat-form-field>
+
+        </div>
+
+      </section>
+
+
+      <!-- DELIVERY -->
+
+      <section class="checkout-card">
+
+        <div class="card-header">
+
+          <div class="step-icon">
+            <mat-icon>local_shipping</mat-icon>
+          </div>
+
+          <div>
+            <span class="step">
+              Шаг 2
+            </span>
+
+            <h2>
+              Способ получения
+            </h2>
+          </div>
+
+        </div>
+
+
+        <mat-radio-group class="delivery-options" value="courier">
+
+          <label class="delivery-option">
+
+            <mat-radio-button value="courier">
+            </mat-radio-button>
+
+            <div class="delivery-icon">
+              <mat-icon>
+                local_shipping
+              </mat-icon>
+            </div>
+
+            <div class="delivery-info">
+
+              <strong>
+                Курьерская доставка
+              </strong>
+
+              <span>
+                Привезём заказ по вашему адресу
+              </span>
+
+            </div>
+
+            <div class="delivery-price">
+              По тарифу
+            </div>
+
+          </label>
+
+
+          <label class="delivery-option">
+
+            <mat-radio-button value="pickup">
+            </mat-radio-button>
+
+            <div class="delivery-icon pickup">
+              <mat-icon>
+                storefront
+              </mat-icon>
+            </div>
+
+            <div class="delivery-info">
+
+              <strong>
+                Самовывоз
+              </strong>
+
+              <span>
+                Заберите заказ в выбранном магазине
+              </span>
+
+            </div>
+
+            <div class="delivery-price free">
+              Бесплатно
+            </div>
+
+          </label>
+
+        </mat-radio-group>
+
+      </section>
+
+
+      <!-- PAYMENT INFO -->
+
+      <section class="payment-info">
+
+        <div class="payment-icon">
+          <mat-icon>
+            verified_user
+          </mat-icon>
+        </div>
+
+        <div>
+          <strong>
+            Данные оплаты защищены
+          </strong>
+
+          <span>
+            После подтверждения заказа
+            вы перейдёте на защищённую страницу оплаты YooKassa
+          </span>
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <aside class="summary">
+
+      <div class="summary-header">
+
+        <div>
+          <span>
+            Ваш заказ
+          </span>
+
+          <h2>
+            {{ cart.items().length }}
+            позиций
+          </h2>
+        </div>
+
+        <div class="summary-icon">
+          <mat-icon>
+            shopping_bag
+          </mat-icon>
+        </div>
+
       </div>
 
-      <button
-        mat-flat-button
-        color="primary"
-        class="pay-btn"
-        (click)="pay()"
-      >
-        Перейти к оплате
+
+      <div class="items">
+
+        @for (
+        item of cart.items();
+        track item.id
+        ) {
+
+        <div class="order-item">
+
+          <div class="product-image">
+
+            @if (item.product.images?.[0]) {
+
+            <img [src]="item.product.images[0]" [alt]="item.product.title" />
+
+            } @else {
+
+            <mat-icon>
+              image
+            </mat-icon>
+
+            }
+
+          </div>
+
+
+          <div class="product-info">
+
+            <strong>
+              {{ item.product.title }}
+            </strong>
+
+            <span>
+              {{ item.quantity }}
+              ×
+              {{ item.product.price }}
+              ₽
+            </span>
+
+          </div>
+
+
+          <div class="product-total">
+            {{
+            item.quantity *
+            item.product.price
+            }}
+            ₽
+          </div>
+
+        </div>
+
+        }
+
+      </div>
+
+
+      <div class="summary-divider"></div>
+
+
+      <div class="summary-row">
+        <span>
+          Товары
+        </span>
+
+        <strong>
+          {{ totalPrice() }} ₽
+        </strong>
+      </div>
+
+
+      <div class="summary-row">
+        <span>
+          Доставка
+        </span>
+
+        <strong class="delivery-summary">
+          Рассчитается позже
+        </strong>
+      </div>
+
+
+      <div class="summary-total">
+
+        <span>
+          Итого
+        </span>
+
+        <strong>
+          {{ totalPrice() }} ₽
+        </strong>
+
+      </div>
+
+
+      <button type="button" class="pay-button" (click)="pay()">
+
+        <span>
+          Перейти к оплате
+        </span>
+
+        <mat-icon>
+          arrow_forward
+        </mat-icon>
+
       </button>
 
-    </mat-card>
+
+      <div class="payment-note">
+
+        <mat-icon>
+          lock
+        </mat-icon>
+
+        <span>
+          Нажимая кнопку, вы переходите
+          к безопасной оплате
+        </span>
+
+      </div>
+
+    </aside>
 
   </div>
 
