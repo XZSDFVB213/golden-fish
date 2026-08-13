@@ -1,28 +1,58 @@
-import { Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import {
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 
+import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
-import { AuthService } from '../../core/services/auth/auth.service';
+import { IProduct } from '../../shared/models/product/product.interface';
+import { UserService } from '../../core/services/user/user.service';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
   imports: [
     RouterLink,
-    DecimalPipe,
     MatIconModule,
   ],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.scss',
 })
 export class FavoritesComponent {
-  private authService = inject(AuthService);
+  private userService = inject(UserService);
 
-  user = this.authService.user;
+  favorites = signal<IProduct[]>([]);
 
-  favorites = computed(() => {
-    return this.user()?.favorites ?? [];
-  });
+  loading = signal(true);
+
+  constructor() {
+    this.loadFavorites();
+  }
+
+  loadFavorites() {
+    this.loading.set(true);
+
+    this.userService
+      .getProfile()
+      .subscribe({
+        next: user => {
+          this.favorites.set(
+            user.favorites ?? [],
+          );
+        },
+
+        error: err => {
+          console.error(
+            'Ошибка загрузки избранного',
+            err,
+          );
+        },
+
+        complete: () => {
+          this.loading.set(false);
+        },
+      });
+  }
 }
