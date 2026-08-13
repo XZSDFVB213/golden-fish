@@ -128,6 +128,7 @@ export class ProductService {
         price: dto.price,
         images: dto.images,
         categoryId: dto.categoryId,
+        isWeighted: dto.isWeighted,
         storeId,
       },
     });
@@ -149,6 +150,7 @@ export class ProductService {
         price: dto.price,
         images: dto.images,
         categoryId: dto.categoryId,
+        isWeighted: dto.isWeighted,
       },
     });
   }

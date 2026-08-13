@@ -61,6 +61,7 @@ model Product {
   price       Int
   images      String[]
   orderItem   OrderItem[]
+  isWeighted  Boolean @default(false)
 
   reviews Review[]
 
@@ -178,6 +179,7 @@ enum TransactionStatus {
   SUCCESS
   FAILED
 }
+
 enum EnumOrderStatus {
   PENDING
   PAYED
