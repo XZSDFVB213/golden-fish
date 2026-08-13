@@ -5,11 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { IProduct } from '../../shared/models/product/product.interface';
 import { UserService } from '../../core/services/user/user.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [RouterLink, MatIconModule],
+  imports: [RouterLink, MatIconModule, DecimalPipe],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.scss',
 })
