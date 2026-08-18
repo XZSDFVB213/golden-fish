@@ -1,71 +1,120 @@
 <div class="catalog-page">
 
-  <header class="catalog-header">
+  <!-- SEARCH -->
 
-    <div>
-      <span class="eyebrow">Каталог</span>
+  <section class="search-section">
 
-      <h1>Продукты</h1>
+    <div class="search-box">
 
-      <p>
-        Выберите категорию и найдите всё нужное
-        в выбранном магазине
-      </p>
-    </div>
-
-    <div class="products-count">
-      <strong>{{ products().length }}</strong>
-      <span>товаров</span>
-    </div>
-
-  </header>
-
-
-  <section class="catalog-toolbar">
-
-    <div class="search">
-
-      <mat-icon>search</mat-icon>
+      <mat-icon>
+        search
+      </mat-icon>
 
       <input
         type="text"
-        placeholder="Поиск по каталогу..."
+        placeholder="Поиск продуктов"
         [value]="search()"
-        (input)="search.set($any($event.target).value)"
+        (input)="
+          search.set(
+            $any($event.target).value
+          )
+        "
       />
 
       @if (search()) {
+
         <button
           type="button"
+          class="clear-search"
           (click)="search.set('')"
         >
-          <mat-icon>close</mat-icon>
+          <mat-icon>
+            close
+          </mat-icon>
         </button>
+
       }
+
+      <button
+        type="button"
+        class="scan-button"
+      >
+        <mat-icon>
+          qr_code_scanner
+        </mat-icon>
+      </button>
 
     </div>
 
   </section>
 
 
+  <!-- TITLE -->
+
+  <header class="catalog-header">
+
+    <div>
+      <h1>
+        Каталог
+      </h1>
+    </div>
+
+  </header>
+
+
+  <!-- CATEGORIES -->
+
   <section class="categories">
 
     <button
-      class="category-pill"
-      [class.active]="selectedCategory() === null"
+      type="button"
+      class="category-item"
+      [class.active]="
+        selectedCategory() === null
+      "
       (click)="loadAllProducts()"
     >
-      Все товары
+
+      <div class="category-circle all-category">
+        <mat-icon>
+          apps
+        </mat-icon>
+      </div>
+
+      <span>
+        Все
+      </span>
+
     </button>
 
-    @for (category of categories(); track category.id) {
+
+    @for (
+      category of categories();
+      track category.id
+    ) {
 
       <button
-        class="category-pill"
-        [class.active]="selectedCategory() === category.id"
+        type="button"
+        class="category-item"
+        [class.active]="
+          selectedCategory() === category.id
+        "
         (click)="loadCategory(category.id)"
       >
-        {{ category.title }}
+
+        <div class="category-circle">
+
+          <img
+            [src]="getCategoryImage(category)"
+            [alt]="category.title"
+          />
+
+        </div>
+
+        <span>
+          {{ category.title }}
+        </span>
+
       </button>
 
     }
@@ -73,20 +122,110 @@
   </section>
 
 
-  <div class="result-row">
+  <!-- TABS -->
 
-    <div>
-      <strong>{{ filteredProducts().length }}</strong>
-      <span> найдено</span>
+  <section class="catalog-tabs">
+
+    <button
+      type="button"
+      [class.active]="
+        activeTab() === 'ALL'
+      "
+      (click)="selectTab('ALL')"
+    >
+      Все товары
+
+      <span>
+        {{ filteredProducts().length }}
+      </span>
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        activeTab() === 'POPULAR'
+      "
+      (click)="selectTab('POPULAR')"
+    >
+      Популярное
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        activeTab() === 'NEW'
+      "
+      (click)="selectTab('NEW')"
+    >
+      Новинки
+    </button>
+
+
+    <button
+      type="button"
+      class="sale"
+      [class.active]="
+        activeTab() === 'SALE'
+      "
+      (click)="selectTab('SALE')"
+    >
+      <span class="sale-icon">
+        %
+      </span>
+
+      Акции
+    </button>
+
+  </section>
+
+
+  <!-- CONTROLS -->
+
+  <section class="catalog-controls">
+
+    <button
+      type="button"
+      class="filter-button"
+    >
+      <mat-icon>
+        tune
+      </mat-icon>
+
+      Фильтры
+    </button>
+
+
+    <div class="controls-right">
+
+      <button
+        type="button"
+        class="sort-button"
+      >
+        Сначала популярные
+
+        <mat-icon>
+          keyboard_arrow_down
+        </mat-icon>
+      </button>
+
+
+      <button
+        type="button"
+        class="view-button active"
+      >
+        <mat-icon>
+          grid_view
+        </mat-icon>
+      </button>
+
     </div>
 
-    <span class="store-hint">
-      <mat-icon>storefront</mat-icon>
-      Ассортимент выбранного магазина
-    </span>
+  </section>
 
-  </div>
 
+  <!-- PRODUCTS -->
 
   @if (filteredProducts().length) {
 
@@ -110,10 +249,14 @@
     <section class="empty">
 
       <div class="empty-icon">
-        <mat-icon>search_off</mat-icon>
+        <mat-icon>
+          search_off
+        </mat-icon>
       </div>
 
-      <h2>Ничего не нашли</h2>
+      <h2>
+        Ничего не найдено
+      </h2>
 
       <p>
         Попробуйте изменить запрос
@@ -124,7 +267,7 @@
         type="button"
         (click)="resetFilters()"
       >
-        Показать все товары
+        Сбросить фильтры
       </button>
 
     </section>
