@@ -6,7 +6,8 @@
 .category-card {
   position: relative;
 
-  height: 185px;
+  width: 100%;
+  aspect-ratio: 1.35 / 1;
 
   display: block;
 
@@ -14,9 +15,8 @@
 
   border-radius: 18px;
 
-  background: #f3f3f3;
+  background: #f4f4f4;
 
-  color: #171717;
   text-decoration: none;
 
   transition:
@@ -24,15 +24,11 @@
     box-shadow 0.18s ease;
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 
     box-shadow:
-      0 12px 25px
+      0 12px 28px
       rgba(0, 0, 0, 0.08);
-
-    .category-image {
-      transform: scale(1.04);
-    }
   }
 }
 
@@ -43,58 +39,75 @@
   display: block;
 
   object-fit: cover;
+  object-position: center;
 
-  transition:
-    transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
 
-h3 {
+.category-card:hover .category-image {
+  transform: scale(1.025);
+}
+
+
+/* название */
+
+.category-title {
   position: absolute;
+
+  top: 10px;
+  left: 10px;
 
   z-index: 2;
 
-  top: 13px;
-  left: 14px;
-  right: 10px;
+  max-width: calc(100% - 20px);
 
-  margin: 0;
+  padding: 7px 11px;
+
+  border-radius: 10px;
 
   color: #171717;
 
-  font-size: 15px;
-  line-height: 1;
+  background: rgba(255, 255, 255, 0.9);
 
-  font-weight: 800;
+  box-shadow:
+    0 4px 12px
+    rgba(0, 0, 0, 0.05);
 
-  letter-spacing: -0.3px;
+  backdrop-filter: blur(8px);
+
+  font-size: 13px;
+  line-height: 1.1;
+
+  font-weight: 750;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 /* MOBILE */
 
 @media (max-width: 750px) {
+
   .category-card {
-    height: 92px;
+    aspect-ratio: 1 / 1;
 
     border-radius: 11px;
   }
 
-  h3 {
-    top: 7px;
-    left: 7px;
+  .category-title {
+    top: 5px;
+    left: 5px;
 
-    font-size: 8px;
+    max-width: calc(100% - 10px);
 
-    letter-spacing: -0.1px;
-  }
-}
+    padding: 4px 6px;
 
-@media (max-width: 390px) {
-  .category-card {
-    height: 82px;
-  }
+    border-radius: 6px;
 
-  h3 {
     font-size: 7px;
+
+    backdrop-filter: blur(5px);
   }
 }

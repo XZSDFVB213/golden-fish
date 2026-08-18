@@ -7,9 +7,10 @@
     class="category-image"
     [src]="image()"
     [alt]="category().title"
+    decoding="async"
   />
 
-  <h3>
+  <div class="category-title">
     {{ category().title }}
-  </h3>
+  </div>
 </a>
