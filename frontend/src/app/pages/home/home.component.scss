@@ -162,14 +162,29 @@
 /* =========================
    CATEGORIES
 ========================= */
-
 .categories-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
+  display: flex;
   gap: 12px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 2px 2px 10px;
+
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  app-category-card {
+    flex: 0 0 260px;
+
+    scroll-snap-align: start;
+  }
 }
 
 /* =========================
@@ -440,11 +455,19 @@
 
   /* CATEGORIES */
 
- .categories-grid {
-    grid-template-columns:
-      repeat(4, minmax(0, 1fr));
+   .categories-grid {
+    gap: 7px;
 
-    gap: 5px;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 6px;
+  }
+
+  .categories-grid app-category-card {
+    flex: 0 0 105px;
   }
 
   .categories-grid app-category-card {

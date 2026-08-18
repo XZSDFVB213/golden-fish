@@ -48,7 +48,7 @@ export class HomeComponent {
       }
 
       this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-        this.categories.set(categories.slice(0, 4));
+        this.categories.set(categories);
       });
 
       this.productService.getByStoreId(store.id).subscribe((products) => {

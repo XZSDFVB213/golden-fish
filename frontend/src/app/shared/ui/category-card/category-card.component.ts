@@ -15,43 +15,54 @@ export class CategoryCardComponent {
   category = input.required<ICategory>();
   index = input(0);
 
-  image = computed(() => {
-    const title = this.category().title.toLowerCase().trim();
+ image = computed(() => {
+  const title = this.category().title
+    .toLowerCase()
+    .trim();
 
-    if (title.includes('рыб')) {
-      return 'assets/categories/fish-category.png';
-    }
+  if (title.includes('рыб')) {
+    return 'assets/categories/fish-category.webp';
+  }
 
-    if (
-      title.includes('морепродукт') ||
-      title.includes('кревет') ||
-      title.includes('кальмар')
-    ) {
-      return 'assets/categories/seafood.png';
-    }
+  if (
+    title.includes('морепродукт') ||
+    title.includes('кревет') ||
+    title.includes('кальмар')
+  ) {
+    return 'assets/categories/seafood.webp';
+  }
 
-    if (title.includes('мяс')) {
-      return 'assets/categories/meat.png';
-    }
+  if (title.includes('мяс')) {
+    return 'assets/categories/meat.webp';
+  }
 
-    if (title.includes('молоч') || title.includes('сыр')) {
-      return 'assets/categories/milk.png';
-    }
+  if (
+    title.includes('молоч') ||
+    title.includes('сыр')
+  ) {
+    return 'assets/categories/milk.webp';
+  }
 
-    if (title.includes('напит') || title.includes('вода')) {
-      return 'assets/categories/drinks.png';
-    }
+  if (
+    title.includes('напит') ||
+    title.includes('вода')
+  ) {
+    return 'assets/categories/drinks.webp';
+  }
 
-    if (title.includes('икр')) {
-      return 'assets/categories/caviar.png';
-    }
+  if (title.includes('икр')) {
+    return 'assets/categories/caviar.webp';
+  }
 
-    if (title.includes('кулинар') || title.includes('готов')) {
-      return 'assets/categories/cooking.png';
-    }
+  if (
+    title.includes('кулинар') ||
+    title.includes('готов')
+  ) {
+    return 'assets/categories/cooking.webp';
+  }
 
-    return 'assets/categories/default.png';
-  });
+  return 'assets/categories/default.webp';
+});
 
   onClick() {}
 }
