@@ -28,72 +28,76 @@ type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
 })
 export class ProductsComponent {
   constructor() {
-  effect(() => {
-    const store = this.storeService.store();
+    effect(
+      () => {
+        const store = this.storeService.store();
 
-    console.log('STORE IN PRODUCTS:', store);
+        console.log('STORE IN PRODUCTS:', store);
 
-    if (!store) {
-      return;
-    }
+        if (!store) {
+          return;
+        }
 
-    console.log('1. НАЧИНАЮ ЗАГРУЗКУ');
-    console.log('2. STORE ID:', store.id);
+        console.log('1. НАЧИНАЮ ЗАГРУЗКУ');
+        console.log('2. STORE ID:', store.id);
 
-    this.loading.set(true);
+        this.loading.set(true);
 
-    console.log('3. ПЕРЕД CATEGORY REQUEST');
+        console.log('3. ПЕРЕД CATEGORY REQUEST');
 
-    this.categoryService
-      .getByStoreId(store.id)
-      .subscribe({
-        next: categories => {
-          console.log('4. CATEGORIES:', categories);
+        this.categoryService.getByStoreId(store.id).subscribe({
+          next: (categories) => {
+            console.log('4. CATEGORIES:', categories);
 
-          this.categories.set(categories);
-        },
+            this.categories.set(categories);
+          },
 
-        error: err => {
-          console.error('CATEGORY ERROR:', err);
-        },
-      });
+          error: (err) => {
+            console.error('CATEGORY ERROR:', err);
+          },
+        });
 
-    console.log('5. ПЕРЕД PRODUCT REQUEST');
+        console.log('5. ПЕРЕД PRODUCT REQUEST');
 
-    this.productService
-      .getByStoreId(store.id)
-      .pipe(
-        finalize(() => {
-          console.log('8. PRODUCT FINALIZE');
-          this.loading.set(false);
-        }),
-      )
-      .subscribe({
-        next: products => {
-          console.log('6. PRODUCTS:', products);
+        this.productService
+          .getByStoreId(store.id)
+          .pipe(
+            finalize(() => {
+              console.log('8. PRODUCT FINALIZE');
 
-          this.allProducts.set(products);
-          this.products.set(products);
+              this.loading.set(false);
+            }),
+          )
+          .subscribe({
+            next: (products) => {
+              console.log('6. PRODUCTS:', products);
 
-          this.selectedCategory.set(null);
+              this.allProducts.set(products);
+              this.products.set(products);
 
-          this.filters.set({
-            categoryId: null,
-            minPrice: 0,
-            maxPrice: this.getMaxPrice(products),
-            weighted: null,
+              this.selectedCategory.set(null);
+
+              this.filters.set({
+                categoryId: null,
+                minPrice: 0,
+                maxPrice: this.getMaxPrice(products),
+                weighted: null,
+              });
+            },
+
+            error: (err) => {
+              console.error('7. PRODUCT ERROR:', err);
+
+              this.allProducts.set([]);
+              this.products.set([]);
+            },
           });
-        },
-
-        error: err => {
-          console.error('7. PRODUCT ERROR:', err);
-
-          this.allProducts.set([]);
-          this.products.set([]);
-        },
-      });
-  });
-}
+      },
+      {
+        allowSignalWrites: true,
+      },
+    );
+  }
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private storeService = inject(StoreService);
