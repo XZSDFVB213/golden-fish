@@ -11,7 +11,10 @@ import { ProductService } from '../../../features/products/service/product.servi
 import { CategoryService } from '../../../core/services/category/category.service';
 import { StoreService } from '../../../core/services/store/store.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductFilterDialogComponent, ProductFilters } from '../dialog/product-filter-dialog/product-filter-dialog.component';
+import {
+  ProductFilterDialogComponent,
+  ProductFilters,
+} from '../dialog/product-filter-dialog/product-filter-dialog.component';
 
 type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
 
@@ -38,14 +41,14 @@ export class ProductsComponent {
   filters = signal<ProductFilters>({
     categoryId: null,
     minPrice: 0,
-    maxPrice: 10000,
+
+    maxPrice: Number.MAX_SAFE_INTEGER,
+
     weighted: null,
   });
-  maxAvailablePrice = computed(() => {
-    const products = this.products();
-
+  private getMaxPrice(products: IProduct[]) {
     if (!products.length) {
-      return 10000;
+      return 0;
     }
 
     return (
@@ -53,27 +56,48 @@ export class ProductsComponent {
         Math.max(...products.map((product) => Number(product.price))) / 100,
       ) * 100
     );
-  });
+  }
   filteredProducts = computed(() => {
+    const products = this.products();
+
     const search = this.search().trim().toLowerCase();
+
+    const category = this.selectedCategory();
 
     const filters = this.filters();
 
-    return this.products().filter((product) => {
+    return products.filter((product) => {
+      /* SEARCH */
+
       const matchesSearch =
         !search ||
         product.title.toLowerCase().includes(search) ||
         product.description?.toLowerCase().includes(search);
+
+      /* CATEGORY */
+
+      const filterCategory = filters.categoryId ?? category;
+
+      const matchesCategory =
+        !filterCategory ||
+        product.categoryId === filterCategory ||
+        product.category?.id === filterCategory;
+
+      /* PRICE */
 
       const price = Number(product.price);
 
       const matchesPrice =
         price >= filters.minPrice && price <= filters.maxPrice;
 
+      /* WEIGHTED */
+
       const matchesWeighted =
         filters.weighted === null || product.isWeighted === filters.weighted;
 
-      return matchesSearch && matchesPrice && matchesWeighted;
+      return (
+        matchesSearch && matchesCategory && matchesPrice && matchesWeighted
+      );
     });
   });
   openFilters() {
@@ -93,7 +117,7 @@ export class ProductsComponent {
 
         filters: this.filters(),
 
-        availableMaxPrice: this.maxAvailablePrice(),
+        availableMaxPrice: this.getMaxPrice(this.products()),
       },
     });
 
@@ -111,45 +135,52 @@ export class ProductsComponent {
       }
     });
   }
+  loading = signal(true);
+
   constructor() {
     effect(() => {
       const store = this.storeService.store();
 
       if (!store) {
-        this.categories.set([]);
-        this.products.set([]);
         return;
       }
+
+      this.loading.set(true);
 
       this.categoryService.getByStoreId(store.id).subscribe((categories) => {
         this.categories.set(categories);
       });
 
-      this.loadAllProducts();
+      this.productService.getByStoreId(store.id).subscribe({
+        next: (products) => {
+          this.products.set(products);
+
+          this.selectedCategory.set(null);
+
+          this.filters.set({
+            categoryId: null,
+            minPrice: 0,
+
+            maxPrice: this.getMaxPrice(products),
+
+            weighted: null,
+          });
+
+          this.loading.set(false);
+        },
+
+        error: () => {
+          this.loading.set(false);
+        },
+      });
     });
   }
-
   loadCategory(categoryId: string) {
     this.selectedCategory.set(categoryId);
-    this.activeTab.set('ALL');
-
-    this.productService.getByCategory(categoryId).subscribe((products) => {
-      this.products.set(products);
-    });
   }
 
   loadAllProducts() {
-    const store = this.storeService.store();
-
-    if (!store) {
-      return;
-    }
-
     this.selectedCategory.set(null);
-
-    this.productService.getByStoreId(store.id).subscribe((products) => {
-      this.products.set(products);
-    });
   }
 
   selectTab(tab: CatalogTab) {

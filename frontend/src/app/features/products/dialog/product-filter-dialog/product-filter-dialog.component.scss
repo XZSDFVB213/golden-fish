@@ -25,7 +25,6 @@
   background: var(--surface);
 }
 
-
 /* =========================
    HEADER
 ========================= */
@@ -43,15 +42,8 @@
   border-bottom: 1px solid var(--border);
 
   h2 {
-    margin: 0;
-
-    font-size: 19px;
-    line-height: 1;
-
+    font-size: 22px;
     font-weight: 800;
-    letter-spacing: -0.4px;
-
-    text-align: center;
   }
 }
 
@@ -114,7 +106,6 @@
   }
 }
 
-
 /* =========================
    SECTIONS
 ========================= */
@@ -125,13 +116,10 @@
   border-bottom: 1px solid var(--border);
 
   h3 {
-    margin: 0 0 14px;
+    margin-bottom: 16px;
 
-    color: var(--text);
-
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: -0.15px;
+    font-size: 15px;
+    font-weight: 750;
   }
 }
 
@@ -140,7 +128,6 @@
   align-items: center;
   justify-content: space-between;
 }
-
 
 /* =========================
    CATEGORY CHIPS
@@ -154,13 +141,16 @@
 }
 
 .chip {
-  min-height: 34px;
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  font-size: 12px;
+  font-weight: 650;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  padding: 0 12px;
 
   border: 1px solid transparent;
   border-radius: 9px;
@@ -169,8 +159,6 @@
   background: #f3f4f6;
 
   font: inherit;
-  font-size: 9px;
-  font-weight: 700;
 
   cursor: pointer;
 
@@ -194,12 +182,9 @@
     background: var(--blue);
     border-color: var(--blue);
 
-    box-shadow:
-      0 5px 14px
-      rgba(7, 86, 200, 0.16);
+    box-shadow: 0 5px 14px rgba(7, 86, 200, 0.16);
   }
 }
-
 
 /* =========================
    PRICE
@@ -214,7 +199,7 @@
 
   color: var(--text-secondary);
 
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 650;
 }
 
@@ -243,7 +228,7 @@
   margin-top: 4px;
 
   label {
-    height: 46px;
+    height: 50px;
 
     display: flex;
     align-items: center;
@@ -264,9 +249,7 @@
     &:focus-within {
       border-color: rgba(7, 86, 200, 0.45);
 
-      box-shadow:
-        0 0 0 3px
-        rgba(7, 86, 200, 0.07);
+      box-shadow: 0 0 0 3px rgba(7, 86, 200, 0.07);
     }
 
     span {
@@ -274,7 +257,7 @@
 
       color: var(--text-muted);
 
-      font-size: 9px;
+      font-size: 12px;
     }
 
     input {
@@ -288,7 +271,7 @@
       background: transparent;
 
       font: inherit;
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 750;
 
       appearance: textfield;
@@ -303,12 +286,11 @@
     b {
       color: #62666e;
 
-      font-size: 9px;
+      font-size: 12px;
       font-weight: 700;
     }
   }
 }
-
 
 /* =========================
    PRODUCT TYPE
@@ -321,7 +303,9 @@
   gap: 3px;
 
   button {
-    min-height: 38px;
+    min-height: 42px;
+
+    font-size: 13px;
 
     display: flex;
     align-items: center;
@@ -336,7 +320,6 @@
     background: transparent;
 
     font: inherit;
-    font-size: 10px;
     font-weight: 600;
 
     text-align: left;
@@ -350,8 +333,8 @@
     }
 
     .checkbox {
-      width: 19px;
-      height: 19px;
+      width: 21px;
+      height: 21px;
 
       flex-shrink: 0;
 
@@ -388,14 +371,11 @@
         color: #fff;
         background: var(--blue);
 
-        box-shadow:
-          0 3px 8px
-          rgba(7, 86, 200, 0.15);
+        box-shadow: 0 3px 8px rgba(7, 86, 200, 0.15);
       }
     }
   }
 }
-
 
 /* =========================
    WEIGHTED HINT
@@ -447,7 +427,6 @@
   }
 }
 
-
 /* =========================
    FOOTER
 ========================= */
@@ -460,18 +439,12 @@
   margin-top: auto;
   padding-top: 18px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0),
-      #fff 22%
-    );
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 22%);
 }
 
 .apply-button {
   width: 100%;
-  height: 48px;
-
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,19 +454,13 @@
 
   color: #fff;
 
-  background:
-    linear-gradient(
-      135deg,
-      #0860d8,
-      #0047b7
-    );
+  background: linear-gradient(135deg, #0860d8, #0047b7);
 
-  box-shadow:
-    0 9px 20px
-    rgba(0, 76, 185, 0.18);
+  box-shadow: 0 9px 20px rgba(0, 76, 185, 0.18);
 
   font: inherit;
-  font-size: 10px;
+
+  font-size: 13px;
   font-weight: 800;
 
   cursor: pointer;
@@ -505,16 +472,13 @@
   &:hover {
     transform: translateY(-1px);
 
-    box-shadow:
-      0 12px 25px
-      rgba(0, 76, 185, 0.23);
+    box-shadow: 0 12px 25px rgba(0, 76, 185, 0.23);
   }
 
   &:active {
     transform: scale(0.99);
   }
 }
-
 
 /* =========================
    MOBILE
@@ -549,7 +513,7 @@
   }
 
   .reset-button {
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .filter-section {
@@ -632,5 +596,30 @@
     border-radius: 9px;
 
     font-size: 9px;
+  }
+}
+@media (max-width: 600px) {
+  .filter-header h2 {
+    font-size: 19px;
+  }
+
+  .filter-section h3 {
+    font-size: 14px;
+  }
+
+  .chip {
+    font-size: 11px;
+  }
+
+  .type-options button {
+    font-size: 12px;
+  }
+
+  .price-inputs label input {
+    font-size: 13px;
+  }
+
+  .apply-button {
+    font-size: 12px;
   }
 }

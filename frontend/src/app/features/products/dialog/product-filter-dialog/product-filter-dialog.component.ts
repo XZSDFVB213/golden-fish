@@ -68,23 +68,24 @@ export class ProductFilterDialogComponent {
       MAT_DIALOG_DATA,
     );
 
-  form = this.fb.nonNullable.group({
-    categoryId: [
-      this.data.filters.categoryId,
-    ],
+  form = this.fb.group({
+  categoryId: [
+    this.data.filters.categoryId,
+  ],
 
-    minPrice: [
-      this.data.filters.minPrice,
-    ],
+  minPrice: [
+    this.data.filters.minPrice ?? 0,
+  ],
 
-    maxPrice: [
-      this.data.filters.maxPrice,
-    ],
+  maxPrice: [
+    this.data.filters.maxPrice ??
+      this.data.availableMaxPrice,
+  ],
 
-    weighted: [
-      this.data.filters.weighted,
-    ],
-  });
+  weighted: [
+    this.data.filters.weighted,
+  ],
+});
 
   selectCategory(
     categoryId: string | null,
@@ -101,20 +102,31 @@ export class ProductFilterDialogComponent {
   }
 
   reset() {
-    this.form.setValue({
-      categoryId: null,
-      minPrice: 0,
-      maxPrice:
-        this.data.availableMaxPrice,
-      weighted: null,
-    });
-  }
+  this.form.patchValue({
+    categoryId: null,
+    minPrice: 0,
+    maxPrice: this.data.availableMaxPrice,
+    weighted: null,
+  });
+}
 
-  apply() {
-    this.dialogRef.close(
-      this.form.getRawValue(),
-    );
-  }
+ apply() {
+  const value = this.form.getRawValue();
+
+  this.dialogRef.close({
+    categoryId: value.categoryId ?? null,
+
+    minPrice:
+      Number(value.minPrice) || 0,
+
+    maxPrice:
+      Number(value.maxPrice) ||
+      this.data.availableMaxPrice,
+
+    weighted:
+      value.weighted ?? null,
+  });
+}
 
   close() {
     this.dialogRef.close();

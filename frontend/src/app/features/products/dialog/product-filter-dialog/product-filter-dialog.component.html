@@ -1,4 +1,8 @@
-<div class="filter-dialog">
+<form
+  class="filter-dialog"
+  [formGroup]="form"
+  (ngSubmit)="apply()"
+>
 
   <!-- HEADER -->
 
@@ -258,16 +262,13 @@
 
   <!-- FOOTER -->
 
-  <footer class="filter-footer">
+<footer class="filter-footer">
+  <button
+    type="submit"
+    class="apply-button"
+  >
+    Показать товары
+  </button>
+</footer>
 
-    <button
-      type="button"
-      class="apply-button"
-      (click)="apply()"
-    >
-      Показать товары
-    </button>
-
-  </footer>
-
-</div>
+</form>
