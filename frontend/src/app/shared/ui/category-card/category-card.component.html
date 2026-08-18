@@ -1,20 +1,15 @@
 <a
   class="category-card"
-  [class]="
-    'category-card ' + variant()
-  "
   routerLink="/products"
   (click)="onClick()"
 >
-  <div class="content">
+  <img
+    class="category-image"
+    [src]="image()"
+    [alt]="category().title"
+  />
 
-    <h3>
-      {{ category().title }}
-    </h3>
-
-    <span>
-      Смотреть
-    </span>
-
-  </div>
+  <h3>
+    {{ category().title }}
+  </h3>
 </a>
