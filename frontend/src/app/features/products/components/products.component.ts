@@ -15,6 +15,7 @@ import {
   ProductFilterDialogComponent,
   ProductFilters,
 } from '../dialog/product-filter-dialog/product-filter-dialog.component';
+import { finalize } from 'rxjs';
 
 type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
 
@@ -123,21 +124,52 @@ export class ProductsComponent {
   loading = signal(true);
 
   constructor() {
-    effect(() => {
-      const store = this.storeService.store();
+  effect(() => {
+    const store = this.storeService.store();
 
-      if (!store) {
-        return;
-      }
+    console.log('STORE IN PRODUCTS:', store);
 
-      this.loading.set(true);
+    if (!store) {
+      this.loading.set(false);
 
-      this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-        this.categories.set(categories);
+      this.categories.set([]);
+      this.allProducts.set([]);
+      this.products.set([]);
+
+      return;
+    }
+
+    this.loading.set(true);
+
+    this.categoryService
+      .getByStoreId(store.id)
+      .subscribe({
+        next: categories => {
+          this.categories.set(categories);
+        },
+
+        error: err => {
+          console.error(
+            'Ошибка категорий:',
+            err,
+          );
+        },
       });
 
-      this.productService.getByStoreId(store.id).subscribe({
-        next: (products) => {
+    this.productService
+      .getByStoreId(store.id)
+      .pipe(
+        finalize(() => {
+          this.loading.set(false);
+        }),
+      )
+      .subscribe({
+        next: products => {
+          console.log(
+            'PRODUCTS LOADED:',
+            products,
+          );
+
           this.allProducts.set(products);
           this.products.set(products);
 
@@ -146,19 +178,24 @@ export class ProductsComponent {
           this.filters.set({
             categoryId: null,
             minPrice: 0,
-            maxPrice: this.getMaxPrice(products),
+            maxPrice:
+              this.getMaxPrice(products),
             weighted: null,
           });
-
-          this.loading.set(false);
         },
 
-        error: () => {
-          this.loading.set(false);
+        error: err => {
+          console.error(
+            'Ошибка загрузки товаров:',
+            err,
+          );
+
+          this.allProducts.set([]);
+          this.products.set([]);
         },
       });
-    });
-  }
+  });
+}
   loadCategory(categoryId: string) {
     this.selectedCategory.set(categoryId);
 
