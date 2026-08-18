@@ -34,6 +34,7 @@ export class ProductsComponent {
   products = signal<IProduct[]>([]);
 
   selectedCategory = signal<string | null>(null);
+  allProducts = signal<IProduct[]>([]);
 
   search = signal('');
   private dialog = inject(MatDialog);
@@ -62,35 +63,23 @@ export class ProductsComponent {
 
     const search = this.search().trim().toLowerCase();
 
-    const category = this.selectedCategory();
-
     const filters = this.filters();
 
     return products.filter((product) => {
-      /* SEARCH */
-
       const matchesSearch =
         !search ||
         product.title.toLowerCase().includes(search) ||
         product.description?.toLowerCase().includes(search);
 
-      /* CATEGORY */
-
-      const filterCategory = filters.categoryId ?? category;
-
       const matchesCategory =
-        !filterCategory ||
-        product.categoryId === filterCategory ||
-        product.category?.id === filterCategory;
-
-      /* PRICE */
+        !filters.categoryId ||
+        product.categoryId === filters.categoryId ||
+        product.category?.id === filters.categoryId;
 
       const price = Number(product.price);
 
       const matchesPrice =
         price >= filters.minPrice && price <= filters.maxPrice;
-
-      /* WEIGHTED */
 
       const matchesWeighted =
         filters.weighted === null || product.isWeighted === filters.weighted;
@@ -117,7 +106,7 @@ export class ProductsComponent {
 
         filters: this.filters(),
 
-        availableMaxPrice: this.getMaxPrice(this.products()),
+        availableMaxPrice: this.getMaxPrice(this.allProducts()),
       },
     });
 
@@ -128,11 +117,7 @@ export class ProductsComponent {
 
       this.filters.set(result);
 
-      if (result.categoryId) {
-        this.loadCategory(result.categoryId);
-      } else {
-        this.loadAllProducts();
-      }
+      this.selectedCategory.set(result.categoryId);
     });
   }
   loading = signal(true);
@@ -153,6 +138,7 @@ export class ProductsComponent {
 
       this.productService.getByStoreId(store.id).subscribe({
         next: (products) => {
+          this.allProducts.set(products);
           this.products.set(products);
 
           this.selectedCategory.set(null);
@@ -160,9 +146,7 @@ export class ProductsComponent {
           this.filters.set({
             categoryId: null,
             minPrice: 0,
-
             maxPrice: this.getMaxPrice(products),
-
             weighted: null,
           });
 
@@ -177,10 +161,22 @@ export class ProductsComponent {
   }
   loadCategory(categoryId: string) {
     this.selectedCategory.set(categoryId);
+
+    this.filters.update((filters) => ({
+      ...filters,
+      categoryId,
+    }));
   }
 
   loadAllProducts() {
     this.selectedCategory.set(null);
+
+    this.filters.update((filters) => ({
+      ...filters,
+      categoryId: null,
+    }));
+
+    this.products.set(this.allProducts());
   }
 
   selectTab(tab: CatalogTab) {
@@ -193,13 +189,11 @@ export class ProductsComponent {
     }
 
     if (tab === 'ALL') {
-      this.loadAllProducts();
+      this.products.set(this.allProducts());
+
       return;
     }
-
     if (tab === 'POPULAR') {
-      this.selectedCategory.set(null);
-
       this.productService.getMostPopular().subscribe((products) => {
         this.products.set(
           products.filter((product) => product.storeId === store.id),
@@ -210,11 +204,7 @@ export class ProductsComponent {
     }
 
     if (tab === 'NEW') {
-      this.selectedCategory.set(null);
-
-      this.productService.getByStoreId(store.id).subscribe((products) => {
-        this.products.set([...products].reverse());
-      });
+      this.products.set([...this.allProducts()].reverse());
 
       return;
     }
@@ -227,9 +217,17 @@ export class ProductsComponent {
   resetFilters() {
     this.search.set('');
     this.activeTab.set('ALL');
-    this.loadAllProducts();
-  }
+    this.selectedCategory.set(null);
 
+    this.filters.set({
+      categoryId: null,
+      minPrice: 0,
+      maxPrice: this.getMaxPrice(this.allProducts()),
+      weighted: null,
+    });
+
+    this.products.set(this.allProducts());
+  }
   getCategoryImage(category: ICategory) {
     const title = category.title.toLowerCase().trim();
 

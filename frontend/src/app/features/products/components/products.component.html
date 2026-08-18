@@ -1,58 +1,4 @@
-@if (loading()) {
-
-<div class="products-loading">
-
-  <mat-icon>
-    hourglass_top
-  </mat-icon>
-
-  <span>
-    Загружаем товары...
-  </span>
-
-</div>
-
-} @else if (filteredProducts().length) {
-
-<section class="products-grid">
-
-  @for (
-  product of filteredProducts();
-  track product.id
-  ) {
-
-  <app-product-item [product]="product" />
-
-  }
-
-</section>
-
-} @else {
-
-<section class="empty">
-
-  <div class="empty-icon">
-    <mat-icon>
-      search_off
-    </mat-icon>
-  </div>
-
-  <h2>
-    Ничего не найдено
-  </h2>
-
-  <p>
-    Попробуйте изменить фильтры
-    или поисковый запрос
-  </p>
-
-  <button type="button" (click)="resetFilters()">
-    Сбросить фильтры
-  </button>
-
-</section>
-
-}<div class="catalog-page">
+<div class="catalog-page">
 
   <!-- SEARCH -->
 
@@ -219,29 +165,39 @@
 
   <!-- PRODUCTS -->
 
-  @if (filteredProducts().length) {
+  <!-- PRODUCTS -->
+
+@if (loading()) {
+
+  <div class="products-loading">
+    <mat-icon>hourglass_top</mat-icon>
+
+    <span>
+      Загружаем товары...
+    </span>
+  </div>
+
+} @else if (filteredProducts().length) {
 
   <section class="products-grid">
 
     @for (
-    product of filteredProducts();
-    track product.id
+      product of filteredProducts();
+      track product.id
     ) {
-
-    <app-product-item [product]="product" />
-
+      <app-product-item
+        [product]="product"
+      />
     }
 
   </section>
 
-  } @else {
+} @else {
 
   <section class="empty">
 
     <div class="empty-icon">
-      <mat-icon>
-        search_off
-      </mat-icon>
+      <mat-icon>search_off</mat-icon>
     </div>
 
     <h2>
@@ -249,16 +205,18 @@
     </h2>
 
     <p>
-      Попробуйте изменить запрос
-      или выбрать другую категорию
+      Попробуйте изменить фильтры
+      или поисковый запрос
     </p>
 
-    <button type="button" (click)="resetFilters()">
+    <button
+      type="button"
+      (click)="resetFilters()"
+    >
       Сбросить фильтры
     </button>
 
   </section>
 
-  }
-
+}
 </div>
