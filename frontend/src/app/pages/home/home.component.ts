@@ -35,7 +35,24 @@ export class HomeComponent {
   categories = signal<ICategory[]>([]);
   popularProducts = signal<IProduct[]>([]);
   newProducts = signal<IProduct[]>([]);
+  private sortCategories(categories: ICategory[]) {
+    const order: Record<string, number> = {
+      рыба: 1,
+      морепродукты: 2,
+      икра: 3,
+      мясо: 4,
+      напитки: 5,
+      'молочные продукты': 6,
+    };
 
+    return [...categories].sort((a, b) => {
+      const aOrder = order[a.title.toLowerCase().trim()] ?? 999;
+
+      const bOrder = order[b.title.toLowerCase().trim()] ?? 999;
+
+      return aOrder - bOrder;
+    });
+  }
   constructor() {
     effect(() => {
       const store = this.storeService.store();
@@ -48,7 +65,9 @@ export class HomeComponent {
       }
 
       this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-        this.categories.set(categories);
+         this.categories.set(
+    this.sortCategories(categories),
+  );
       });
 
       this.productService.getByStoreId(store.id).subscribe((products) => {

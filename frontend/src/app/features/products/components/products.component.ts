@@ -27,6 +27,24 @@ type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
+  private sortCategories(categories: ICategory[]) {
+    const order: Record<string, number> = {
+      рыба: 1,
+      морепродукты: 2,
+      икра: 3,
+      мясо: 4,
+      напитки: 5,
+      'молочные продукты': 6,
+    };
+
+    return [...categories].sort((a, b) => {
+      const aOrder = order[a.title.toLowerCase().trim()] ?? 999;
+
+      const bOrder = order[b.title.toLowerCase().trim()] ?? 999;
+
+      return aOrder - bOrder;
+    });
+  }
   constructor() {
     effect(
       () => {
@@ -49,7 +67,7 @@ export class ProductsComponent {
           next: (categories) => {
             console.log('4. CATEGORIES:', categories);
 
-            this.categories.set(categories);
+            this.categories.set(this.sortCategories(categories));
           },
 
           error: (err) => {
