@@ -439,20 +439,20 @@
 
   /* CATEGORIES */
 
-  .categories-grid {
+   .categories-grid {
     display: grid;
 
     grid-template-columns:
       repeat(4, minmax(0, 1fr));
 
-    gap: 6px;
+    gap: 5px;
 
     overflow: visible;
+  }
 
-    app-category-card {
-      min-width: 0;
-      max-width: none;
-    }
+  .categories-grid app-category-card {
+    min-width: 0;
+    width: 100%;
   }
 
   /* PROMO */

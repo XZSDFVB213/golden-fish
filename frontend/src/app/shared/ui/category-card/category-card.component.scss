@@ -223,35 +223,42 @@
 }
 @media (max-width: 750px) {
   .category-card {
-    min-height: 105px;
+    min-height: 78px;
 
-    padding: 9px 7px;
+    padding: 7px 6px;
 
-    border-radius: 14px;
+    border-radius: 11px;
   }
 
   .category-icon {
-    width: 42px;
-    height: 42px;
+    width: 30px;
+    height: 30px;
 
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 
-    border-radius: 11px;
+    border-radius: 8px;
 
     mat-icon {
-      width: 22px;
-      height: 22px;
+      width: 17px;
+      height: 17px;
 
-      font-size: 22px;
+      font-size: 17px;
     }
   }
 
   .category-title {
-    font-size: 9px;
-    line-height: 1.15;
+    font-size: 7px;
+    line-height: 1.1;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .category-link {
+  .category-link,
+  .category-description {
     display: none;
   }
 }
