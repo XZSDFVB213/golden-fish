@@ -1,7 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ProductItemComponent } from '../../shared/ui/product-item/product-item.component';
@@ -19,14 +17,12 @@ import { StoreService } from '../../core/services/store/store.service';
   selector: 'app-home',
   standalone: true,
   imports: [
+    RouterLink,
+    MatIconModule,
+
     ProductItemComponent,
     CategoryCardComponent,
     HeroBannerComponent,
-
-    RouterLink,
-
-    MatIconModule,
-    MatButtonModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -52,7 +48,7 @@ export class HomeComponent {
       }
 
       this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-        this.categories.set(categories);
+        this.categories.set(categories.slice(0, 4));
       });
 
       this.productService.getByStoreId(store.id).subscribe((products) => {

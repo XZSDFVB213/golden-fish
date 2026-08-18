@@ -1,34 +1,104 @@
 <div class="home-page">
 
-  <app-hero-banner />
+  <!-- HERO -->
+
+  <section class="hero-section">
+    <app-hero-banner />
+  </section>
 
 
-  <section class="section">
+  <!-- BENEFITS -->
+
+  <section class="benefits">
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        <mat-icon>location_on</mat-icon>
+      </div>
+
+      <div>
+        <strong>Два магазина</strong>
+        <span>рядом с вами</span>
+      </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        <mat-icon>water_drop</mat-icon>
+      </div>
+
+      <div>
+        <strong>Всегда свежее</strong>
+        <span>свежие продукты</span>
+      </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        <mat-icon>local_shipping</mat-icon>
+      </div>
+
+      <div>
+        <strong>Быстрая доставка</strong>
+        <span>от 60 минут</span>
+      </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        <mat-icon>verified_user</mat-icon>
+      </div>
+
+      <div>
+        <strong>Контроль</strong>
+        <span>качества</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CATEGORIES -->
+
+  <section class="home-section">
 
     <div class="section-header">
-      <div>
-        <span class="section-label">
-          Каталог
-        </span>
 
-        <h2>
-          Что сегодня хочется?
-        </h2>
-      </div>
+      <h2>
+        Категории
+      </h2>
+
+      <a routerLink="/products" class="see-all">
+        Смотреть все
+
+        <mat-icon>
+          chevron_right
+        </mat-icon>
+      </a>
+
     </div>
+
 
     <div class="categories-grid">
 
       @for (
-        category of categories();
-        track category.id;
-        let i = $index
+      category of categories();
+      track category.id;
+      let i = $index
       ) {
 
-        <app-category-card
-          [category]="category"
-          [index]="i"
-        />
+      <app-category-card [category]="category" [index]="i" />
 
       }
 
@@ -37,31 +107,70 @@
   </section>
 
 
-  <section class="section">
+  <!-- PROMO -->
+
+  <section class="promo-banner">
+
+    <div class="promo-content">
+
+      <span class="promo-label">
+        Только 3 дня
+      </span>
+
+      <h2>
+        Скидка 20%<br />
+        на морепродукты
+      </h2>
+
+      <a routerLink="/products" class="promo-button">
+        Смотреть товары
+      </a>
+
+    </div>
+
+
+    <div class="promo-visual">
+
+      <div class="bubble bubble-one"></div>
+      <div class="bubble bubble-two"></div>
+      <div class="bubble bubble-three"></div>
+
+      <img src="assets/images/shrimps.png" alt="Морепродукты" />
+
+    </div>
+
+  </section>
+
+
+  <!-- POPULAR -->
+
+  <section class="home-section">
 
     <div class="section-header">
 
-      <div>
-        <span class="section-label">
-          Выбирают чаще всего
-        </span>
+      <h2>
+        Популярное
+      </h2>
 
-        <h2>Популярное</h2>
-      </div>
+      <a routerLink="/products" class="see-all">
+        Смотреть все
+
+        <mat-icon>
+          chevron_right
+        </mat-icon>
+      </a>
 
     </div>
+
 
     <div class="products-grid">
 
       @for (
-        product of popularProducts();
-        track product.id
+      product of popularProducts();
+      track product.id
       ) {
 
-        <app-product-item
-          [product]="product"
-          
-        />
+      <app-product-item [product]="product" />
 
       }
 
@@ -70,30 +179,35 @@
   </section>
 
 
-  <section class="section">
+  <!-- NEW -->
+
+  <section class="home-section">
 
     <div class="section-header">
 
-      <div>
-        <span class="section-label">
-          Только появились
-        </span>
+      <h2>
+        Вам может понравиться
+      </h2>
 
-        <h2>Новинки</h2>
-      </div>
+      <a routerLink="/products" class="see-all">
+        Смотреть все
+
+        <mat-icon>
+          chevron_right
+        </mat-icon>
+      </a>
 
     </div>
+
 
     <div class="products-grid">
 
       @for (
-        product of newProducts();
-        track product.id
+      product of newProducts();
+      track product.id
       ) {
 
-        <app-product-item
-          [product]="product"
-        />
+      <app-product-item [product]="product" />
 
       }
 
