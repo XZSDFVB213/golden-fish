@@ -175,7 +175,7 @@ export class ProductsComponent {
       .trim();
 
     if (title.includes('рыб')) {
-      return 'assets/categories/fish-category.png';
+      return 'assets/categories/fish-category.webp';
     }
 
     if (
@@ -183,38 +183,38 @@ export class ProductsComponent {
       title.includes('кревет') ||
       title.includes('кальмар')
     ) {
-      return 'assets/categories/seafood.png';
+      return 'assets/categories/seafood.webp';
     }
 
     if (title.includes('мяс')) {
-      return 'assets/categories/meat.png';
+      return 'assets/categories/meat.webp';
     }
 
     if (
       title.includes('молоч') ||
       title.includes('сыр')
     ) {
-      return 'assets/categories/milk.png';
+      return 'assets/categories/milk.webp';
     }
 
     if (
       title.includes('напит') ||
       title.includes('вода')
     ) {
-      return 'assets/categories/drinks.png';
+      return 'assets/categories/drinks.webp';
     }
 
     if (title.includes('икр')) {
-      return 'assets/categories/caviar.png';
+      return 'assets/categories/caviar.webp';
     }
 
     if (
       title.includes('кулинар') ||
       title.includes('готов')
     ) {
-      return 'assets/categories/cooking.png';
+      return 'assets/categories/cooking.webp';
     }
 
-    return 'assets/categories/default.png';
+    return 'assets/categories/default.webp';
   }
 }
