@@ -27,6 +27,67 @@ type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
+  constructor() {
+    effect(() => {
+      const store = this.storeService.store();
+
+      console.log('STORE IN PRODUCTS:', store);
+
+      if (!store) {
+        this.loading.set(false);
+
+        this.categories.set([]);
+        this.allProducts.set([]);
+        this.products.set([]);
+
+        return;
+      }
+
+      this.loading.set(true);
+
+      this.categoryService.getByStoreId(store.id).subscribe({
+        next: (categories) => {
+          this.categories.set(categories);
+        },
+
+        error: (err) => {
+          console.error('Ошибка категорий:', err);
+        },
+      });
+
+      this.productService
+        .getByStoreId(store.id)
+        .pipe(
+          finalize(() => {
+            this.loading.set(false);
+          }),
+        )
+        .subscribe({
+          next: (products) => {
+            console.log('PRODUCTS LOADED:', products);
+
+            this.allProducts.set(products);
+            this.products.set(products);
+
+            this.selectedCategory.set(null);
+
+            this.filters.set({
+              categoryId: null,
+              minPrice: 0,
+              maxPrice: this.getMaxPrice(products),
+              weighted: null,
+            });
+          },
+
+          error: (err) => {
+            console.error('Ошибка загрузки товаров:', err);
+
+            this.allProducts.set([]);
+            this.products.set([]);
+          },
+        });
+    });
+  }
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private storeService = inject(StoreService);
@@ -123,79 +184,6 @@ export class ProductsComponent {
   }
   loading = signal(true);
 
-  constructor() {
-  effect(() => {
-    const store = this.storeService.store();
-
-    console.log('STORE IN PRODUCTS:', store);
-
-    if (!store) {
-      this.loading.set(false);
-
-      this.categories.set([]);
-      this.allProducts.set([]);
-      this.products.set([]);
-
-      return;
-    }
-
-    this.loading.set(true);
-
-    this.categoryService
-      .getByStoreId(store.id)
-      .subscribe({
-        next: categories => {
-          this.categories.set(categories);
-        },
-
-        error: err => {
-          console.error(
-            'Ошибка категорий:',
-            err,
-          );
-        },
-      });
-
-    this.productService
-      .getByStoreId(store.id)
-      .pipe(
-        finalize(() => {
-          this.loading.set(false);
-        }),
-      )
-      .subscribe({
-        next: products => {
-          console.log(
-            'PRODUCTS LOADED:',
-            products,
-          );
-
-          this.allProducts.set(products);
-          this.products.set(products);
-
-          this.selectedCategory.set(null);
-
-          this.filters.set({
-            categoryId: null,
-            minPrice: 0,
-            maxPrice:
-              this.getMaxPrice(products),
-            weighted: null,
-          });
-        },
-
-        error: err => {
-          console.error(
-            'Ошибка загрузки товаров:',
-            err,
-          );
-
-          this.allProducts.set([]);
-          this.products.set([]);
-        },
-      });
-  });
-}
   loadCategory(categoryId: string) {
     this.selectedCategory.set(categoryId);
 
