@@ -16,7 +16,7 @@ export class CategoryCardComponent {
   index = input(0);
 
   image = computed(() => {
-    const title = this.category().title.toLowerCase();
+    const title = this.category().title.toLowerCase().trim();
 
     if (title.includes('рыб')) {
       return 'assets/categories/fish-category.png';
@@ -29,16 +29,20 @@ export class CategoryCardComponent {
     ) {
       return 'assets/categories/seafood.png';
     }
-    if (title.includes('мясо')) {
+
+    if (title.includes('мяс')) {
       return 'assets/categories/meat.png';
     }
-    if (title.includes(' молочные продукты ')) {
+
+    if (title.includes('молоч') || title.includes('сыр')) {
       return 'assets/categories/milk.png';
     }
-    if (title.includes(' напитки ')) {
+
+    if (title.includes('напит') || title.includes('вода')) {
       return 'assets/categories/drinks.png';
     }
-    if (title.includes('икра')) {
+
+    if (title.includes('икр')) {
       return 'assets/categories/caviar.png';
     }
 
