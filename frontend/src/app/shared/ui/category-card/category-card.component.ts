@@ -32,13 +32,13 @@ export class CategoryCardComponent {
     if (title.includes('мясо')) {
       return 'assets/categories/meat.png';
     }
-    if (title.includes('Молочные продукты')) {
+    if (title.includes(' молочные продукты ')) {
       return 'assets/categories/milk.png';
     }
-    if (title.includes('Напитки')) {
+    if (title.includes(' напитки ')) {
       return 'assets/categories/drinks.png';
     }
-    if (title.includes('икр')) {
+    if (title.includes('икра')) {
       return 'assets/categories/caviar.png';
     }
 
