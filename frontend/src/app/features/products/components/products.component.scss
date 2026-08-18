@@ -6,11 +6,11 @@
 .catalog-page {
   width: 100%;
   max-width: 1240px;
+  box-sizing: border-box;
 
   margin: 0 auto;
   padding: 18px 28px 80px;
 }
-
 
 /* =========================
    SEARCH
@@ -30,7 +30,7 @@
 
   padding: 0 15px;
 
-  border: 1px solid #eeeeF3;
+  border: 1px solid #eeeef3;
   border-radius: 15px;
 
   background: #f8f8fa;
@@ -40,8 +40,7 @@
     background 0.15s ease;
 
   &:focus-within {
-    border-color:
-      rgba(0, 79, 196, 0.2);
+    border-color: rgba(0, 79, 196, 0.2);
 
     background: #fff;
   }
@@ -109,7 +108,6 @@
   }
 }
 
-
 /* =========================
    TITLE
 ========================= */
@@ -130,7 +128,6 @@
     letter-spacing: -1px;
   }
 }
-
 
 /* =========================
    CATEGORIES
@@ -196,9 +193,7 @@
     .category-circle {
       border-color: #0756c8;
 
-      box-shadow:
-        0 0 0 3px
-        rgba(0, 81, 201, 0.08);
+      box-shadow: 0 0 0 3px rgba(0, 81, 201, 0.08);
     }
 
     span {
@@ -252,7 +247,6 @@
     font-size: 27px;
   }
 }
-
 
 /* =========================
    TABS
@@ -311,16 +305,9 @@
     &.active {
       color: #fff;
 
-      background:
-        linear-gradient(
-          135deg,
-          #0960db,
-          #0046b9
-        );
+      background: linear-gradient(135deg, #0960db, #0046b9);
 
-      box-shadow:
-        0 7px 18px
-        rgba(0, 71, 180, 0.17);
+      box-shadow: 0 7px 18px rgba(0, 71, 180, 0.17);
     }
   }
 }
@@ -341,7 +328,6 @@
   font-size: 8px;
 }
 
-
 /* =========================
    CONTROLS
 ========================= */
@@ -356,7 +342,7 @@
   margin: 18px 0 17px;
   padding: 13px 0;
 
-  border-bottom: 1px solid #eeeeF2;
+  border-bottom: 1px solid #eeeef2;
 }
 
 .filter-button,
@@ -441,7 +427,6 @@
   }
 }
 
-
 /* =========================
    PRODUCTS
 ========================= */
@@ -449,12 +434,10 @@
 .products-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
   gap: 14px;
 }
-
 
 /* =========================
    EMPTY
@@ -528,30 +511,23 @@
   }
 }
 
-
 /* =========================
    TABLET
 ========================= */
 
 @media (max-width: 1000px) {
   .products-grid {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-
 
 /* =========================
    MOBILE
 ========================= */
 
 @media (max-width: 750px) {
-
   .catalog-page {
-    padding:
-      10px
-      10px
-      75px;
+    padding: 10px 10px 75px;
   }
 
   /* SEARCH */
@@ -585,7 +561,6 @@
     height: 28px;
   }
 
-
   /* HEADER */
 
   .catalog-header {
@@ -596,7 +571,6 @@
     }
   }
 
-
   /* CATEGORIES */
 
   .categories {
@@ -605,10 +579,7 @@
     margin-left: -10px;
     margin-right: -10px;
 
-    padding:
-      2px
-      14px
-      7px;
+    padding: 2px 14px 7px;
   }
 
   .category-item {
@@ -638,7 +609,6 @@
     }
   }
 
-
   /* TABS */
 
   .catalog-tabs {
@@ -664,18 +634,12 @@
     font-size: 6px;
   }
 
-
   /* CONTROLS */
 
   .catalog-controls {
-    margin:
-      10px
-      0
-      11px;
+    margin: 10px 0 11px;
 
-    padding:
-      9px
-      0;
+    padding: 9px 0;
   }
 
   .filter-button {
@@ -711,12 +675,10 @@
     }
   }
 
-
   /* 3 PRODUCTS PER ROW */
 
   .products-grid {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     gap: 6px;
   }

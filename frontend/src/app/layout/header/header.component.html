@@ -21,32 +21,55 @@
 
     <!-- STORE -->
 
-    <div class="store-selector">
+<div class="store-selector">
 
-      <mat-select
-        [value]="selectedStoreId()"
-        (selectionChange)="onStoreChange($event.value)"
-      >
+  <mat-select
+    [value]="selectedStoreId()"
+    (selectionChange)="onStoreChange($event.value)"
+    panelClass="store-select-panel"
+    [panelWidth]="230"
+  >
 
-        <mat-select-trigger>
-          {{ selectedStoreLabel() }}
-        </mat-select-trigger>
+    <mat-select-trigger>
+      {{ selectedStoreLabel() }}
+    </mat-select-trigger>
 
-        @for (
-          store of stores();
-          track store.id;
-          let i = $index
-        ) {
+    @for (
+      store of stores();
+      track store.id;
+      let i = $index
+    ) {
 
-          <mat-option [value]="store.id">
-            Магазин {{ i + 1 }} — {{ store.title }}
-          </mat-option>
+      <mat-option [value]="store.id">
 
-        }
+        <div class="store-option">
 
-      </mat-select>
+          <div class="store-option-number">
+            {{ i + 1 }}
+          </div>
 
-    </div>
+          <div class="store-option-content">
+            <strong>
+              Магазин {{ i + 1 }}
+            </strong>
+
+            <span>
+              {{
+                store.title
+                  .replace('Золотая рыбка - ', '')
+              }}
+            </span>
+          </div>
+
+        </div>
+
+      </mat-option>
+
+    }
+
+  </mat-select>
+
+</div>
 
 
     <!-- ACTIONS -->
