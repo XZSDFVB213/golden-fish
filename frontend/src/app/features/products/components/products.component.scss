@@ -527,8 +527,15 @@
 ========================= */
 
 @media (max-width: 750px) {
-  .catalog-page {
-    padding: 10px 10px 75px;
+   .catalog-page {
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px 75px;
+
+    overflow-x: hidden;
   }
 
   /* SEARCH */
@@ -574,13 +581,31 @@
 
   /* CATEGORIES */
 
-  .categories {
+   .categories {
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    display: flex;
+
     gap: 7px;
 
-    margin-left: -10px;
-    margin-right: -10px;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    padding: 2px 14px 7px;
+    margin: 0;
+
+    padding:
+      2px
+      4px
+      8px;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .category-item {
