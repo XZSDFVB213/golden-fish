@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -79,4 +79,17 @@ export class HeaderComponent {
         : undefined,
     });
   }
+  selectedStoreLabel = computed(() => {
+  const storeId = this.selectedStoreId();
+
+  const index = this.stores().findIndex(
+    store => store.id === storeId,
+  );
+
+  if (index === -1) {
+    return 'Магазин';
+  }
+
+  return `Магазин ${index + 1}`;
+});
 }

@@ -8,23 +8,14 @@
       routerLink="/home"
       class="brand"
     >
-
       <div class="brand-icon">
         <mat-icon>set_meal</mat-icon>
       </div>
 
       <div class="brand-text">
-
-        <strong>
-          Золотая рыбка
-        </strong>
-
-        <span>
-          продукты рядом
-        </span>
-
+        <strong>Золотая</strong>
+        <strong>рыбка</strong>
       </div>
-
     </a>
 
 
@@ -32,145 +23,57 @@
 
     <div class="store-selector">
 
-      <div class="store-icon">
-        <mat-icon>location_on</mat-icon>
-      </div>
-
-      <div class="store-content">
-
-        <span class="store-label">
-          Ваш магазин
-        </span>
-
-        <mat-select
-          [value]="selectedStoreId()"
-          (selectionChange)="
-            onStoreChange($event.value)
-          "
-        >
-
-          @for (
-            store of stores();
-            track store.id
-          ) {
-
-            <mat-option
-              [value]="store.id"
-            >
-              {{ store.title }}
-            </mat-option>
-
-          }
-
-        </mat-select>
-
-      </div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="search">
-
-      <mat-icon>
-        search
-      </mat-icon>
-
-      <input
-        type="text"
-        placeholder="Найти молоко, сыр, напитки..."
-        [value]="search()"
-        (input)="
-          search.set(
-            $any($event.target).value
-          )
-        "
-        (keyup.enter)="searchProducts()"
-      />
-
-      @if (search()) {
-
-        <button
-          type="button"
-          class="clear-search"
-          (click)="search.set('')"
-        >
-          <mat-icon>
-            close
-          </mat-icon>
-        </button>
-
-      }
-
-      <button
-        type="button"
-        class="search-button"
-        (click)="searchProducts()"
+      <mat-select
+        [value]="selectedStoreId()"
+        (selectionChange)="onStoreChange($event.value)"
       >
-        Найти
-      </button>
+
+        <mat-select-trigger>
+          {{ selectedStoreLabel() }}
+        </mat-select-trigger>
+
+        @for (
+          store of stores();
+          track store.id;
+          let i = $index
+        ) {
+
+          <mat-option [value]="store.id">
+            Магазин {{ i + 1 }} — {{ store.title }}
+          </mat-option>
+
+        }
+
+      </mat-select>
 
     </div>
 
 
     <!-- ACTIONS -->
 
-    <nav class="actions">
+    <nav class="header-actions">
 
       <a
         routerLink="/orders"
-        class="action"
+        class="header-action notification"
+        aria-label="Заказы"
       >
+        <mat-icon>
+          notifications_none
+        </mat-icon>
 
-        <div class="action-icon">
-          <mat-icon>
-            receipt_long
-          </mat-icon>
-        </div>
-
-        <span>
-          Заказы
-        </span>
-
-      </a>
-
-
-      <a
-        routerLink="/cart"
-        class="action cart-action"
-      >
-
-        <div
-          class="action-icon"
-          [matBadge]="totalCount()"
-          [matBadgeHidden]="totalCount() === 0"
-          matBadgeColor="warn"
-          matBadgeSize="small"
-        >
-          <mat-icon>
-            shopping_bag
-          </mat-icon>
-        </div>
-
-        <span>
-          Корзина
-        </span>
-
+        <span class="notification-dot"></span>
       </a>
 
 
       <a
         routerLink="/profile"
-        class="profile-action"
+        class="header-action"
+        aria-label="Профиль"
       >
-
-        <div class="profile-icon">
-          <mat-icon>
-            person
-          </mat-icon>
-        </div>
-
+        <mat-icon>
+          person_outline
+        </mat-icon>
       </a>
 
     </nav>
