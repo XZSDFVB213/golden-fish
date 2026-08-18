@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,20 +10,15 @@ import { IProduct } from '../../../shared/models/product/product.interface';
 import { ProductService } from '../../../features/products/service/product.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { StoreService } from '../../../core/services/store/store.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductFilterDialogComponent, ProductFilters } from '../dialog/product-filter-dialog/product-filter-dialog.component';
 
-type CatalogTab =
-  | 'ALL'
-  | 'POPULAR'
-  | 'NEW'
-  | 'SALE';
+type CatalogTab = 'ALL' | 'POPULAR' | 'NEW' | 'SALE';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [
-    ProductItemComponent,
-    MatIconModule,
-  ],
+  imports: [ProductItemComponent, MatIconModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
@@ -44,28 +33,84 @@ export class ProductsComponent {
   selectedCategory = signal<string | null>(null);
 
   search = signal('');
-
+  private dialog = inject(MatDialog);
   activeTab = signal<CatalogTab>('ALL');
+  filters = signal<ProductFilters>({
+    categoryId: null,
+    minPrice: 0,
+    maxPrice: 10000,
+    weighted: null,
+  });
+  maxAvailablePrice = computed(() => {
+    const products = this.products();
 
-  filteredProducts = computed(() => {
-    const value = this.search()
-      .trim()
-      .toLowerCase();
-
-    if (!value) {
-      return this.products();
+    if (!products.length) {
+      return 10000;
     }
 
-    return this.products().filter(product =>
-      product.title
-        .toLowerCase()
-        .includes(value) ||
-      product.description
-        ?.toLowerCase()
-        .includes(value),
+    return (
+      Math.ceil(
+        Math.max(...products.map((product) => Number(product.price))) / 100,
+      ) * 100
     );
   });
+  filteredProducts = computed(() => {
+    const search = this.search().trim().toLowerCase();
 
+    const filters = this.filters();
+
+    return this.products().filter((product) => {
+      const matchesSearch =
+        !search ||
+        product.title.toLowerCase().includes(search) ||
+        product.description?.toLowerCase().includes(search);
+
+      const price = Number(product.price);
+
+      const matchesPrice =
+        price >= filters.minPrice && price <= filters.maxPrice;
+
+      const matchesWeighted =
+        filters.weighted === null || product.isWeighted === filters.weighted;
+
+      return matchesSearch && matchesPrice && matchesWeighted;
+    });
+  });
+  openFilters() {
+    const ref = this.dialog.open(ProductFilterDialogComponent, {
+      width: '430px',
+
+      maxWidth: 'calc(100vw - 24px)',
+
+      maxHeight: 'calc(100vh - 30px)',
+
+      autoFocus: false,
+
+      panelClass: 'catalog-filter-dialog',
+
+      data: {
+        categories: this.categories(),
+
+        filters: this.filters(),
+
+        availableMaxPrice: this.maxAvailablePrice(),
+      },
+    });
+
+    ref.afterClosed().subscribe((result: ProductFilters | undefined) => {
+      if (!result) {
+        return;
+      }
+
+      this.filters.set(result);
+
+      if (result.categoryId) {
+        this.loadCategory(result.categoryId);
+      } else {
+        this.loadAllProducts();
+      }
+    });
+  }
   constructor() {
     effect(() => {
       const store = this.storeService.store();
@@ -76,11 +121,9 @@ export class ProductsComponent {
         return;
       }
 
-      this.categoryService
-        .getByStoreId(store.id)
-        .subscribe(categories => {
-          this.categories.set(categories);
-        });
+      this.categoryService.getByStoreId(store.id).subscribe((categories) => {
+        this.categories.set(categories);
+      });
 
       this.loadAllProducts();
     });
@@ -90,11 +133,9 @@ export class ProductsComponent {
     this.selectedCategory.set(categoryId);
     this.activeTab.set('ALL');
 
-    this.productService
-      .getByCategory(categoryId)
-      .subscribe(products => {
-        this.products.set(products);
-      });
+    this.productService.getByCategory(categoryId).subscribe((products) => {
+      this.products.set(products);
+    });
   }
 
   loadAllProducts() {
@@ -106,11 +147,9 @@ export class ProductsComponent {
 
     this.selectedCategory.set(null);
 
-    this.productService
-      .getByStoreId(store.id)
-      .subscribe(products => {
-        this.products.set(products);
-      });
+    this.productService.getByStoreId(store.id).subscribe((products) => {
+      this.products.set(products);
+    });
   }
 
   selectTab(tab: CatalogTab) {
@@ -130,16 +169,11 @@ export class ProductsComponent {
     if (tab === 'POPULAR') {
       this.selectedCategory.set(null);
 
-      this.productService
-        .getMostPopular()
-        .subscribe(products => {
-          this.products.set(
-            products.filter(
-              product =>
-                product.storeId === store.id,
-            ),
-          );
-        });
+      this.productService.getMostPopular().subscribe((products) => {
+        this.products.set(
+          products.filter((product) => product.storeId === store.id),
+        );
+      });
 
       return;
     }
@@ -147,13 +181,9 @@ export class ProductsComponent {
     if (tab === 'NEW') {
       this.selectedCategory.set(null);
 
-      this.productService
-        .getByStoreId(store.id)
-        .subscribe(products => {
-          this.products.set(
-            [...products].reverse(),
-          );
-        });
+      this.productService.getByStoreId(store.id).subscribe((products) => {
+        this.products.set([...products].reverse());
+      });
 
       return;
     }
@@ -170,9 +200,7 @@ export class ProductsComponent {
   }
 
   getCategoryImage(category: ICategory) {
-    const title = category.title
-      .toLowerCase()
-      .trim();
+    const title = category.title.toLowerCase().trim();
 
     if (title.includes('рыб')) {
       return 'assets/categories/fish-category.webp';
@@ -190,17 +218,11 @@ export class ProductsComponent {
       return 'assets/categories/meat.webp';
     }
 
-    if (
-      title.includes('молоч') ||
-      title.includes('сыр')
-    ) {
+    if (title.includes('молоч') || title.includes('сыр')) {
       return 'assets/categories/milk.webp';
     }
 
-    if (
-      title.includes('напит') ||
-      title.includes('вода')
-    ) {
+    if (title.includes('напит') || title.includes('вода')) {
       return 'assets/categories/drinks.webp';
     }
 
@@ -208,10 +230,7 @@ export class ProductsComponent {
       return 'assets/categories/caviar.webp';
     }
 
-    if (
-      title.includes('кулинар') ||
-      title.includes('готов')
-    ) {
+    if (title.includes('кулинар') || title.includes('готов')) {
       return 'assets/categories/cooking.webp';
     }
 

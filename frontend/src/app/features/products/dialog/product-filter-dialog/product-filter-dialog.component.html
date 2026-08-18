@@ -1,0 +1,273 @@
+<div class="filter-dialog">
+
+  <!-- HEADER -->
+
+  <header class="filter-header">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="close()"
+    >
+      <mat-icon>
+        arrow_back
+      </mat-icon>
+    </button>
+
+
+    <h2>
+      Фильтры
+    </h2>
+
+
+    <button
+      type="button"
+      class="reset-button"
+      (click)="reset()"
+    >
+      Сбросить
+    </button>
+
+  </header>
+
+
+  <!-- CATEGORY -->
+
+  <section class="filter-section">
+
+    <h3>
+      Категория
+    </h3>
+
+
+    <div class="chips">
+
+      <button
+        type="button"
+        class="chip"
+        [class.active]="
+          form.controls.categoryId.value === null
+        "
+        (click)="selectCategory(null)"
+      >
+        Все
+      </button>
+
+
+      @for (
+        category of data.categories;
+        track category.id
+      ) {
+
+        <button
+          type="button"
+          class="chip"
+          [class.active]="
+            form.controls.categoryId.value ===
+            category.id
+          "
+          (click)="
+            selectCategory(category.id)
+          "
+        >
+          {{ category.title }}
+        </button>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- PRICE -->
+
+  <section class="filter-section">
+
+    <div class="section-heading">
+
+      <h3>
+        Цена, ₽
+      </h3>
+
+    </div>
+
+
+    <div class="price-labels">
+
+      <span>
+        {{ form.controls.minPrice.value }} ₽
+      </span>
+
+      <span>
+        {{ form.controls.maxPrice.value }} ₽
+      </span>
+
+    </div>
+
+
+    <mat-slider
+      class="price-slider"
+      [min]="0"
+      [max]="data.availableMaxPrice"
+      [step]="50"
+    >
+
+      <input
+        matSliderStartThumb
+        formControlName="minPrice"
+      />
+
+      <input
+        matSliderEndThumb
+        formControlName="maxPrice"
+      />
+
+    </mat-slider>
+
+
+    <div class="price-inputs">
+
+      <label>
+
+        <span>от</span>
+
+        <input
+          type="number"
+          formControlName="minPrice"
+        />
+
+        <b>₽</b>
+
+      </label>
+
+
+      <label>
+
+        <span>до</span>
+
+        <input
+          type="number"
+          formControlName="maxPrice"
+        />
+
+        <b>₽</b>
+
+      </label>
+
+    </div>
+
+  </section>
+
+
+  <!-- TYPE -->
+
+  <section class="filter-section">
+
+    <h3>
+      Тип товара
+    </h3>
+
+
+    <div class="type-options">
+
+      <button
+        type="button"
+        [class.active]="
+          form.controls.weighted.value === null
+        "
+        (click)="selectWeighted(null)"
+      >
+        <div class="checkbox">
+          <mat-icon>
+            check
+          </mat-icon>
+        </div>
+
+        Все товары
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          form.controls.weighted.value === true
+        "
+        (click)="selectWeighted(true)"
+      >
+        <div class="checkbox">
+          <mat-icon>
+            check
+          </mat-icon>
+        </div>
+
+        Весовые товары
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          form.controls.weighted.value === false
+        "
+        (click)="selectWeighted(false)"
+      >
+        <div class="checkbox">
+          <mat-icon>
+            check
+          </mat-icon>
+        </div>
+
+        Штучные товары
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- INFO -->
+
+  @if (
+    form.controls.weighted.value === true
+  ) {
+
+    <div class="weighted-hint">
+
+      <mat-icon>
+        scale
+      </mat-icon>
+
+      <div>
+
+        <strong>
+          Весовые товары
+        </strong>
+
+        <span>
+          Цена таких товаров указана
+          за килограмм
+        </span>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- FOOTER -->
+
+  <footer class="filter-footer">
+
+    <button
+      type="button"
+      class="apply-button"
+      (click)="apply()"
+    >
+      Показать товары
+    </button>
+
+  </footer>
+
+</div>
