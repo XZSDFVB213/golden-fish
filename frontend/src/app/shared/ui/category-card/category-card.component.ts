@@ -1,8 +1,4 @@
-import {
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 
@@ -20,8 +16,7 @@ export class CategoryCardComponent {
   index = input(0);
 
   image = computed(() => {
-    const title =
-      this.category().title.toLowerCase();
+    const title = this.category().title.toLowerCase();
 
     if (title.includes('рыб')) {
       return 'assets/categories/fish-category.png';
@@ -34,25 +29,20 @@ export class CategoryCardComponent {
     ) {
       return 'assets/categories/seafood.png';
     }
-    if(
-      title.includes('мясо')) {
-        return 'assets/categories/meat.png';
-      }
-    if(
-      title.includes('Молочная продукция')){
-        return 'assets/categories/milk.png';
-      }
-    if(title.includes('Напитки')) {
+    if (title.includes('мясо')) {
+      return 'assets/categories/meat.png';
+    }
+    if (title.includes('Молочные продукты')) {
+      return 'assets/categories/milk.png';
+    }
+    if (title.includes('Напитки')) {
       return 'assets/categories/drinks.png';
     }
     if (title.includes('икр')) {
       return 'assets/categories/caviar.png';
     }
 
-    if (
-      title.includes('кулинар') ||
-      title.includes('готов')
-    ) {
+    if (title.includes('кулинар') || title.includes('готов')) {
       return 'assets/categories/cooking.png';
     }
 
