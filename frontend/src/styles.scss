@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 :root {
   --container-width: 1440px;
 
@@ -24,9 +30,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
     border-radius: 28px !important;
 
-    box-shadow:
-      0 30px 100px
-      rgba(25, 40, 31, 0.18) !important;
+    box-shadow: 0 30px 100px rgba(25, 40, 31, 0.18) !important;
   }
 }
 .product-dialog-panel {
@@ -35,9 +39,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
     border-radius: 28px !important;
 
-    box-shadow:
-      0 30px 100px
-      rgba(25, 40, 31, 0.18) !important;
+    box-shadow: 0 30px 100px rgba(25, 40, 31, 0.18) !important;
   }
 }
 .catalog-filter-dialog {
@@ -46,22 +48,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 
   .mat-mdc-dialog-surface {
-    padding: 22px !important;
+    overflow: hidden !important;
 
-    border-radius: 24px !important;
+    padding: 22px 24px 24px !important;
 
-    box-shadow:
-      0 30px 80px
-      rgba(0, 0, 0, 0.14) !important;
+    border-radius: 20px !important;
+
+    background: #fff !important;
+
+    box-shadow: 0 24px 70px rgba(24, 34, 52, 0.18) !important;
   }
 }
 
 @media (max-width: 600px) {
   .catalog-filter-dialog {
-    .mat-mdc-dialog-surface {
-      padding: 17px !important;
+    .mat-mdc-dialog-container {
+      align-items: flex-end !important;
+    }
 
-      border-radius: 22px !important;
+    .mat-mdc-dialog-surface {
+      max-height: calc(100dvh - 24px) !important;
+
+      overflow-y: auto !important;
+
+      padding: 16px 16px 18px !important;
+
+      border-radius: 18px 18px 0 0 !important;
     }
   }
 }
