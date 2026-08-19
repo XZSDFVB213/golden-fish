@@ -92,4 +92,5 @@ export class HeaderComponent {
 
   return `Магазин ${index + 1}`;
 });
+  cartCount = computed(() => this.totalCount());
 }
