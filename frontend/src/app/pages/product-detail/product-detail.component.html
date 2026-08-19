@@ -41,6 +41,7 @@
 
           В наличии
         </div>
+ @if (quantity() === 0) {
 
         <button
           type="button"
@@ -53,6 +54,33 @@
 
           В корзину
         </button>
+
+      } @else {
+
+        <div class="quantity">
+
+          <button
+            type="button"
+            (click)="decrease()"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+
+          <strong>
+            {{ quantity() }}
+          </strong>
+
+          <button
+            type="button"
+            (click)="increase()"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+
+        </div>
+
+      }
+        
 
         <div class="benefits">
 
