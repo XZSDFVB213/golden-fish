@@ -4,10 +4,7 @@
 
     <!-- LOGO -->
 
-    <a
-      routerLink="/home"
-      class="brand"
-    >
+    <a routerLink="/home" class="brand">
       <div class="brand-icon">
         <mat-icon>set_meal</mat-icon>
       </div>
@@ -21,89 +18,75 @@
 
     <!-- STORE -->
 
-<div class="store-selector">
+    <div class="store-selector">
 
-  <mat-select
-    [value]="selectedStoreId()"
-    (selectionChange)="onStoreChange($event.value)"
-    panelClass="store-select-panel"
-    [panelWidth]="230"
-  >
+      <mat-select [value]="selectedStoreId()" (selectionChange)="onStoreChange($event.value)"
+        panelClass="store-select-panel" [panelWidth]="230">
 
-    <mat-select-trigger>
-      {{ selectedStoreLabel() }}
-    </mat-select-trigger>
+        <mat-select-trigger>
+          {{ selectedStoreLabel() }}
+        </mat-select-trigger>
 
-    @for (
-      store of stores();
-      track store.id;
-      let i = $index
-    ) {
+        @for (
+        store of stores();
+        track store.id;
+        let i = $index
+        ) {
 
-      <mat-option [value]="store.id">
+        <mat-option [value]="store.id">
 
-        <div class="store-option">
+          <div class="store-option">
 
-          <div class="store-option-number">
-            {{ i + 1 }}
-          </div>
+            <div class="store-option-number">
+              {{ i + 1 }}
+            </div>
 
-          <div class="store-option-content">
-            <strong>
-              Магазин {{ i + 1 }}
-            </strong>
+            <div class="store-option-content">
+              <strong>
+                Магазин {{ i + 1 }}
+              </strong>
 
-            <span>
-              {{
+              <span>
+                {{
                 store.title
-                  .replace('Золотая рыбка - ', '')
-              }}
-            </span>
+                .replace('Золотая рыбка - ', '')
+                }}
+              </span>
+            </div>
+
           </div>
 
-        </div>
+        </mat-option>
 
-      </mat-option>
+        }
 
-    }
+      </mat-select>
 
-  </mat-select>
-
-</div>
+    </div>
 
 
     <!-- ACTIONS -->
 
     <nav class="header-actions">
 
-      <a
-        routerLink="/notifications"
-        class="header-action notification"
-        aria-label="Уведомления"
-      >
+      <a routerLink="/notifications" class="header-action notification" aria-label="Уведомления">
         <mat-icon>
           notifications_none
         </mat-icon>
 
         <span class="notification-dot"></span>
       </a>
-<a
-        routerLink="/cart"
-        class="header-action cart"
-        aria-label="Корзина"
-      >
+      <a routerLink="/cart" class="header-action cart" aria-label="Корзина">
         <mat-icon>
           shopping_cart
         </mat-icon>
-
+        @if (cartCount()) {
         <span class="notification-dot">{{cartCount()}}</span>
+
+        }
       </a>
 
-      <a
-        routerLink="/profile"
-        class="header-action"
-        aria-label="Профиль"
-      >
+      <a routerLink="/profile" class="header-action" aria-label="Профиль">
         <mat-icon>
           person_outline
         </mat-icon>
