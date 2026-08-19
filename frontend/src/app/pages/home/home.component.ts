@@ -65,9 +65,7 @@ export class HomeComponent {
       }
 
       this.categoryService.getByStoreId(store.id).subscribe((categories) => {
-         this.categories.set(
-    this.sortCategories(categories),
-  );
+        this.categories.set(this.sortCategories(categories));
       });
 
       this.productService.getByStoreId(store.id).subscribe((products) => {
