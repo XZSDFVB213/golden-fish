@@ -1,4 +1,4 @@
-<div class="checkout-page">
+<div class="checkout-page" [formGroup]="form">
 
   <header class="checkout-header">
 
@@ -71,10 +71,17 @@
                 person_outline
               </mat-icon>
 
-              <input matInput placeholder="Ваше имя" />
+              <input matInput formControlName="name" placeholder="Ваше имя" />
 
             </mat-form-field>
-
+            @if (
+            form.controls.name.touched &&
+            form.controls.name.invalid
+            ) {
+            <span class="field-error">
+              Укажите имя
+            </span>
+            }
           </div>
 
 
@@ -90,9 +97,18 @@
                 call
               </mat-icon>
 
-              <input matInput type="tel" placeholder="+7 999 000-00-00" />
+              <input matInput type="tel" formControlName="phone" placeholder="+7 999 000-00-00" />
 
             </mat-form-field>
+
+            @if (
+            form.controls.phone.touched &&
+            form.controls.phone.invalid
+            ) {
+            <span class="field-error">
+              Укажите корректный номер телефона
+            </span>
+            }
 
           </div>
 
@@ -111,7 +127,8 @@
               chat_bubble_outline
             </mat-icon>
 
-            <textarea matInput rows="4" placeholder="Например: позвонить перед доставкой"></textarea>
+            <textarea matInput formControlName="comment" rows="4"
+              placeholder="Например: позвонить перед доставкой"></textarea>
 
           </mat-form-field>
 
@@ -143,7 +160,7 @@
         </div>
 
 
-        <mat-radio-group class="delivery-options" value="courier">
+        <<mat-radio-group class="delivery-options" formControlName="deliveryType">
 
           <label class="delivery-option">
 
@@ -204,7 +221,7 @@
 
           </label>
 
-        </mat-radio-group>
+          </mat-radio-group>
 
       </section>
 
@@ -405,7 +422,8 @@
       </div>
 
       }
-      <button type="button" class="pay-button" (click)="pay()">
+      <button type="button" class="pay-button" [disabled]="form.invalid ||
+    cart.items().length === 0" (click)="pay()">
 
         <span>
           Перейти к оплате
