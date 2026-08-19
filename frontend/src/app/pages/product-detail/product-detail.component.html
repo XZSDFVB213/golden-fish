@@ -1,34 +1,145 @@
 @if (product(); as product) {
-  <div class="product-detail">
-    <div class="image">
-      <img [src]="product.images[0]" [alt]="product.title" />
-    </div>
+  <main class="product-page">
 
-    <div class="info">
-      <h1>
-        {{ product.title }}
-      </h1>
+    <!-- PRODUCT -->
 
-      <div class="price">{{ product.price }} ₽</div>
+    <section class="product-detail">
 
-      <button (click)="addToCart(product)" mat-flat-button color="primary">В корзину</button>
-    </div>
-  </div>
+      <div class="product-image">
+        <img
+          [src]="product.images[0]"
+          [alt]="product.title"
+        />
+      </div>
 
-  <section class="description">
-    <h2>Описание</h2>
+      <div class="product-info">
 
-    <p>
-      {{ product.description }}
-    </p>
-  </section>
-  <section>
-    <h2>Похожие товары</h2>
+        @if (product.category) {
+          <span class="category">
+            {{ product.category.title }}
+          </span>
+        }
 
-    <div class="products-grid">
-      @for (product of similarProducts(); track product.id) {
-        <app-product-item [product]="product" />
-      }
-    </div>
-  </section>
+        <h1>
+          {{ product.title }}
+        </h1>
+
+        <div class="price">
+          <strong>
+            {{ product.price }} ₽
+          </strong>
+
+          @if (product.isWeighted) {
+            <span>за кг</span>
+          } @else {
+            <span>за шт.</span>
+          }
+        </div>
+
+        <div class="availability">
+          <span class="availability-dot"></span>
+
+          В наличии
+        </div>
+
+        <button
+          type="button"
+          class="cart-button"
+          (click)="addToCart(product)"
+        >
+          <mat-icon>
+            shopping_bag
+          </mat-icon>
+
+          В корзину
+        </button>
+
+        <div class="benefits">
+
+          <div class="benefit">
+            <mat-icon>
+              storefront
+            </mat-icon>
+
+            <div>
+              <strong>
+                Самовывоз
+              </strong>
+
+              <span>
+                из выбранного магазина
+              </span>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <mat-icon>
+              verified
+            </mat-icon>
+
+            <div>
+              <strong>
+                Свежие продукты
+              </strong>
+
+              <span>
+                проверяем качество
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DESCRIPTION -->
+
+    <section class="description">
+
+      <h2>
+        О товаре
+      </h2>
+
+      <p>
+        {{ product.description }}
+      </p>
+
+    </section>
+
+
+    <!-- SIMILAR -->
+
+    @if (similarProducts().length) {
+      <section class="similar-section">
+
+        <div class="section-header">
+          <h2>
+            Похожие товары
+          </h2>
+
+          <span>
+            Возможно, вам понравится
+          </span>
+        </div>
+
+        <div class="similar-products">
+
+          @for (
+            similarProduct of similarProducts();
+            track similarProduct.id
+          ) {
+            <app-product-item
+              [product]="similarProduct"
+            />
+          }
+
+        </div>
+
+      </section>
+    }
+
+  </main>
 }

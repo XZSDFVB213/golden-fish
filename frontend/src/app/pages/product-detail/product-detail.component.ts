@@ -11,11 +11,12 @@ import { IProduct } from '../../shared/models/product/product.interface';
 import { ProductItemComponent } from '../../shared/ui/product-item/product-item.component';
 import { MatButton } from '@angular/material/button';
 import { CartService } from '../../features/cart/service/cart.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [ProductItemComponent, MatButton, RouterLink],
+  imports: [ProductItemComponent, MatButton, RouterLink, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
