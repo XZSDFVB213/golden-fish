@@ -1,5 +1,6 @@
 import {
   ArrayMinSize,
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -10,31 +11,53 @@ export class ProductDto {
   @IsString({
     message: 'Название обязательно',
   })
-  @IsNotEmpty({ message: 'Название не должно быть пустым' })
+  @IsNotEmpty({
+    message: 'Название не должно быть пустым',
+  })
   title!: string;
 
   @IsString({
     message: 'Описание обязательно',
   })
-  @IsNotEmpty({ message: 'Описание не должно быть пустым' })
+  @IsNotEmpty({
+    message: 'Описание не должно быть пустым',
+  })
   description!: string;
 
-  @IsString({
-    message: 'Изображение обязательно',
-    each: true,
+  @IsBoolean({
+    message: 'isWeighted должен быть boolean',
   })
-  @IsBoolean({ message: 'isWeighted обязательно' })
   isWeighted!: boolean;
 
-  @ArrayMinSize(1, { message: 'Хотя бы 1 картинка' })
-  @IsNotEmpty({ message: 'Изображение не должно быть пустым', each: true })
+  @IsArray({
+    message: 'Изображения должны быть массивом',
+  })
+  @ArrayMinSize(1, {
+    message: 'Хотя бы 1 картинка',
+  })
+  @IsString({
+    each: true,
+    message: 'Каждое изображение должно быть строкой',
+  })
+  @IsNotEmpty({
+    each: true,
+    message: 'Ссылка на изображение не должна быть пустой',
+  })
   images!: string[];
-  @IsNumber({}, { message: 'Цена обязательна' })
-  @IsNotEmpty({ message: 'Цена не должна быть пустой' })
+
+  @IsNumber(
+    {},
+    {
+      message: 'Цена обязательна',
+    },
+  )
   price!: number;
+
   @IsString({
     message: 'Категория обязательна',
   })
-  @IsNotEmpty({ message: 'Id Категории не должно быть пустым' })
+  @IsNotEmpty({
+    message: 'Id категории не должно быть пустым',
+  })
   categoryId!: string;
 }
