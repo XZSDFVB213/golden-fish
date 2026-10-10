@@ -1,14 +1,8 @@
 <header class="header">
-
   <div class="header-container">
-
     <!-- LOGO -->
 
-    <a
-      routerLink="/home"
-      class="brand"
-      aria-label="Золотая рыбка"
-    >
+    <a routerLink="/home" class="brand" aria-label="Золотая рыбка">
       <img
         src="assets/images/logo.png"
         alt="Золотая рыбка"
@@ -16,89 +10,61 @@
       />
     </a>
 
-
     <!-- STORE -->
 
     <div class="store-selector">
-    
       <mat-select
         [value]="selectedStoreId()"
         (selectionChange)="onStoreChange($event.value)"
         panelClass="store-select-panel"
         [panelWidth]="240"
       >
-    
         <mat-select-trigger>
           {{ selectedStoreLabel() }}
         </mat-select-trigger>
-    
+
         @for (store of stores(); track store.id) {
-    
           <mat-option [value]="store.id">
-    
             <div class="store-option">
-    
               <div class="store-option-icon">
                 <mat-icon>storefront</mat-icon>
               </div>
-    
-              <div class="store-option-content">
-    
-                <strong>
-                  {{
-                    store.title.replace(
-                      'Золотая рыбка - ',
-                      ''
-                    )
-                  }}
-                </strong>
-    
-                <span>
-                  Золотая рыбка
-                </span>
-    
-              </div>
-    
-            </div>
-    
-          </mat-option>
-    
-        }
-    
-      </mat-select>
-    
-    </div>
 
+              <div class="store-option-content">
+                <strong>
+                  {{ store.title.replace("Золотая рыбка - ", "") }}
+                </strong>
+
+                <span> {{ store.description.replace("Золотая рыбка - ", "") }} </span>
+              </div>
+            </div>
+          </mat-option>
+        }
+      </mat-select>
+    </div>
 
     <!-- ACTIONS -->
 
     <nav class="header-actions">
-
-      <a routerLink="/notifications" class="header-action notification" aria-label="Уведомления">
-        <mat-icon>
-          notifications_none
-        </mat-icon>
+      <a
+        routerLink="/notifications"
+        class="header-action notification"
+        aria-label="Уведомления"
+      >
+        <mat-icon> notifications_none </mat-icon>
 
         <span class="notification-dot"></span>
       </a>
       <a routerLink="/cart" class="header-action cart" aria-label="Корзина">
-        <mat-icon>
-          shopping_cart
-        </mat-icon>
+        <mat-icon> shopping_cart </mat-icon>
         @if (cartCount()) {
-        <span class="notification-dot">{{cartCount()}}</span>
-
+          <span class="notification-dot">{{ cartCount() }}</span>
         }
       </a>
 
       <a routerLink="/profile" class="header-action" aria-label="Профиль">
-        <mat-icon>
-          person_outline
-        </mat-icon>
+        <mat-icon> person_outline </mat-icon>
       </a>
-
     </nav>
-
   </div>
-
 </header>
