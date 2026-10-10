@@ -5,15 +5,15 @@
 
   display: block;
 }
-
+.brand-logo {
+  width: 14% !important;
+}
 .header {
   width: 100%;
 
-  background:
-    rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.96);
 
-  border-bottom:
-    1px solid #f0f1f4;
+  border-bottom: 1px solid #f0f1f4;
 
   backdrop-filter: blur(16px);
 
@@ -40,7 +40,6 @@
   margin: 0 auto;
   padding: 0 28px;
 }
-
 
 /* =========================
    BRAND
@@ -93,7 +92,6 @@
   }
 }
 
-
 /* =========================
    STORE
 ========================= */
@@ -120,9 +118,7 @@
   }
 
   &:focus-within {
-    box-shadow:
-      0 0 0 3px
-      rgba(7, 86, 200, 0.07);
+    box-shadow: 0 0 0 3px rgba(7, 86, 200, 0.07);
   }
   transition:
     background 0.15s ease,
@@ -133,9 +129,7 @@
   }
 
   &:focus-within {
-    box-shadow:
-      0 0 0 3px
-      rgba(7, 86, 200, 0.07);
+    box-shadow: 0 0 0 3px rgba(7, 86, 200, 0.07);
   }
 }
 
@@ -149,7 +143,6 @@ mat-select {
 }
 
 ::ng-deep .store-select-panel {
-
   .mat-mdc-option {
     min-height: 58px;
   }
@@ -213,7 +206,6 @@ mat-select {
   }
 }
 
-
 /* =========================
    ACTIONS
 ========================= */
@@ -266,7 +258,9 @@ mat-select {
     font-size: 22px;
   }
 }
-
+.brand-logo {
+  width: 14% !important;
+}
 .notification-dot {
   position: absolute;
 
@@ -282,13 +276,11 @@ mat-select {
   background: #0756c8;
 }
 
-
 /* =========================
    TABLET
 ========================= */
 
 @media (max-width: 800px) {
-
   .header-container {
     padding: 0 18px;
   }
@@ -306,13 +298,11 @@ mat-select {
   }
 }
 
-
 /* =========================
    MOBILE
 ========================= */
 
 @media (max-width: 600px) {
-
   .header-container {
     height: 62px;
 
@@ -325,7 +315,6 @@ mat-select {
 
     padding: 0 12px;
   }
-
 
   /* logo */
 
@@ -343,7 +332,6 @@ mat-select {
     }
   }
 
-
   /* STORE ОСТАЁТСЯ ВИДИМЫМ */
 
   .store-selector {
@@ -360,7 +348,6 @@ mat-select {
   mat-select {
     font-size: 12px;
   }
-
 
   /* ACTIONS */
 
@@ -394,7 +381,6 @@ mat-select {
   }
 }
 @media (max-width: 600px) {
-
   .header-container {
     height: 64px;
 
@@ -453,7 +439,6 @@ mat-select {
 /* Очень маленький экран */
 
 @media (max-width: 360px) {
-
   .header-container {
     padding: 0 8px;
   }

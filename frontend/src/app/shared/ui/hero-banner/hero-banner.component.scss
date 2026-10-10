@@ -294,7 +294,7 @@
 .semi .hero-image {
   width: 72%;
   max-width: 500px;
-
+  max-height:340px;
   right: 3%;
   bottom: 50%;
 
@@ -535,7 +535,7 @@
     max-width: none;
 
     right: -6%;
-    bottom: 50%;
+    bottom: 50%;max-height
 
     transform: translateY(50%);
   }
