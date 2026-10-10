@@ -9,7 +9,7 @@ export class ManagerGuard {
   canActivate(): boolean {
     const role = this.auth.role();
 
-    if (role === 'MANAGER') return true;
+    if (role === 'MANAGER' || role === 'ADMIN') return true;
 
     this.router.navigate(['/home']);
     return false;
