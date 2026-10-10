@@ -1,39 +1,76 @@
-<section class="hero">
+<section class="hero-slider">
+  <div class="slides">
+    @for (slide of slides; track slide.title; let i = $index) {
+      <article
+        class="hero-slide"
+        [class.active]="activeSlide() === i"
+        [class.fish]="slide.variant === 'fish'"
+        [class.seafood]="slide.variant === 'seafood'"
+        [class.semi]="slide.variant === 'semi'"
+      >
+        <div class="hero-content">
+          <h1>
+            {{ slide.title }}
 
-  <div class="hero-content">
+            <span>
+              {{ slide.accent }}
+            </span>
+          </h1>
 
-    <h1>
-      Доставка свежей рыбы
-      <span>за 60 минут</span>
-    </h1>
+          <p>
+            {{ slide.description }}
+          </p>
 
-    <p>
-      Бесплатная доставка<br />
-      при заказе от 5000 ₽
-    </p>
+          <a [routerLink]="slide.link" class="hero-button">
+            {{ slide.button }}
+          </a>
+        </div>
 
-    <a
-      routerLink="/products"
-      class="hero-button"
-    >
-      Заказать
-    </a>
+        <div class="hero-visual">
+          @if (slide.variant === "fish") {
+            <div class="ice ice-1"></div>
 
+            <div class="ice ice-2"></div>
+
+            <div class="ice ice-3"></div>
+          }
+
+          <img [src]="slide.image" [alt]="slide.title" class="hero-image" />
+        </div>
+      </article>
+    }
   </div>
 
+  <!-- ARROWS -->
 
-  <div class="hero-visual">
+  <button
+    type="button"
+    class="slider-arrow previous"
+    (click)="previous()"
+    aria-label="Предыдущий баннер"
+  >
+    ‹
+  </button>
 
-    <div class="ice ice-1"></div>
-    <div class="ice ice-2"></div>
-    <div class="ice ice-3"></div>
+  <button
+    type="button"
+    class="slider-arrow next"
+    (click)="next()"
+    aria-label="Следующий баннер"
+  >
+    ›
+  </button>
 
-    <img
-      class="salmon"
-      src="assets/images/hero-salmon.webp"
-      alt="Свежий лосось"
-    />
+  <!-- DOTS -->
 
+  <div class="slider-dots">
+    @for (slide of slides; track slide.title; let i = $index) {
+      <button
+        type="button"
+        [class.active]="activeSlide() === i"
+        (click)="goTo(i)"
+        [attr.aria-label]="'Баннер ' + (i + 1)"
+      ></button>
+    }
   </div>
-
 </section>

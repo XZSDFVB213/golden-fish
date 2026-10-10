@@ -4,64 +4,69 @@
 
     <!-- LOGO -->
 
-    <a routerLink="/home" class="brand">
-      <div class="brand-icon">
-        <mat-icon>set_meal</mat-icon>
-      </div>
-
-      <div class="brand-text">
-        <strong>Золотая</strong>
-        <strong>рыбка</strong>
-      </div>
+    <a
+      routerLink="/home"
+      class="brand"
+      aria-label="Золотая рыбка"
+    >
+      <img
+        src="assets/images/logo.png"
+        alt="Золотая рыбка"
+        class="brand-logo"
+      />
     </a>
 
 
     <!-- STORE -->
 
     <div class="store-selector">
-
-      <mat-select [value]="selectedStoreId()" (selectionChange)="onStoreChange($event.value)"
-        panelClass="store-select-panel" [panelWidth]="230">
-
+    
+      <mat-select
+        [value]="selectedStoreId()"
+        (selectionChange)="onStoreChange($event.value)"
+        panelClass="store-select-panel"
+        [panelWidth]="240"
+      >
+    
         <mat-select-trigger>
           {{ selectedStoreLabel() }}
         </mat-select-trigger>
-
-        @for (
-        store of stores();
-        track store.id;
-        let i = $index
-        ) {
-
-        <mat-option [value]="store.id">
-
-          <div class="store-option">
-
-            <div class="store-option-number">
-              {{ i + 1 }}
+    
+        @for (store of stores(); track store.id) {
+    
+          <mat-option [value]="store.id">
+    
+            <div class="store-option">
+    
+              <div class="store-option-icon">
+                <mat-icon>storefront</mat-icon>
+              </div>
+    
+              <div class="store-option-content">
+    
+                <strong>
+                  {{
+                    store.title.replace(
+                      'Золотая рыбка - ',
+                      ''
+                    )
+                  }}
+                </strong>
+    
+                <span>
+                  Золотая рыбка
+                </span>
+    
+              </div>
+    
             </div>
-
-            <div class="store-option-content">
-              <strong>
-                Магазин {{ i + 1 }}
-              </strong>
-
-              <span>
-                {{
-                store.title
-                .replace('Золотая рыбка - ', '')
-                }}
-              </span>
-            </div>
-
-          </div>
-
-        </mat-option>
-
+    
+          </mat-option>
+    
         }
-
+    
       </mat-select>
-
+    
     </div>
 
 

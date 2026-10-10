@@ -99,7 +99,7 @@
 ========================= */
 
 .store-selector {
-  width: 150px;
+  width: 195px;
   height: 44px;
 
   display: flex;
@@ -124,6 +124,19 @@
       0 0 0 3px
       rgba(7, 86, 200, 0.07);
   }
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    background: #f0f1f3;
+  }
+
+  &:focus-within {
+    box-shadow:
+      0 0 0 3px
+      rgba(7, 86, 200, 0.07);
+  }
 }
 
 mat-select {
@@ -135,20 +148,68 @@ mat-select {
   font-weight: 750;
 }
 
-::ng-deep {
-  .store-selector {
+::ng-deep .store-select-panel {
 
-    .mat-mdc-select-trigger {
-      min-height: auto;
-    }
+  .mat-mdc-option {
+    min-height: 58px;
+  }
 
-    .mat-mdc-select-value {
-      color: #25262b;
-    }
+  .mat-pseudo-checkbox {
+    display: none;
+  }
+}
 
-    .mat-mdc-select-arrow {
-      color: #7d8088;
-    }
+.store-option {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.store-option-icon {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: #0756c8;
+  background: #edf4ff;
+
+  mat-icon {
+    width: 18px;
+    height: 18px;
+
+    font-size: 18px;
+  }
+}
+
+.store-option-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+
+  strong {
+    color: #202126;
+
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  span {
+    color: #90939a;
+
+    font-size: 11px;
   }
 }
 
@@ -232,6 +293,10 @@ mat-select {
     padding: 0 18px;
   }
 
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
   .brand-text {
     display: none;
   }
@@ -329,7 +394,62 @@ mat-select {
     right: 5px;
   }
 }
+@media (max-width: 600px) {
 
+  .header-container {
+    height: 64px;
+
+    grid-template-columns:
+      auto
+      1fr
+      auto;
+
+    gap: 7px;
+
+    padding: 0 10px;
+  }
+
+  .brand-logo {
+    width: 43px;
+    height: 43px;
+  }
+
+  .store-selector {
+    width: 115px;
+    height: 38px;
+
+    justify-self: center;
+
+    padding: 0 10px;
+
+    border-radius: 12px;
+  }
+
+  mat-select {
+    font-size: 11px;
+  }
+
+  .header-actions {
+    gap: 3px;
+  }
+
+  .header-action {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #f7f7f8;
+
+    mat-icon {
+      width: 19px;
+      height: 19px;
+
+      font-size: 19px;
+    }
+  }
+}
 
 /* Очень маленький экран */
 

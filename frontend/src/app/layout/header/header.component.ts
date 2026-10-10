@@ -12,13 +12,7 @@ import { CartService } from '../../features/cart/service/cart.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    RouterLink,
-
-    MatIconModule,
-    MatBadgeModule,
-    MatSelectModule,
-  ],
+  imports: [RouterLink, MatIconModule, MatBadgeModule, MatSelectModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -34,19 +28,18 @@ export class HeaderComponent {
   stores = signal<IStore[]>([
     {
       id: 'cmq3qjnto00018w94ty3jx96g',
-      title: 'Золотая рыбка - Центр',
-      description: 'Описание',
+      title: 'Золотая рыбка - Х. Тагиева',
+      description: 'Республика Дагестан, Дербент, улица Х. Тагиева, 53К',
     } as IStore,
+
     {
       id: 'cmq3qkcar00038w94ouiakoxa',
-      title: 'Золотая рыбка - Северный',
-      description: 'Описание',
+      title: 'Золотая рыбка - ул. Азиза Гильядова',
+      description: 'Республика Дагестан, Дербент, улица Азиза Гильядова, 13',
     } as IStore,
   ]);
 
-  selectedStoreId = signal(
-    'cmq3qjnto00018w94ty3jx96g',
-  );
+  selectedStoreId = signal('cmq3qjnto00018w94ty3jx96g');
 
   constructor() {
     if (!this.storeService.store()) {
@@ -61,9 +54,7 @@ export class HeaderComponent {
   onStoreChange(storeId: string) {
     this.selectedStoreId.set(storeId);
 
-    const store = this.stores().find(
-      store => store.id === storeId,
-    );
+    const store = this.stores().find((store) => store.id === storeId);
 
     if (store) {
       this.storeService.setStore(store);
@@ -74,23 +65,19 @@ export class HeaderComponent {
     const value = this.search().trim();
 
     this.router.navigate(['/products'], {
-      queryParams: value
-        ? { search: value }
-        : undefined,
+      queryParams: value ? { search: value } : undefined,
     });
   }
   selectedStoreLabel = computed(() => {
-  const storeId = this.selectedStoreId();
+    const store = this.stores().find(
+      (store) => store.id === this.selectedStoreId(),
+    );
 
-  const index = this.stores().findIndex(
-    store => store.id === storeId,
-  );
+    if (!store) {
+      return 'Выберите магазин';
+    }
 
-  if (index === -1) {
-    return 'Магазин';
-  }
-
-  return `Магазин ${index + 1}`;
-});
+    return store.title.replace('Золотая рыбка - ', '');
+  });
   cartCount = computed(() => this.totalCount());
 }
