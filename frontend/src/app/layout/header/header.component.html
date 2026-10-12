@@ -20,7 +20,14 @@
         [panelWidth]="240"
       >
         <mat-select-trigger>
-          {{ selectedStoreLabel() }}
+          <div class="selected-store">
+            <mat-icon>location_on</mat-icon>
+        
+            <div class="selected-store-text">
+              <span>Магазин</span>
+              <strong>{{ selectedStoreLabel() }}</strong>
+            </div>
+          </div>
         </mat-select-trigger>
 
         @for (store of stores(); track store.id) {
@@ -29,13 +36,15 @@
               <div class="store-option-icon">
                 <mat-icon>storefront</mat-icon>
               </div>
-
+        
               <div class="store-option-content">
                 <strong>
                   {{ store.title.replace("Золотая рыбка - ", "") }}
                 </strong>
-
-                <span> {{ store.description.replace("Золотая рыбка - ", "") }} </span>
+        
+                <span>
+                  {{ store.description }}
+                </span>
               </div>
             </div>
           </mat-option>
