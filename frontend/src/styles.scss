@@ -6,29 +6,7 @@ body {
 
   overflow-x: hidden;
 }
-:host {
-  display: block;
 
-  min-height: 100vh;
-
-  background:
-    radial-gradient(
-      circle at 12% 8%,
-      rgba(7, 86, 200, 0.08),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 90% 30%,
-      rgba(0, 153, 255, 0.06),
-      transparent 25%
-    ),
-    linear-gradient(
-      180deg,
-      #f4f8ff 0%,
-      #ffffff 34%,
-      #f7faff 100%
-    );
-}
 *,
 *::before,
 *::after {
@@ -36,11 +14,40 @@ body {
 }
 html,
 body {
-  height: 100%;
+  width: 100%;
+  max-width: 100%;
+
+  min-height: 100%;
+
+  overflow-x: hidden;
 }
+
 body {
   margin: 0;
+
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  color: var(--text-primary);
+
+  background:
+    radial-gradient(
+      circle at 12% 6%,
+      rgba(7, 86, 200, 0.07),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 28%,
+      rgba(0, 153, 255, 0.05),
+      transparent 26%
+    ),
+    linear-gradient(
+      180deg,
+      #f3f7ff 0%,
+      #ffffff 38%,
+      #f7faff 100%
+    );
+
+  background-attachment: fixed;
 }
 :root {
   --container-width: 1440px;
@@ -57,6 +64,13 @@ body {
 
   --text-primary: #111827;
   --text-secondary: #6b7280;
+
+  --primary: #0756c8;
+  --primary-dark: #003f9d;
+  --primary-light: #edf4ff;
+
+  --page-background: #f3f7ff;
+  --surface: #ffffff;
 }
 .category-dialog-panel {
   .mat-mdc-dialog-surface {
