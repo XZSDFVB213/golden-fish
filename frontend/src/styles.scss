@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 html,
 body {
   width: 100%;
@@ -25,27 +26,13 @@ body {
 body {
   margin: 0;
 
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-
+  font-family: 'Montserrat', sans-serif;
   color: var(--text-primary);
 
   background:
-    radial-gradient(
-      circle at 12% 6%,
-      rgba(7, 86, 200, 0.07),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 90% 28%,
-      rgba(0, 153, 255, 0.05),
-      transparent 26%
-    ),
-    linear-gradient(
-      180deg,
-      #f3f7ff 0%,
-      #ffffff 38%,
-      #f7faff 100%
-    );
+    radial-gradient(circle at 12% 6%, rgba(0, 91, 223, 0.18), transparent 32%),
+    radial-gradient(circle at 90% 28%, rgba(0, 153, 255, 0.12), transparent 30%),
+    linear-gradient(180deg, #dbeafe 0%, #f7fbff 35%, #ffffff 75%);
 
   background-attachment: fixed;
 }
@@ -107,7 +94,20 @@ body {
     box-shadow: 0 24px 70px rgba(24, 34, 52, 0.18) !important;
   }
 }
-
+html,
+body,
+body.mat-typography,
+.mat-typography {
+  font-family: 'Montserrat', sans-serif !important;
+}
+button,
+input,
+textarea,
+select,
+.mat-mdc-button,
+.mat-mdc-form-field {
+  font-family: 'Montserrat', sans-serif !important;
+}
 @media (max-width: 600px) {
   .catalog-filter-dialog {
     .mat-mdc-dialog-container {
