@@ -26,7 +26,7 @@ body {
 body {
   margin: 0;
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: var(--text-primary);
 
   background:
@@ -98,7 +98,7 @@ html,
 body,
 body.mat-typography,
 .mat-typography {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
 }
 button,
 input,
@@ -106,7 +106,7 @@ textarea,
 select,
 .mat-mdc-button,
 .mat-mdc-form-field {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
 }
 @media (max-width: 600px) {
   .catalog-filter-dialog {
