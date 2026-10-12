@@ -1,6 +1,5 @@
 :host {
   display: block;
-  background: #fff;
   box-sizing: border-box;
 }
 
@@ -43,7 +42,6 @@
   &:focus-within {
     border-color: rgba(0, 79, 196, 0.2);
 
-    background: #fff;
   }
 
   > mat-icon {
