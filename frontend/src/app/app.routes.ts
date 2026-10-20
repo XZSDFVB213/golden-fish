@@ -35,6 +35,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'notifications',
+        loadComponent: () =>
+          import('./pages/notification/notification.component').then(
+            (m) => m.NotificationsComponent,
+          ),
+      },
+      {
         path: 'home',
         loadComponent: () =>
           import('./pages/home/home.component').then((c) => c.HomeComponent),
@@ -81,7 +88,7 @@ export const routes: Routes = [
             (c) => c.SupportComponent,
           ),
       },
-       {
+      {
         path: 'favorites',
         loadComponent: () =>
           import('./pages/favorites/favorites.component').then(

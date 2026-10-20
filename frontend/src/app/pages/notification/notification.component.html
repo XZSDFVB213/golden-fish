@@ -1,0 +1,146 @@
+<section class="notifications-page">
+
+  <div class="page-header">
+
+    <div>
+      <a
+        routerLink="/home"
+        class="back-link"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Назад
+      </a>
+
+      <h1>Уведомления</h1>
+
+      <p>
+        Новости о заказах, скидках
+        и важных событиях
+      </p>
+    </div>
+
+    @if (unreadCount()) {
+      <button
+        class="read-all"
+        (click)="markAllAsRead()"
+      >
+        <mat-icon>done_all</mat-icon>
+        Прочитать все
+      </button>
+    }
+
+  </div>
+
+
+  <div class="notification-filters">
+
+    <button
+      [class.active]="filter() === 'all'"
+      (click)="setFilter('all')"
+    >
+      Все
+
+      <span>
+        {{ notifications().length }}
+      </span>
+    </button>
+
+    <button
+      [class.active]="filter() === 'unread'"
+      (click)="setFilter('unread')"
+    >
+      Непрочитанные
+
+      @if (unreadCount()) {
+        <span>
+          {{ unreadCount() }}
+        </span>
+      }
+    </button>
+
+  </div>
+
+
+  <div class="notifications-list">
+
+    @for (
+      notification
+      of filteredNotifications();
+      track notification.id
+    ) {
+
+      <article
+        class="notification-card"
+        [class.unread]="!notification.read"
+        (click)="markAsRead(notification.id)"
+      >
+
+        <div
+          class="notification-icon"
+          [class.order]="
+            notification.type === 'order'
+          "
+          [class.promo]="
+            notification.type === 'promo'
+          "
+          [class.info]="
+            notification.type === 'info'
+          "
+        >
+          <mat-icon>
+            {{ notification.icon }}
+          </mat-icon>
+        </div>
+
+
+        <div class="notification-content">
+
+          <div class="notification-title">
+
+            <h3>
+              {{ notification.title }}
+            </h3>
+
+            @if (!notification.read) {
+              <span class="unread-dot"></span>
+            }
+
+          </div>
+
+          <p>
+            {{ notification.text }}
+          </p>
+
+          <time>
+            {{ notification.date }}
+          </time>
+
+        </div>
+
+      </article>
+
+    } @empty {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          <mat-icon>
+            notifications_none
+          </mat-icon>
+        </div>
+
+        <h2>
+          Здесь пока пусто
+        </h2>
+
+        <p>
+          Новые уведомления появятся здесь
+        </p>
+
+      </div>
+
+    }
+
+  </div>
+
+</section>
