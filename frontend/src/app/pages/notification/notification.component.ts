@@ -19,8 +19,8 @@ interface NotificationItem {
     MatIconModule,
     RouterLink,
   ],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.scss',
+  templateUrl: './notification.component.html',
+  styleUrl: './notification.component.scss',
 })
 export class NotificationsComponent {
   filter = signal<'all' | 'unread'>('all');
